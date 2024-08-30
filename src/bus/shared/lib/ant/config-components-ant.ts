@@ -1,0 +1,45 @@
+import {
+  Button,
+  Flex,
+  Input,
+  Table,
+  Tag,
+  Space,
+  Pagination,
+  Select,
+  InputNumber,
+  Badge,
+  Breadcrumb,
+  Tabs,
+  type TableProps,
+  type TableColumnsType,
+  type TabsProps,
+  Tooltip,
+  Skeleton,
+} from "antd";
+import type { SearchProps } from "antd/es/input/Search";
+
+const { Column, ColumnGroup } = Table;
+
+export {
+  Button,
+  Flex,
+  Input,
+  Table,
+  Tag,
+  Space,
+  TableProps,
+  TableColumnsType,
+  Pagination,
+  Column,
+  ColumnGroup,
+  Select,
+  InputNumber,
+  Badge,
+  Breadcrumb,
+  TabsProps,
+  Tabs,
+  SearchProps,
+  Tooltip,
+  Skeleton,
+};

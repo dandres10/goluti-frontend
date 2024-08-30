@@ -1,0 +1,26 @@
+.select-core {
+  font-family: Inter;
+  color: var(--primary-main);
+  .ant-select-arrow {
+    color: var(--primary-main);
+    width: 9px;
+    font-size: 10px;
+  }
+}
+
+.select-core-disabled {
+  font-family: Inter;
+  color: var(--Neutral-6);
+  .ant-select-arrow {
+    color: var(--Neutral-6);
+    width: 9px;
+    font-size: 10px;
+  }
+}
+
+.item-core-select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
