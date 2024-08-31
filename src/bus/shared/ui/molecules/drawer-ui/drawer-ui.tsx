@@ -8,6 +8,8 @@ export interface IDrawerUI {
   onClose: any;
   open: boolean;
   id: string;
+  size?: "default" | "large" | undefined;
+  component?: React.ReactNode;
 }
 
 /**
@@ -17,9 +19,7 @@ export interface IDrawerUI {
  * @returns {JSX.Element} The rendered select component.
  */
 export const DrawerUI = (props: IDrawerUI) => {
-  const { title, placement, onClose, open, id } = props;
-
-  
+  const { title, placement, onClose, open, id, size, component } = props;
 
   return (
     <ConfigProvider theme={configAnt}>
@@ -30,8 +30,9 @@ export const DrawerUI = (props: IDrawerUI) => {
         onClose={onClose}
         open={open}
         key={id}
+        size={size}
       >
-        
+        {component}
       </Drawer>
     </ConfigProvider>
   );
