@@ -1,9 +1,22 @@
-/* import { ConfigProvider } from "antd"; */
+import { NavbarType } from "./bus/shared/enums";
+import { FooterHomeUI, NavbarUI } from "@/bus/shared/ui/molecules";
 import { RoutesCore } from "./routes/routes-core";
-/* import { configAnt } from "./bus/shared/lib/ant"; */
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
-  return <RoutesCore />;
+  return (
+    <>
+      <BrowserRouter>
+        <NavbarUI
+          id="navbar-core"
+          navbarType={NavbarType.HOME}
+          className="home-view__navbar"
+        />
+        <RoutesCore />
+        <FooterHomeUI id="footer-home" />
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;

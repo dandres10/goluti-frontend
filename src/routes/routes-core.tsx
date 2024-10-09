@@ -1,12 +1,13 @@
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import HomeLogic from "../pages/home/home-logic";
+import LoginLogic from "@/pages/login/login-logic";
 
 export const RoutesCore = () => {
   return (
-    <BrowserRouter>
+    
       <Routes>
         <Route path={"/"} element={<HomeLogic />} />
+        <Route path={"/login"} element={<LoginLogic />} />
       </Routes>
-    </BrowserRouter>
   );
 };

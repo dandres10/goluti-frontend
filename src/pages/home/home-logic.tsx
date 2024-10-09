@@ -9,7 +9,7 @@ export interface PropsHomeLogic {
 export const HomeLogic = () => {
   const props: PropsHomeLogic = {
     title: "Home + vite + Felizzzzx ",
-    navbarType: NavbarType.DASHBOARD
+    navbarType: NavbarType.HOME
   };
 
   return <HomeView {...props}/>;

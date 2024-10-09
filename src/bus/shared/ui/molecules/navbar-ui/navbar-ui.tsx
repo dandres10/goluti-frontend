@@ -14,10 +14,13 @@ import { Avatar, Badge } from "antd";
 import { DrawerUI } from "@bus/shared/ui/molecules/index";
 import { useFullWidth } from "@bus/shared/hooks";
 import { MenuHomeUI } from "../menu-home-ui/menu-home-ui";
+import { useNavigate } from "react-router-dom";
 
 export interface INavbarUI {
   id: string;
   navbarType: NavbarType;
+  className?: string;
+  /*   navigate?: any; */
 }
 
 /**
@@ -29,6 +32,7 @@ export interface INavbarUI {
 export const NavbarUI = (props: INavbarUI) => {
   const [openMenuHome, setOpenMenuHome] = useState(false);
   const fullWidth = useFullWidth();
+  const navigate = useNavigate();
 
   const showDrawer = () => {
     setOpenMenuHome(true);
@@ -37,9 +41,12 @@ export const NavbarUI = (props: INavbarUI) => {
   const onCloseMenuHome = () => {
     setOpenMenuHome(false);
   };
+  const handleLogin = () => {
+    navigate("/login");
+  };
 
   return (
-    <div id="home-view__navbar" className="navbar-ui">
+    <div id="home-view__navbar" className={`${props.className} navbar-ui`}>
       <div className="navbar-ui__start">
         {[NavbarType.HOME].includes(props.navbarType) && fullWidth < 800 ? (
           <MenuOutlined
@@ -105,6 +112,7 @@ export const NavbarUI = (props: INavbarUI) => {
             text="Ingresar"
             type="primary"
             width="5rem"
+            onClick={() => handleLogin()}
           />
         ) : null}
         {[NavbarType.DASHBOARD].includes(props.navbarType) ? (
