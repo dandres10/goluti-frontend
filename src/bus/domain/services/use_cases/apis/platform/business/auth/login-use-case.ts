@@ -17,7 +17,6 @@ export class LoginUseCase implements UseCase<IAuthLoginRequestDTO, IAuthLoginRes
     ): Promise<IAuthLoginResponseDTO | null> {
         const paramsEntity = this.authLoginRequestMapper.mapTo(params)
         return await this.authRepository.login(paramsEntity, config).then((data: IAuthLoginResponseDTO | null) => {
-
             if (data)
                 return data;
             return null;
