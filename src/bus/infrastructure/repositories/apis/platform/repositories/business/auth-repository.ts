@@ -1,16 +1,18 @@
 import platformAxios from "@/bus/core/axios/platform-axios";
-import { InjectionCore } from "@/bus/core/injection/injection-core";
+import { CONST_PLATFORM_API_ROUTES } from "@/bus/core/const";
+import { CONST_CORE_DTO } from "@/bus/core/const/const-core";
 import { IConfigRepositoryDTO } from "@/bus/core/interfaces";
-import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth";
+import { InjectionCore } from "@/bus/core/injection/injection-core";
+import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
 import { IAuthRepository } from "@/bus/domain/services/repositories/apis/platform/business/i-auth-repository";
-import { IAuthLoginRequestEntity, IAuthLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth";
-import { InjectionAuthMapper } from "@/bus/infrastructure/mappers/apis/platform/business/injection/injection-auth-mapper";
+import { IAuthLoginRequestEntity, IAuthLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { InjectionPlatformBusinessAuthMapper } from "@/bus/infrastructure/mappers/apis/platform/injection/business/injection-platform-business-auth-mapper";
 
 
 export class AuthRepository extends IAuthRepository {
     private static instance: AuthRepository;
-    private resolve = InjectionCore.InjectionResolve();
-    private readonly authLoginResponseMapper = InjectionAuthMapper.InjectionAuthLoginResponseMapper();
+    private readonly resolve = InjectionCore.Resolve();
+    private readonly authLoginResponseMapper = InjectionPlatformBusinessAuthMapper.AuthLoginResponseMapper();
 
     private constructor() {
         super();
@@ -22,15 +24,20 @@ export class AuthRepository extends IAuthRepository {
         return AuthRepository.instance;
     }
 
-    login = async (
+    public async login(
         params: IAuthLoginRequestEntity,
-        config: IConfigRepositoryDTO = { loadService: true }
-    ): Promise<IAuthLoginResponseDTO | null> => {
-        return platformAxios.post(`auth/login`, params).then(({ data }) => {
-            const entity = this.resolve.ResolveRequest<IAuthLoginResponseEntity>(data);
-            if (entity)
-                return this.authLoginResponseMapper.mapFrom(entity);
-            return null
-        });
+        config: IConfigRepositoryDTO = CONST_CORE_DTO.CONFIG
+    ): Promise<IAuthLoginResponseDTO | null> {
+        if (config.loadService)
+            return platformAxios
+                .post(CONST_PLATFORM_API_ROUTES.AUTH_LOGIN, params)
+                .then(({ data }) => {
+                    const entity = this.resolve.ResolveRequest<IAuthLoginResponseEntity>(data);
+                    if (entity)
+                        return this.authLoginResponseMapper.mapFrom(entity);
+                    return null
+                });
+
+        return null
     };
 }

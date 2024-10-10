@@ -1,6 +1,6 @@
 import { Mapper } from "@/bus/core/classes";
-import { IPermissionLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth";
-import { IPermissionLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth";
+import { IPermissionLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { IPermissionLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
 
 
 

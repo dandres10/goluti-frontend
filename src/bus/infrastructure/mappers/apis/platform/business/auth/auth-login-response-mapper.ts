@@ -1,7 +1,7 @@
 import { Mapper } from "@/bus/core/classes";
-import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth";
-import { IAuthLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth";
-import { InjectionAuthMapper } from "../injection/injection-auth-mapper";
+import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { IAuthLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { InjectionPlatformBusinessAuthMapper } from "../../injection/business/injection-platform-business-auth-mapper";
 
 
 
@@ -9,8 +9,8 @@ import { InjectionAuthMapper } from "../injection/injection-auth-mapper";
 export class AuthLoginResponseMapper extends Mapper<IAuthLoginResponseEntity, IAuthLoginResponseDTO> {
 
     private static instance: AuthLoginResponseMapper;
-    private platformConfigurationResponseMapper = InjectionAuthMapper.InjectionPlatformConfigurationResponseMapper()
-    private platformVariationsResponseMapper = InjectionAuthMapper.InjectionPlatformVariationsResponseMapper()
+    private platformConfigurationResponseMapper = InjectionPlatformBusinessAuthMapper.PlatformConfigurationResponseMapper()
+    private platformVariationsResponseMapper = InjectionPlatformBusinessAuthMapper.PlatformVariationsResponseMapper()
     public constructor() { super(); }
 
 

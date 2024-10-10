@@ -1,6 +1,6 @@
 import { Mapper } from "@/bus/core/classes";
-import { ILanguageLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth";
-import { ILanguageLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth";
+import { ILanguageLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { ILanguageLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
 
 
 

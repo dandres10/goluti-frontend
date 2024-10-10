@@ -1,6 +1,6 @@
 import { Mapper } from "@/bus/core/classes";
-import { ICountryLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth";
-import { ICountryLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth";
+import { ICountryLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { ICountryLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
 
 
 

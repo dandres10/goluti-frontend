@@ -1,6 +1,6 @@
 import { Mapper } from "@/bus/core/classes";
-import { IMenuLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth";
-import { IMenuLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth";
+import { IMenuLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { IMenuLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
 
 
 export class MenuLoginResponseMapper extends Mapper<IMenuLoginResponseEntity, IMenuLoginResponseDTO> {

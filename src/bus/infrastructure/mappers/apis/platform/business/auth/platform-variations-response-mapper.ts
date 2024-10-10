@@ -1,7 +1,7 @@
 import { Mapper } from "@/bus/core/classes";
-import { IPlatformVariationsResponseDTO } from "@/bus/domain/models/apis/platform/business/auth";
-import { IPlatformVariationsResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth";
-import { InjectionAuthMapper } from "../injection/injection-auth-mapper";
+import { IPlatformVariationsResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { IPlatformVariationsResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { InjectionPlatformBusinessAuthMapper } from "../../injection/business/injection-platform-business-auth-mapper";
 
 
 
@@ -9,9 +9,9 @@ import { InjectionAuthMapper } from "../injection/injection-auth-mapper";
 export class PlatformVariationsResponseMapper extends Mapper<IPlatformVariationsResponseEntity, IPlatformVariationsResponseDTO> {
 
     private static instance: PlatformVariationsResponseMapper;
-    private currencyLoginResponseMapper = InjectionAuthMapper.InjectionCurrencyLoginResponseMapper()
-    private locationLoginResponseMapper = InjectionAuthMapper.InjectionLocationLoginResponseMapper()
-    private languageLoginResponseMapper = InjectionAuthMapper.InjectionLanguageLoginResponseMapper()
+    private currencyLoginResponseMapper = InjectionPlatformBusinessAuthMapper.CurrencyLoginResponseMapper()
+    private locationLoginResponseMapper = InjectionPlatformBusinessAuthMapper.LocationLoginResponseMapper()
+    private languageLoginResponseMapper = InjectionPlatformBusinessAuthMapper.LanguageLoginResponseMapper()
     private constructor() {
         super();
     }

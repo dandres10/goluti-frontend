@@ -1,6 +1,6 @@
 import { Mapper } from "@/bus/core/classes";
-import { IUserLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth";
-import { IUserLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth";
+import { IUserLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { IUserLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
 
 
 

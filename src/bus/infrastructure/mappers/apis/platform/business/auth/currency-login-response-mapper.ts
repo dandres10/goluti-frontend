@@ -1,6 +1,6 @@
 import { Mapper } from "@/bus/core/classes";
-import { ICurrencyLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth";
-import { ICurrencyLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth";
+import { ICurrencyLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { ICurrencyLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
 
 
 export class CurrencyLoginResponseMapper extends Mapper<ICurrencyLoginResponseEntity, ICurrencyLoginResponseDTO> {

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "development:mode": "vite --mode development",
+    "qa:mode": "vite --mode qa",
     "staging:mode": "vite --mode staging",
     "production:mode": "vite --mode production",
     "build:development": "vite build --mode development",
@@ -17,10 +18,12 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
+    "@reduxjs/toolkit": "^2.2.8",
     "antd": "^5.20.3",
     "axios": "^1.6.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-redux": "^9.1.2",
     "react-router": "^6.26.1",
     "react-router-dom": "^6.26.1"
   },
