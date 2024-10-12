@@ -1,8 +1,8 @@
-import { IConfigRepositoryDTO } from '../interfaces/index';
+import { IConfigDTO } from '../interfaces/index';
 
 
 export interface IConstCoreDTO {
-    CONFIG: IConfigRepositoryDTO
+    CONFIG: IConfigDTO
 }
 
 export const CONST_CORE_DTO: IConstCoreDTO = {

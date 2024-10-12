@@ -1,4 +1,4 @@
-export interface IUserLoginResponseDTO {
+export interface IUserReduxDTO {
     id: string;
     email: string;
     firstName: string;

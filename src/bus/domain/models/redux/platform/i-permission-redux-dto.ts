@@ -1,7 +1,6 @@
-export interface IRolLoginResponseDTO {
+export interface IPermissionReduxDTO {
   id: string;
   name: string;
-  code: string;
   description: string;
   state: boolean;
 }

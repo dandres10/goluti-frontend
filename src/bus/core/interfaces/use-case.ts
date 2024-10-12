@@ -1,8 +1,8 @@
-import { IConfigRepositoryDTO } from "./i-config-repository-dto";
+import { IConfigDTO } from "./i-config-repository-dto";
 
 export interface UseCase<S, T> {
     execute(
         params?: S,
-        config?: IConfigRepositoryDTO,
+        config?: IConfigDTO,
     ): Promise<T> | void | any | null;
 }

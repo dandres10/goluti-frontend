@@ -1,9 +1,12 @@
-import { SavePlatformUseCase } from "@/bus/domain/services/use_cases/redux/save-platform-use-case";
-
+import { IConfigDTO } from "../../core/interfaces";
+import { IUserReduxDTO } from "../../domain/models/redux/platform";
+import { IAuthLoginResponseDTO } from "../../domain/models/apis/platform/business/auth/login";
+import { InjectionPlatformReduxUseCase } from "../../domain/services/use_cases/redux/injection";
 
 export class PlatformReduxFacade {
     private static instance: PlatformReduxFacade;
-    private savePlatformUseCase = SavePlatformUseCase.getInstance();
+    private savePlatformUseCase = InjectionPlatformReduxUseCase.SavePlatformUseCase();
+    private readUserUseCase = InjectionPlatformReduxUseCase.ReadUserUseCase();
 
 
     public static getInstance(): PlatformReduxFacade {
@@ -13,10 +16,15 @@ export class PlatformReduxFacade {
     }
 
 
-    public savePlatform(params: any): void {
-        this.savePlatformUseCase.execute(params);
-
+    public savePlatform(params: IAuthLoginResponseDTO, config: IConfigDTO): void {
+        this.savePlatformUseCase.execute(params,config);
     }
+
+    public readUser(config: IConfigDTO): IUserReduxDTO | undefined {
+        return this.readUserUseCase.execute(config)
+    }
+
+
 
 
 }

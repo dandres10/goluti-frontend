@@ -1,17 +1,12 @@
-
-import { ACTIONS_AUTH } from "@/bus/domain/services/repositories/redux/auth";
-import { IPlatformReduxRepository } from "@/bus/domain/services/repositories/redux/i-platform-redux-repository";
-
-import { useAppDispatch } from '@bus/core/config/index';
+import { IConfigDTO } from '../../../core/interfaces';
+import { ACTIONS_AUTH } from "../../../domain/services/repositories/redux/auth";
+import { IPlatformReduxDTO, IUserReduxDTO } from '../../../domain/models/redux/platform';
+import { IPlatformReduxRepository } from "../../../domain/services/repositories/redux/platform/i-platform-redux-repository";
 
 
 export class PlatformReduxRepository extends IPlatformReduxRepository {
-    private static instance: PlatformReduxRepository;
-    private dispatch = useAppDispatch();
 
-    private constructor() {
-        super();
-    }
+    private static instance: PlatformReduxRepository;
 
     public static getInstance(): PlatformReduxRepository {
         if (!PlatformReduxRepository.instance)
@@ -20,8 +15,19 @@ export class PlatformReduxRepository extends IPlatformReduxRepository {
     }
 
     public savePlatform(
-        params: any
+        params: IPlatformReduxDTO,
+        config: IConfigDTO
     ): void {
-        this.dispatch(ACTIONS_AUTH.addPlatformAction(params));
+        if (config?.dispatch) {
+            config.dispatch(ACTIONS_AUTH.addPlatformAction(params));
+        }
     };
+
+    public readUser(config: IConfigDTO): IUserReduxDTO | undefined {
+        if (config?.selector) {
+            const user = config.selector((state: any) => state?.bus?.platform?.configuration?.user);
+            return user;
+        }
+        return undefined;
+    }
 }

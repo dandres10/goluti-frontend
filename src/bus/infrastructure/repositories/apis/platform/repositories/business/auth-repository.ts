@@ -1,7 +1,7 @@
 import platformAxios from "@/bus/core/axios/platform-axios";
 import { CONST_PLATFORM_API_ROUTES } from "@/bus/core/const";
 import { CONST_CORE_DTO } from "@/bus/core/const/const-core";
-import { IConfigRepositoryDTO } from "@/bus/core/interfaces";
+import { IConfigDTO } from "@/bus/core/interfaces";
 import { InjectionCore } from "@/bus/core/injection/injection-core";
 import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
 import { IAuthRepository } from "@/bus/domain/services/repositories/apis/platform/business/i-auth-repository";
@@ -26,7 +26,7 @@ export class AuthRepository extends IAuthRepository {
 
     public async login(
         params: IAuthLoginRequestEntity,
-        config: IConfigRepositoryDTO = CONST_CORE_DTO.CONFIG
+        config: IConfigDTO = CONST_CORE_DTO.CONFIG
     ): Promise<IAuthLoginResponseDTO | null> {
         if (config.loadService)
             return platformAxios

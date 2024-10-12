@@ -1,4 +1,4 @@
-export interface ICompanyLoginResponseDTO {
+export interface ICompanyReduxDTO {
   id: string;
   name: string;
   inactivityTime: number;

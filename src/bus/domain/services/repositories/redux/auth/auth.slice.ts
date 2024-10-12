@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { addPlatformReducer } from "./auth.reducer";
+import { IPlatformReduxDTO } from "@/bus/domain/models/redux/platform";
 
 
 export const keyAuth = "bus";
 
 export interface IInitialStateRedux {
-  platform: any;
+  platform: IPlatformReduxDTO | null;
 }
 
 const initialState: IInitialStateRedux = {

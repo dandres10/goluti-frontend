@@ -1,4 +1,4 @@
-export interface ICountryLoginResponseDTO {
+export interface ICountryReduxDTO {
   id: string;
   name: string;
   code: string;

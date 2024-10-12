@@ -1,4 +1,4 @@
-export interface IPlatformLoginResponseDTO {
+export interface IPlatformInitialReduxDTO {
   id: string;
   languageId: string;
   locationId: string;

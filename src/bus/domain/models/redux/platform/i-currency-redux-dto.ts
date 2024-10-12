@@ -1,4 +1,4 @@
-export interface ICurrencyLoginResponseDTO {
+export interface ICurrencyReduxDTO {
     id: string;
     name: string;
     code: string;

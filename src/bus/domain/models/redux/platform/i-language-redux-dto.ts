@@ -1,4 +1,4 @@
-export interface ILanguageLoginResponseDTO {
+export interface ILanguageReduxDTO {
   id: string;
   name: string;
   code: string;

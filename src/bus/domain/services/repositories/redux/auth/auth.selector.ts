@@ -1,15 +1,14 @@
 import { useAppSelector } from "@/bus/core/config";
+import { IUserReduxDTO } from "@/bus/domain/models/redux/platform";
 
 
-export interface IPlatformSelector {
-  platformSelector: Function;
-}
 
-const platformSelector = () => {
-  const { platform } = useAppSelector((state:any) => state.auth);
-  return platform;
+
+const userSelector = (): IUserReduxDTO | undefined => {
+  const user = useAppSelector((state: any) => state?.bus?.platform?.configuration?.user);
+  return user;
 };
 
-export const SELECTORS_AUTH: IPlatformSelector = {
-  platformSelector,
+export const SELECTORS_PLATFORM = {
+  userSelector,
 };

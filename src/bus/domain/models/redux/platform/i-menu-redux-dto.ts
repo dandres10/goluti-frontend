@@ -1,4 +1,4 @@
-export interface IMenuLoginResponseDTO {
+export interface IMenuReduxDTO {
   id: string;
   name: string;
   label: string;

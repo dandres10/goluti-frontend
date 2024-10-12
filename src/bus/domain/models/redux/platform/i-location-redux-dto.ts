@@ -1,4 +1,4 @@
-export interface ILocationLoginResponseDTO {
+export interface ILocationReduxDTO {
   id: string;
   name: string;
   address: string;
