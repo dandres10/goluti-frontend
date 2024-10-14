@@ -1,1 +1,1 @@
-export * from './platform-redux-repository'
+export * from './bus/platform/platform-redux-repository'

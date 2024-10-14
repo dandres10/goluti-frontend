@@ -12,7 +12,7 @@ import {
     RolReduxMapper,
     UserReduxMapper,
     PlatformInitialReduxMapper
-} from "../platform";
+} from "../bus/platform";
 
 export class InjectionPlatformReduxMapper {
     public static CompanyReduxMapper() { return CompanyReduxMapper.getInstance() }

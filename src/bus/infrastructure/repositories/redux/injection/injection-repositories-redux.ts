@@ -1,4 +1,4 @@
-import { PlatformReduxRepository } from "../platform-redux-repository";
+import { PlatformReduxRepository } from "../bus/platform/platform-redux-repository";
 
 export class InjectionRepositoriesRedux {
     
