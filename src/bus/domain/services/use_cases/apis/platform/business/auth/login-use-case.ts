@@ -1,8 +1,9 @@
-import { UseCase } from "@/bus/core/interfaces/use-case";
-import { IConfigDTO } from "@/bus/core/interfaces";
-import { IAuthLoginRequestDTO, IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { InjectionPlatformBusinessAuthMapper } from "@/bus/infrastructure/mappers/apis/platform/injection/business/injection-platform-business-auth-mapper";
-import { InjectionPlatformBusinessRepository } from "@/bus/infrastructure/repositories/apis/platform/repositories/injection/injection-platform-business-repository";
+import { IConfigDTO } from "../../../../../../../core/interfaces";
+import { UseCase } from "../../../../../../../core/interfaces/use-case";
+import { IAuthLoginRequestDTO, IAuthLoginResponseDTO } from "../../../../../../../domain/models/apis/platform/business/auth/login";
+import { InjectionPlatformBusinessAuthMapper } from "../../../../../../../infrastructure/mappers/apis/platform/injection/business/injection-platform-business-auth-mapper";
+import { InjectionPlatformBusinessRepository } from "../../../../../../../infrastructure/repositories/apis/platform/repositories/injection/injection-platform-business-repository";
+
 
 
 export class LoginUseCase implements UseCase<IAuthLoginRequestDTO, IAuthLoginResponseDTO | null> {
@@ -25,8 +26,9 @@ export class LoginUseCase implements UseCase<IAuthLoginRequestDTO, IAuthLoginRes
         return await this.authRepository
             .login(paramsEntity, config)
             .then((data: IAuthLoginResponseDTO | null) => {
-                if (data)
+                if (data) {
                     return data;
+                }
                 return null;
             })
     }

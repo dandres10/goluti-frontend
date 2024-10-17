@@ -5,11 +5,13 @@ import { IAuthLoginResponseDTO } from "../../../../../models/apis/platform/busin
 import { InjectionRepositoriesRedux } from "../../../../../../infrastructure/repositories/redux/injection/injection-repositories-redux";
 
 
+
 export class SavePlatformUseCase implements UseCase<any, void> {
 
     private static instance: SavePlatformUseCase;
-    private platformRepository = InjectionRepositoriesRedux.PlatformReduxRepository()
-    private platformMapper = InjectionPlatformReduxMapper.PlatformReduxMapper();
+    private platformReduxRepository = InjectionRepositoriesRedux.PlatformReduxRepository()
+    private platformReduxMapper = InjectionPlatformReduxMapper.PlatformReduxMapper();
+    
 
 
     public static getInstance(): SavePlatformUseCase {
@@ -22,7 +24,7 @@ export class SavePlatformUseCase implements UseCase<any, void> {
         param: IAuthLoginResponseDTO,
         config: IConfigDTO
     ): void {
-        const data = this.platformMapper.mapFrom(param)
-        this.platformRepository.savePlatform(data, config)
+        const data = this.platformReduxMapper.mapFrom(param)
+        this.platformReduxRepository.savePlatform(data, config)
     }
 }

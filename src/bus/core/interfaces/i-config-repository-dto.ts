@@ -5,4 +5,5 @@ export interface IConfigDTO {
     loadService?: boolean
     dispatch?: AppDispatch
     selector?: SelectorBusRedux
+    key?: string
 }
