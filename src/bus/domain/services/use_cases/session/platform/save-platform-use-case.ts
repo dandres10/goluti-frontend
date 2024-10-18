@@ -13,8 +13,6 @@ export class SavePlatformUseCase implements UseCase<IAuthLoginResponseDTO, void>
     private platformSessionRepository = InjectionPlatformSessionRepository.PlatformSessionRepository();
     private dispatchUpdatePlatformEventUseCase = InjectionPlatformEventUseCase.DispatchUpdatePlatformEventUseCase();
 
-
-
     public static getInstance(): SavePlatformUseCase {
         if (!SavePlatformUseCase.instance)
             SavePlatformUseCase.instance = new SavePlatformUseCase();
