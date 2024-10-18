@@ -1,6 +1,6 @@
-import { Mapper } from "../../../../../../core/classes";
-import { IUserLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
-import { IUserLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../../core/classes";
+import { IUserLoginResponseDTO } from "../../../../../../../domain/models/apis/platform/business/auth/login";
+import { IUserLoginResponseEntity } from "../../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 

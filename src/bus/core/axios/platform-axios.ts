@@ -1,9 +1,15 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { getFromSessionStorage } from "../functions/session-storange";
+import { KEYS_SESSION } from "../const/keys-session";
+
+const PLATFORM = getFromSessionStorage(KEYS_SESSION.PLATFORM);
+console.log(PLATFORM)
 
 const HEADER = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
-    "language": "es"
+    "language": "es",
+    "Authorization": `Bearer ${PLATFORM?.token}`
 };
 
 const platformAxios: AxiosInstance = axios.create({

@@ -1,6 +1,6 @@
-import { Mapper } from "../../../../../../core/classes";
-import { IMenuLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
-import { IMenuLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../../core/classes";
+import { IMenuLoginResponseDTO } from "../../../../../../../domain/models/apis/platform/business/auth/login";
+import { IMenuLoginResponseEntity } from "../../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 export class MenuLoginResponseMapper extends Mapper<IMenuLoginResponseEntity, IMenuLoginResponseDTO> {

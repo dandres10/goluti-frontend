@@ -24,10 +24,8 @@ export class SavePlatformUseCase implements UseCase<IAuthLoginResponseDTO, void>
         config: IConfigDTO
     ): void {
         const data = this.platformReduxMapper.mapFrom(param)
-        setTimeout(() => {
-            this.dispatchUpdatePlatformEventUseCase.execute(data);
-        }, 3000);
-        this.platformSessionRepository.savePlatform(data, config)
+        this.dispatchUpdatePlatformEventUseCase.execute(data);
+        this.platformSessionRepository.savePlatform(data, config);
     }
 }
 

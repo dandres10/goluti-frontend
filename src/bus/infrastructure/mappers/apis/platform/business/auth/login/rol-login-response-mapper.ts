@@ -1,6 +1,6 @@
-import { Mapper } from "../../../../../../core/classes";
-import { IRolLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
-import { IRolLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../../core/classes";
+import { IRolLoginResponseDTO } from "../../../../../../../domain/models/apis/platform/business/auth/login";
+import { IRolLoginResponseEntity } from "../../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 export class RolLoginResponseMapper extends Mapper<IRolLoginResponseEntity, IRolLoginResponseDTO> {

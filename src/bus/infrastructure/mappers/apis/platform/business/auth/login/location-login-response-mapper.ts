@@ -1,6 +1,6 @@
-import { Mapper } from "../../../../../../core/classes";
-import { ILocationLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
-import { ILocationLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../../core/classes";
+import { ILocationLoginResponseDTO } from "../../../../../../../domain/models/apis/platform/business/auth/login";
+import { ILocationLoginResponseEntity } from "../../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 export class LocationLoginResponseMapper extends Mapper<ILocationLoginResponseEntity, ILocationLoginResponseDTO> {

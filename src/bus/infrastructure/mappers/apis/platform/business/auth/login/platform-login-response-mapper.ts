@@ -1,6 +1,6 @@
-import { Mapper } from "../../../../../../core/classes";
-import { IPlatformLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
-import { IPlatformLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../../core/classes";
+import { IPlatformLoginResponseDTO } from "../../../../../../../domain/models/apis/platform/business/auth/login";
+import { IPlatformLoginResponseEntity } from "../../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 

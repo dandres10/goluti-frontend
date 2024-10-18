@@ -10,6 +10,7 @@ import { InjectionReduxFacade } from "@/bus/facade/redux/injection/injection-red
 import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
 import { InjectionPlatformBusinessFacade } from "@/bus/facade/apis/platform/injection/business/injection-platform-business-facade";
+import { IRefreshTokenResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/refresh-token";
 
 //api
 const _authFacade = InjectionPlatformBusinessFacade.AuthFacade();
@@ -28,7 +29,6 @@ export const LoginLogic = () => {
 
   useEffect(() => {
     login();
-    console.log("useEffect");
     listenerUpdatePlatformEvent();
   }, []);
 
@@ -45,6 +45,19 @@ export const LoginLogic = () => {
           _injectionSessionFacade.savePlatform(res, {
             key: KEYS_SESSION.PLATFORM,
           });
+          setTimeout(() => {
+            refreshToken();
+          }, 3000);
+        }
+      });
+  };
+
+  const refreshToken = async () => {
+    await _authFacade
+      .refreshToken()
+      .then((res: IRefreshTokenResponseDTO | null) => {
+        if (res) {
+          console.log("token", res?.token);
         }
       });
   };

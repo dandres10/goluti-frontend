@@ -13,7 +13,7 @@ import {
     PlatformVariationsResponseMapper,
     RolLoginResponseMapper,
     UserLoginResponseMapper
-} from "../../business/auth/index";
+} from "../../business/auth/login/index";
 
 
 export class InjectionPlatformBusinessAuthMapper {

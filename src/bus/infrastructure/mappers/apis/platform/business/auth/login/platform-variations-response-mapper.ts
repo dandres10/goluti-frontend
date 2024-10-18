@@ -1,7 +1,7 @@
-import { Mapper } from "../../../../../../core/classes";
-import { IPlatformVariationsResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
-import { IPlatformVariationsResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
-import { InjectionPlatformBusinessAuthMapper } from "../../injection/business/injection-platform-business-auth-mapper";
+import { Mapper } from "../../../../../../../core/classes";
+import { IPlatformVariationsResponseDTO } from "../../../../../../../domain/models/apis/platform/business/auth/login";
+import { IPlatformVariationsResponseEntity } from "../../../../../../../infrastructure/entities/apis/platform/business/auth/login";
+import { InjectionPlatformBusinessAuthMapper } from "../../../injection/business/injection-platform-business-auth-mapper";
 
 
 

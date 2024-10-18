@@ -1,7 +1,7 @@
-import { Mapper } from "../../../../../../core/classes";
-import { IAuthLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
-import { IAuthLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
-import { InjectionPlatformBusinessAuthMapper } from "../../injection/business/injection-platform-business-auth-mapper";
+import { Mapper } from "../../../../../../../core/classes";
+import { IAuthLoginResponseDTO } from "../../../../../../../domain/models/apis/platform/business/auth/login";
+import { IAuthLoginResponseEntity } from "../../../../../../../infrastructure/entities/apis/platform/business/auth/login";
+import { InjectionPlatformBusinessAuthMapper } from "../../../injection/business/injection-platform-business-auth-mapper";
 
 export class AuthLoginResponseMapper extends Mapper<IAuthLoginResponseEntity, IAuthLoginResponseDTO> {
 
