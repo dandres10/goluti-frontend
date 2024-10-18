@@ -4,9 +4,6 @@ import { RoutesCore } from "./routes/routes-core";
 import { BrowserRouter } from "react-router-dom";
 import ReduxProviderBus from "./bus/core/config/redux/redux-provider";
 
-
-
-
 function App() {
   return (
     <>

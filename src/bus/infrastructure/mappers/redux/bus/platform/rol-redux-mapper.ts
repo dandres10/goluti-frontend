@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { IRolReduxDTO } from "@/bus/domain/models/redux/bus/platform";
-import { IRolLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../core/classes";
+import { IRolReduxDTO } from "../../../../../domain/models/redux/bus/platform";
+import { IRolLoginResponseDTO } from "../../../../../domain/models/apis/platform/business/auth/login";
 
 
 export class RolReduxMapper extends Mapper<IRolLoginResponseDTO, IRolReduxDTO> {
@@ -15,7 +15,7 @@ export class RolReduxMapper extends Mapper<IRolLoginResponseDTO, IRolReduxDTO> {
         return RolReduxMapper.instance;
     }
 
-    mapFrom(param: IRolLoginResponseDTO): IRolReduxDTO {
+    public mapFrom(param: IRolLoginResponseDTO): IRolReduxDTO {
         return {
             id: param.id,
             name: param.name,
@@ -25,13 +25,13 @@ export class RolReduxMapper extends Mapper<IRolLoginResponseDTO, IRolReduxDTO> {
         }
     }
 
-    mapFromList(params: IRolLoginResponseDTO[]): IRolReduxDTO[] {
+    public mapFromList(params: IRolLoginResponseDTO[]): IRolReduxDTO[] {
         return params.map((param: IRolLoginResponseDTO) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IRolReduxDTO): IRolLoginResponseDTO {
+    public mapTo(param: IRolReduxDTO): IRolLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -41,7 +41,7 @@ export class RolReduxMapper extends Mapper<IRolLoginResponseDTO, IRolReduxDTO> {
         }
     }
 
-    mapToList(params: IRolReduxDTO[]): IRolLoginResponseDTO[] {
+    public mapToList(params: IRolReduxDTO[]): IRolLoginResponseDTO[] {
         return params.map((param: IRolReduxDTO) => {
             return this.mapTo(param);
         })

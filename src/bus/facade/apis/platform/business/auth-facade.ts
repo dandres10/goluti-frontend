@@ -1,7 +1,6 @@
-import { IConfigDTO } from "@/bus/core/interfaces";
-import { IAuthLoginRequestDTO, IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { InjectionPlatformBusinessAuthUseCase } from "@/bus/domain/services/use_cases/apis/platform/injection/business/injection-platform-business-auth-use-case";
-
+import { IConfigDTO } from "../../../../core/interfaces";
+import { IAuthLoginRequestDTO, IAuthLoginResponseDTO } from "../../../../domain/models/apis/platform/business/auth/login";
+import { InjectionPlatformBusinessAuthUseCase } from "../../../../domain/services/use_cases/apis/platform/injection/business/injection-platform-business-auth-use-case";
 
 export class AuthFacade {
 

@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { IPlatformLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { IPlatformLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../core/classes";
+import { IPlatformLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { IPlatformLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 
@@ -17,7 +17,7 @@ export class PlatformLoginResponseMapper extends Mapper<IPlatformLoginResponseEn
         return PlatformLoginResponseMapper.instance;
     }
 
-    mapFrom(param: IPlatformLoginResponseEntity): IPlatformLoginResponseDTO {
+    public mapFrom(param: IPlatformLoginResponseEntity): IPlatformLoginResponseDTO {
         return {
             id: param.id,
             languageId: param.language_id,
@@ -27,13 +27,13 @@ export class PlatformLoginResponseMapper extends Mapper<IPlatformLoginResponseEn
         }
     }
 
-    mapFromList(params: IPlatformLoginResponseEntity[]): IPlatformLoginResponseDTO[] {
+    public mapFromList(params: IPlatformLoginResponseEntity[]): IPlatformLoginResponseDTO[] {
         return params.map((param: IPlatformLoginResponseEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IPlatformLoginResponseDTO): IPlatformLoginResponseEntity {
+    public mapTo(param: IPlatformLoginResponseDTO): IPlatformLoginResponseEntity {
         return {
             id: param.id,
             language_id: param.languageId,
@@ -43,7 +43,7 @@ export class PlatformLoginResponseMapper extends Mapper<IPlatformLoginResponseEn
         }
     }
 
-    mapToList(params: IPlatformLoginResponseDTO[]): IPlatformLoginResponseEntity[] {
+    public mapToList(params: IPlatformLoginResponseDTO[]): IPlatformLoginResponseEntity[] {
         return params.map((param: IPlatformLoginResponseDTO) => {
             return this.mapTo(param);
         })

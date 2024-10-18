@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { IPlatformReduxDTO } from "@/bus/domain/models/redux/bus/platform";
+import { Mapper } from "../../../../../core/classes";
+import { IAuthLoginResponseDTO } from "../../../../../domain/models/apis/platform/business/auth/login";
+import { IPlatformReduxDTO } from "../../../../../domain/models/redux/bus/platform";
 import { InjectionPlatformReduxMapper } from "../../injection";
 
 
@@ -20,7 +20,7 @@ export class PlatformReduxMapper extends Mapper<IAuthLoginResponseDTO, IPlatform
         return PlatformReduxMapper.instance;
     }
 
-    mapFrom(param: IAuthLoginResponseDTO): IPlatformReduxDTO {
+    public mapFrom(param: IAuthLoginResponseDTO): IPlatformReduxDTO {
         return {
             configuration: this.platformConfigurationResponseMapper.mapFrom(param.platformConfiguration),
             variations: this.platformVariationsResponseMapper.mapFrom(param.platformVariations),
@@ -28,13 +28,13 @@ export class PlatformReduxMapper extends Mapper<IAuthLoginResponseDTO, IPlatform
         }
     }
 
-    mapFromList(params: IAuthLoginResponseDTO[]): IPlatformReduxDTO[] {
+    public mapFromList(params: IAuthLoginResponseDTO[]): IPlatformReduxDTO[] {
         return params.map((param: IAuthLoginResponseDTO) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IPlatformReduxDTO): IAuthLoginResponseDTO {
+    public mapTo(param: IPlatformReduxDTO): IAuthLoginResponseDTO {
         return {
             platformConfiguration: this.platformConfigurationResponseMapper.mapTo(param.configuration),
             platformVariations: this.platformVariationsResponseMapper.mapTo(param.variations),
@@ -42,7 +42,7 @@ export class PlatformReduxMapper extends Mapper<IAuthLoginResponseDTO, IPlatform
         }
     }
 
-    mapToList(params: IPlatformReduxDTO[]): IAuthLoginResponseDTO[] {
+    public mapToList(params: IPlatformReduxDTO[]): IAuthLoginResponseDTO[] {
         return params.map((param: IPlatformReduxDTO) => {
             return this.mapTo(param);
         })

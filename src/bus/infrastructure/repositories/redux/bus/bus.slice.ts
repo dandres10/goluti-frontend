@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IPlatformReduxDTO } from "../../../../domain/models/redux/bus/platform";
 import { addPlatformReducer } from "./platform/platform.reducer";
+import { IPlatformReduxDTO } from "../../../../domain/models/redux/bus/platform";
 
 
 export const keyBus = "bus";

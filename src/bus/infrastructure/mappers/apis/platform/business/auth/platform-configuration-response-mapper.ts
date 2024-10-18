@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { IPlatformConfigurationResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { IPlatformConfigurationResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../core/classes";
+import { IPlatformConfigurationResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { IPlatformConfigurationResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 import { InjectionPlatformBusinessAuthMapper } from "../../injection/business/injection-platform-business-auth-mapper";
 
 
@@ -26,7 +26,7 @@ export class PlatformConfigurationResponseMapper extends Mapper<IPlatformConfigu
         return PlatformConfigurationResponseMapper.instance;
     }
 
-    mapFrom(param: IPlatformConfigurationResponseEntity): IPlatformConfigurationResponseDTO {
+    public mapFrom(param: IPlatformConfigurationResponseEntity): IPlatformConfigurationResponseDTO {
         return {
             user: this.userLoginResponseMapper.mapFrom(param.user),
             currency: this.currencyLoginResponseMapper.mapFrom(param.currency),
@@ -41,13 +41,13 @@ export class PlatformConfigurationResponseMapper extends Mapper<IPlatformConfigu
         }
     }
 
-    mapFromList(params: IPlatformConfigurationResponseEntity[]): IPlatformConfigurationResponseDTO[] {
+    public mapFromList(params: IPlatformConfigurationResponseEntity[]): IPlatformConfigurationResponseDTO[] {
         return params.map((param: IPlatformConfigurationResponseEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IPlatformConfigurationResponseDTO): IPlatformConfigurationResponseEntity {
+    public mapTo(param: IPlatformConfigurationResponseDTO): IPlatformConfigurationResponseEntity {
         return {
             user: this.userLoginResponseMapper.mapTo(param.user),
             currency: this.currencyLoginResponseMapper.mapTo(param.currency),
@@ -62,7 +62,7 @@ export class PlatformConfigurationResponseMapper extends Mapper<IPlatformConfigu
         }
     }
 
-    mapToList(params: IPlatformConfigurationResponseDTO[]): IPlatformConfigurationResponseEntity[] {
+    public mapToList(params: IPlatformConfigurationResponseDTO[]): IPlatformConfigurationResponseEntity[] {
         return params.map((param: IPlatformConfigurationResponseDTO) => {
             return this.mapTo(param);
         })

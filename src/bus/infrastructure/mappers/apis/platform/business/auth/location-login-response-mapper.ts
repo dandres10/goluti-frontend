@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { ILocationLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { ILocationLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../core/classes";
+import { ILocationLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { ILocationLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 export class LocationLoginResponseMapper extends Mapper<ILocationLoginResponseEntity, ILocationLoginResponseDTO> {
@@ -15,7 +15,7 @@ export class LocationLoginResponseMapper extends Mapper<ILocationLoginResponseEn
         return LocationLoginResponseMapper.instance;
     }
 
-    mapFrom(param: ILocationLoginResponseEntity): ILocationLoginResponseDTO {
+    public mapFrom(param: ILocationLoginResponseEntity): ILocationLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -28,13 +28,13 @@ export class LocationLoginResponseMapper extends Mapper<ILocationLoginResponseEn
         }
     }
 
-    mapFromList(params: ILocationLoginResponseEntity[]): ILocationLoginResponseDTO[] {
+    public mapFromList(params: ILocationLoginResponseEntity[]): ILocationLoginResponseDTO[] {
         return params.map((param: ILocationLoginResponseEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: ILocationLoginResponseDTO): ILocationLoginResponseEntity {
+    public mapTo(param: ILocationLoginResponseDTO): ILocationLoginResponseEntity {
         return {
             id: param.id,
             name: param.name,
@@ -47,7 +47,7 @@ export class LocationLoginResponseMapper extends Mapper<ILocationLoginResponseEn
         }
     }
 
-    mapToList(params: ILocationLoginResponseDTO[]): ILocationLoginResponseEntity[] {
+    public mapToList(params: ILocationLoginResponseDTO[]): ILocationLoginResponseEntity[] {
         return params.map((param: ILocationLoginResponseDTO) => {
             return this.mapTo(param);
         })

@@ -1,7 +1,7 @@
-import { Mapper } from "@/bus/core/classes";
-import { IConfigurationReduxDTO } from "@/bus/domain/models/redux/bus/platform";
-import { IPlatformConfigurationResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../core/classes";
 import { InjectionPlatformReduxMapper } from "../../injection";
+import { IConfigurationReduxDTO } from "../../../../../domain/models/redux/bus/platform";
+import { IPlatformConfigurationResponseDTO } from "../../../../../domain/models/apis/platform/business/auth/login";
 
 
 export class ConfigurationReduxMapper extends Mapper<IPlatformConfigurationResponseDTO, IConfigurationReduxDTO> {
@@ -26,7 +26,7 @@ export class ConfigurationReduxMapper extends Mapper<IPlatformConfigurationRespo
         return ConfigurationReduxMapper.instance;
     }
 
-    mapFrom(param: IPlatformConfigurationResponseDTO): IConfigurationReduxDTO {
+    public mapFrom(param: IPlatformConfigurationResponseDTO): IConfigurationReduxDTO {
         return {
             user: this.userReduxMapper.mapFrom(param.user),
             currency: this.currencyReduxMapper.mapFrom(param.currency),
@@ -41,13 +41,13 @@ export class ConfigurationReduxMapper extends Mapper<IPlatformConfigurationRespo
         }
     }
 
-    mapFromList(params: IPlatformConfigurationResponseDTO[]): IConfigurationReduxDTO[] {
+    public mapFromList(params: IPlatformConfigurationResponseDTO[]): IConfigurationReduxDTO[] {
         return params.map((param: IPlatformConfigurationResponseDTO) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IConfigurationReduxDTO): IPlatformConfigurationResponseDTO {
+    public mapTo(param: IConfigurationReduxDTO): IPlatformConfigurationResponseDTO {
         return {
             user: this.userReduxMapper.mapTo(param.user),
             currency: this.currencyReduxMapper.mapTo(param.currency),
@@ -62,7 +62,7 @@ export class ConfigurationReduxMapper extends Mapper<IPlatformConfigurationRespo
         }
     }
 
-    mapToList(params: IConfigurationReduxDTO[]): IPlatformConfigurationResponseDTO[] {
+    public mapToList(params: IConfigurationReduxDTO[]): IPlatformConfigurationResponseDTO[] {
         return params.map((param: IConfigurationReduxDTO) => {
             return this.mapTo(param);
         })

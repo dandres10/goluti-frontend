@@ -1,6 +1,4 @@
-import { IPlatformReduxDTO } from "@/bus/domain/models/redux/bus/platform";
-
-
+import { IPlatformReduxDTO } from "../../../../domain/models/redux/bus/platform";
 
 export abstract class IPlatformEventRepository {
     abstract createUpdatePlatformEvent(param: IPlatformReduxDTO | null): CustomEvent<{ message: IPlatformReduxDTO | null }>;

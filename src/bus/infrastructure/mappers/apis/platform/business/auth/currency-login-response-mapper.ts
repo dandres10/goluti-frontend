@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { ICurrencyLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { ICurrencyLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../core/classes";
+import { ICurrencyLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { ICurrencyLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 export class CurrencyLoginResponseMapper extends Mapper<ICurrencyLoginResponseEntity, ICurrencyLoginResponseDTO> {
@@ -15,7 +15,7 @@ export class CurrencyLoginResponseMapper extends Mapper<ICurrencyLoginResponseEn
         return CurrencyLoginResponseMapper.instance;
     }
 
-    mapFrom(param: ICurrencyLoginResponseEntity): ICurrencyLoginResponseDTO {
+    public mapFrom(param: ICurrencyLoginResponseEntity): ICurrencyLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -25,13 +25,13 @@ export class CurrencyLoginResponseMapper extends Mapper<ICurrencyLoginResponseEn
         }
     }
 
-    mapFromList(params: ICurrencyLoginResponseEntity[]): ICurrencyLoginResponseDTO[] {
+    public mapFromList(params: ICurrencyLoginResponseEntity[]): ICurrencyLoginResponseDTO[] {
         return params.map((param: ICurrencyLoginResponseEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: ICurrencyLoginResponseDTO): ICurrencyLoginResponseEntity {
+    public mapTo(param: ICurrencyLoginResponseDTO): ICurrencyLoginResponseEntity {
         return {
             id: param.id,
             name: param.name,
@@ -41,7 +41,7 @@ export class CurrencyLoginResponseMapper extends Mapper<ICurrencyLoginResponseEn
         }
     }
 
-    mapToList(params: ICurrencyLoginResponseDTO[]): ICurrencyLoginResponseEntity[] {
+    public mapToList(params: ICurrencyLoginResponseDTO[]): ICurrencyLoginResponseEntity[] {
         return params.map((param: ICurrencyLoginResponseDTO) => {
             return this.mapTo(param);
         })

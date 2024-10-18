@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { ILanguageReduxDTO } from "@/bus/domain/models/redux/bus/platform";
-import { ILanguageLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../core/classes";
+import { ILanguageReduxDTO } from "../../../../../domain/models/redux/bus/platform";
+import { ILanguageLoginResponseDTO } from "../../../../../domain/models/apis/platform/business/auth/login";
 
 
 
@@ -16,7 +16,7 @@ export class LanguageReduxMapper extends Mapper<ILanguageLoginResponseDTO, ILang
         return LanguageReduxMapper.instance;
     }
 
-    mapFrom(param: ILanguageLoginResponseDTO): ILanguageReduxDTO {
+    public mapFrom(param: ILanguageLoginResponseDTO): ILanguageReduxDTO {
         return {
             id: param.id,
             name: param.name,
@@ -26,13 +26,13 @@ export class LanguageReduxMapper extends Mapper<ILanguageLoginResponseDTO, ILang
         }
     }
 
-    mapFromList(params: ILanguageLoginResponseDTO[]): ILanguageReduxDTO[] {
+    public mapFromList(params: ILanguageLoginResponseDTO[]): ILanguageReduxDTO[] {
         return params.map((param: ILanguageLoginResponseDTO) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: ILanguageReduxDTO): ILanguageLoginResponseDTO {
+    public mapTo(param: ILanguageReduxDTO): ILanguageLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -42,7 +42,7 @@ export class LanguageReduxMapper extends Mapper<ILanguageLoginResponseDTO, ILang
         }
     }
 
-    mapToList(params: ILanguageReduxDTO[]): ILanguageLoginResponseDTO[] {
+    public mapToList(params: ILanguageReduxDTO[]): ILanguageLoginResponseDTO[] {
         return params.map((param: ILanguageReduxDTO) => {
             return this.mapTo(param);
         })

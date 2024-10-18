@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { ICompanyLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { ICompanyLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../core/classes";
+import { ICompanyLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { ICompanyLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 export class CompanyLoginResponseMapper extends Mapper<ICompanyLoginResponseEntity, ICompanyLoginResponseDTO> {
@@ -15,7 +15,7 @@ export class CompanyLoginResponseMapper extends Mapper<ICompanyLoginResponseEnti
         return CompanyLoginResponseMapper.instance;
     }
 
-    mapFrom(param: ICompanyLoginResponseEntity): ICompanyLoginResponseDTO {
+    public mapFrom(param: ICompanyLoginResponseEntity): ICompanyLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -25,13 +25,13 @@ export class CompanyLoginResponseMapper extends Mapper<ICompanyLoginResponseEnti
         }
     }
 
-    mapFromList(params: ICompanyLoginResponseEntity[]): ICompanyLoginResponseDTO[] {
+    public mapFromList(params: ICompanyLoginResponseEntity[]): ICompanyLoginResponseDTO[] {
         return params.map((param: ICompanyLoginResponseEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: ICompanyLoginResponseDTO): ICompanyLoginResponseEntity {
+    public mapTo(param: ICompanyLoginResponseDTO): ICompanyLoginResponseEntity {
         return {
             id: param.id,
             name: param.name,
@@ -41,7 +41,7 @@ export class CompanyLoginResponseMapper extends Mapper<ICompanyLoginResponseEnti
         }
     }
 
-    mapToList(params: ICompanyLoginResponseDTO[]): ICompanyLoginResponseEntity[] {
+    public mapToList(params: ICompanyLoginResponseDTO[]): ICompanyLoginResponseEntity[] {
         return params.map((param: ICompanyLoginResponseDTO) => {
             return this.mapTo(param);
         })

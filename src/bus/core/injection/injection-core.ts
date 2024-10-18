@@ -1,4 +1,4 @@
-import { Resolve } from "../classes/resolve";
+import { Resolve } from "../classes";
 
 export class InjectionCore {
     public static Resolve() {

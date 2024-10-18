@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { ICompanyReduxDTO } from "@/bus/domain/models/redux/bus/platform";
-import { ICompanyLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../core/classes";
+import { ICompanyReduxDTO } from "../../../../../domain/models/redux/bus/platform";
+import { ICompanyLoginResponseDTO } from "../../../../../domain/models/apis/platform/business/auth/login";
 
 
 export class CompanyReduxMapper extends Mapper<ICompanyLoginResponseDTO, ICompanyReduxDTO> {

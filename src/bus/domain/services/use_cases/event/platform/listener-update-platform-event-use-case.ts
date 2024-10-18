@@ -15,7 +15,7 @@ export class ListenerUpdatePlatformEventUseCase implements UseCase<Function, voi
     }
 
     public execute(callback: (message: IPlatformReduxDTO) => void): void {
-        return this.platformEventRepository.listenerUpdatePlatformEvent((message: IPlatformReduxDTO) => callback(message));
+        this.platformEventRepository.listenerUpdatePlatformEvent((message: IPlatformReduxDTO) => callback(message));
     }
 }
 

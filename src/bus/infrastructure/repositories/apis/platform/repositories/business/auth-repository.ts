@@ -1,13 +1,12 @@
-import platformAxios from "@/bus/core/axios/platform-axios";
-import { CONST_PLATFORM_API_ROUTES } from "@/bus/core/const";
-import { CONST_CORE_DTO } from "@/bus/core/const/const-core";
-import { IConfigDTO } from "@/bus/core/interfaces";
-import { InjectionCore } from "@/bus/core/injection/injection-core";
-import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { IAuthRepository } from "@/bus/domain/services/repositories/apis/platform/business/i-auth-repository";
-import { IAuthLoginRequestEntity, IAuthLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
-import { InjectionPlatformBusinessAuthMapper } from "@/bus/infrastructure/mappers/apis/platform/injection/business/injection-platform-business-auth-mapper";
-
+import { IConfigDTO } from "../../../../../../core/interfaces";
+import platformAxios from "../../../../../../core/axios/platform-axios";
+import { CONST_PLATFORM_API_ROUTES } from "../../../../../../core/const";
+import { CONST_CORE_DTO } from "../../../../../../core/const/const-core";
+import { InjectionCore } from "../../../../../../core/injection/injection-core";
+import { IAuthLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { IAuthRepository } from "../../../../../../domain/services/repositories/apis/platform/business/i-auth-repository";
+import { IAuthLoginRequestEntity, IAuthLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
+import { InjectionPlatformBusinessAuthMapper } from "../../../../../../infrastructure/mappers/apis/platform/injection/business/injection-platform-business-auth-mapper";
 
 export class AuthRepository extends IAuthRepository {
     private static instance: AuthRepository;

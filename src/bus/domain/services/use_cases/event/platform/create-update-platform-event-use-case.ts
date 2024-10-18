@@ -2,8 +2,8 @@
 
 
 import { UseCase } from "../../../../../core/interfaces/use-case";
-import { IPlatformReduxDTO } from "@/bus/domain/models/redux/bus/platform";
-import { InjectionEventRepository } from "@/bus/infrastructure/repositories/event/injection/injection-event-repository";
+import { IPlatformReduxDTO } from "../../../../../domain/models/redux/bus/platform";
+import { InjectionEventRepository } from "../../../../../infrastructure/repositories/event/injection/injection-event-repository";
 
 
 

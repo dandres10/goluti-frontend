@@ -1,16 +1,9 @@
-
-
-
 import { BUS_EVENTS } from "../../../core/const";
 import { IPlatformReduxDTO } from "../../../domain/models/redux/bus/platform";
 import { IPlatformEventRepository } from "../../../domain/services/repositories/events/i-platform-event-repository";
 
 
-
-
 export class PlatformEventRepository extends IPlatformEventRepository {
-    
-
 
     private static instance: PlatformEventRepository;
     private updatePlatformEvent?: CustomEvent<{ message: IPlatformReduxDTO | null }>;
@@ -32,7 +25,6 @@ export class PlatformEventRepository extends IPlatformEventRepository {
             });
         }
         return this.updatePlatformEvent;
-
     }
 
 

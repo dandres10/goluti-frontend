@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { ICurrencyReduxDTO } from "@/bus/domain/models/redux/bus/platform";
-import { ICurrencyLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../core/classes";
+import { ICurrencyReduxDTO } from "../../../../../domain/models/redux/bus/platform";
+import { ICurrencyLoginResponseDTO } from "../../../../../domain/models/apis/platform/business/auth/login";
 
 
 export class CurrencyReduxMapper extends Mapper<ICurrencyLoginResponseDTO, ICurrencyReduxDTO> {
@@ -15,7 +15,7 @@ export class CurrencyReduxMapper extends Mapper<ICurrencyLoginResponseDTO, ICurr
         return CurrencyReduxMapper.instance;
     }
 
-    mapFrom(param: ICurrencyLoginResponseDTO): ICurrencyReduxDTO {
+    public mapFrom(param: ICurrencyLoginResponseDTO): ICurrencyReduxDTO {
         return {
             id: param.id,
             name: param.name,
@@ -25,13 +25,13 @@ export class CurrencyReduxMapper extends Mapper<ICurrencyLoginResponseDTO, ICurr
         }
     }
 
-    mapFromList(params: ICurrencyLoginResponseDTO[]): ICurrencyReduxDTO[] {
+    public mapFromList(params: ICurrencyLoginResponseDTO[]): ICurrencyReduxDTO[] {
         return params.map((param: ICurrencyLoginResponseDTO) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: ICurrencyReduxDTO): ICurrencyLoginResponseDTO {
+    public mapTo(param: ICurrencyReduxDTO): ICurrencyLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -41,7 +41,7 @@ export class CurrencyReduxMapper extends Mapper<ICurrencyLoginResponseDTO, ICurr
         }
     }
 
-    mapToList(params: ICurrencyReduxDTO[]): ICurrencyLoginResponseDTO[] {
+    public mapToList(params: ICurrencyReduxDTO[]): ICurrencyLoginResponseDTO[] {
         return params.map((param: ICurrencyReduxDTO) => {
             return this.mapTo(param);
         })

@@ -1,6 +1,8 @@
 
 import { TypedUseSelectorHook } from 'react-redux';
-import { IInitialStateReduxDTO } from '../config/redux/slices/bus';
+import { IInitialStateReduxDTO } from '../../infrastructure/repositories/redux/bus/bus.slice';
+
+
 
 // Define el estado global con una propiedad `bus` de tipo `IInitialStateReduxDTO`
 type RootState = {

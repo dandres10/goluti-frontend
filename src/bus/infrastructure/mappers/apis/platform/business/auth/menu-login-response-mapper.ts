@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { IMenuLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { IMenuLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../core/classes";
+import { IMenuLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { IMenuLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 export class MenuLoginResponseMapper extends Mapper<IMenuLoginResponseEntity, IMenuLoginResponseDTO> {
@@ -15,7 +15,7 @@ export class MenuLoginResponseMapper extends Mapper<IMenuLoginResponseEntity, IM
         return MenuLoginResponseMapper.instance;
     }
 
-    mapFrom(param: IMenuLoginResponseEntity): IMenuLoginResponseDTO {
+    public mapFrom(param: IMenuLoginResponseEntity): IMenuLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -28,13 +28,13 @@ export class MenuLoginResponseMapper extends Mapper<IMenuLoginResponseEntity, IM
         }
     }
 
-    mapFromList(params: IMenuLoginResponseEntity[]): IMenuLoginResponseDTO[] {
+    public mapFromList(params: IMenuLoginResponseEntity[]): IMenuLoginResponseDTO[] {
         return params.map((param: IMenuLoginResponseEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IMenuLoginResponseDTO): IMenuLoginResponseEntity {
+    public mapTo(param: IMenuLoginResponseDTO): IMenuLoginResponseEntity {
         return {
             id: param.id,
             name: param.name,
@@ -47,7 +47,7 @@ export class MenuLoginResponseMapper extends Mapper<IMenuLoginResponseEntity, IM
         }
     }
 
-    mapToList(params: IMenuLoginResponseDTO[]): IMenuLoginResponseEntity[] {
+    public mapToList(params: IMenuLoginResponseDTO[]): IMenuLoginResponseEntity[] {
         return params.map((param: IMenuLoginResponseDTO) => {
             return this.mapTo(param);
         })

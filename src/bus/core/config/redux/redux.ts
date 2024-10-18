@@ -1,4 +1,4 @@
-import { AppDispatch, RootState } from "@/bus/core/config/redux/store";
+import { AppDispatch, RootState } from "../../../core/config/redux/store";
 import {
   useDispatch,
   useSelector,

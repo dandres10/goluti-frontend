@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { ICountryLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { ICountryLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../core/classes";
+import { ICountryLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { ICountryLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 
@@ -16,7 +16,7 @@ export class CountryLoginResponseMapper extends Mapper<ICountryLoginResponseEnti
         return CountryLoginResponseMapper.instance;
     }
 
-    mapFrom(param: ICountryLoginResponseEntity): ICountryLoginResponseDTO {
+    public mapFrom(param: ICountryLoginResponseEntity): ICountryLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -26,13 +26,13 @@ export class CountryLoginResponseMapper extends Mapper<ICountryLoginResponseEnti
         }
     }
 
-    mapFromList(params: ICountryLoginResponseEntity[]): ICountryLoginResponseDTO[] {
+    public mapFromList(params: ICountryLoginResponseEntity[]): ICountryLoginResponseDTO[] {
         return params.map((param: ICountryLoginResponseEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: ICountryLoginResponseDTO): ICountryLoginResponseEntity {
+    public mapTo(param: ICountryLoginResponseDTO): ICountryLoginResponseEntity {
         return {
             id: param.id,
             name: param.name,
@@ -42,7 +42,7 @@ export class CountryLoginResponseMapper extends Mapper<ICountryLoginResponseEnti
         }
     }
 
-    mapToList(params: ICountryLoginResponseDTO[]): ICountryLoginResponseEntity[] {
+    public mapToList(params: ICountryLoginResponseDTO[]): ICountryLoginResponseEntity[] {
         return params.map((param: ICountryLoginResponseDTO) => {
             return this.mapTo(param);
         })

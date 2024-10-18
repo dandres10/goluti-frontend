@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { IPermissionReduxDTO } from "@/bus/domain/models/redux/bus/platform";
-import { IPermissionLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../core/classes";
+import { IPermissionReduxDTO } from "../../../../../domain/models/redux/bus/platform";
+import { IPermissionLoginResponseDTO } from "../../../../../domain/models/apis/platform/business/auth/login";
 
 
 export class PermissionReduxMapper extends Mapper<IPermissionLoginResponseDTO, IPermissionReduxDTO> {
@@ -15,7 +15,7 @@ export class PermissionReduxMapper extends Mapper<IPermissionLoginResponseDTO, I
         return PermissionReduxMapper.instance;
     }
 
-    mapFrom(param: IPermissionLoginResponseDTO): IPermissionReduxDTO {
+    public mapFrom(param: IPermissionLoginResponseDTO): IPermissionReduxDTO {
         return {
             id: param.id,
             name: param.name,
@@ -24,13 +24,13 @@ export class PermissionReduxMapper extends Mapper<IPermissionLoginResponseDTO, I
         }
     }
 
-    mapFromList(params: IPermissionLoginResponseDTO[]): IPermissionReduxDTO[] {
+    public mapFromList(params: IPermissionLoginResponseDTO[]): IPermissionReduxDTO[] {
         return params.map((param: IPermissionLoginResponseDTO) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IPermissionReduxDTO): IPermissionLoginResponseDTO {
+    public mapTo(param: IPermissionReduxDTO): IPermissionLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -39,7 +39,7 @@ export class PermissionReduxMapper extends Mapper<IPermissionLoginResponseDTO, I
         }
     }
 
-    mapToList(params: IPermissionReduxDTO[]): IPermissionLoginResponseDTO[] {
+    public mapToList(params: IPermissionReduxDTO[]): IPermissionLoginResponseDTO[] {
         return params.map((param: IPermissionReduxDTO) => {
             return this.mapTo(param);
         })

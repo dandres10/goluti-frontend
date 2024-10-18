@@ -1,5 +1,5 @@
 
-import { IPlatformReduxDTO } from "@/bus/domain/models/redux/bus/platform";
+import { IPlatformReduxDTO } from "../../domain/models/redux/bus/platform";
 import { InjectionPlatformEventUseCase } from "../../domain/services/use_cases/event/injection/injection-platform-event-use-case";
 
 export class PlatformEventFacade {
@@ -15,6 +15,6 @@ export class PlatformEventFacade {
 
 
     public listenerUpdatePlatformEvent(callback: (message: IPlatformReduxDTO) => void): void {
-        return this.listenerUpdatePlatformEventUseCase.execute(callback);
+        this.listenerUpdatePlatformEventUseCase.execute(callback);
     }
 }

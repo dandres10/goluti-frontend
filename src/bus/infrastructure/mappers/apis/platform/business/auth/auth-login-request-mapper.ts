@@ -1,8 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { IAuthLoginRequestDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { IAuthLoginRequestEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
-
-
+import { Mapper } from "../../../../../../core/classes";
+import { IAuthLoginRequestDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { IAuthLoginRequestEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 export class AuthLoginRequestMapper extends Mapper<IAuthLoginRequestEntity, IAuthLoginRequestDTO> {
 
@@ -16,27 +14,27 @@ export class AuthLoginRequestMapper extends Mapper<IAuthLoginRequestEntity, IAut
         return AuthLoginRequestMapper.instance;
     }
 
-    mapFrom(param: IAuthLoginRequestEntity): IAuthLoginRequestDTO {
+    public mapFrom(param: IAuthLoginRequestEntity): IAuthLoginRequestDTO {
         return {
             email: param.email,
             password: param.password
         }
     }
 
-    mapFromList(params: IAuthLoginRequestEntity[]): IAuthLoginRequestDTO[] {
+    public mapFromList(params: IAuthLoginRequestEntity[]): IAuthLoginRequestDTO[] {
         return params.map((param: IAuthLoginRequestEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IAuthLoginRequestDTO): IAuthLoginRequestEntity {
+    public mapTo(param: IAuthLoginRequestDTO): IAuthLoginRequestEntity {
         return {
             email: param.email,
             password: param.password
         }
     }
 
-    mapToList(params: IAuthLoginRequestDTO[]): IAuthLoginRequestEntity[] {
+    public mapToList(params: IAuthLoginRequestDTO[]): IAuthLoginRequestEntity[] {
         return params.map((param: IAuthLoginRequestDTO) => {
             return this.mapTo(param);
         })

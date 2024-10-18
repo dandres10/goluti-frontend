@@ -1,19 +1,13 @@
 
 import { IConfigDTO } from "../../../core/interfaces";
-import { getFromSessionStorage, saveToSessionStorage } from "../../../core/functions/session-storange";
 import { IPlatformReduxDTO } from "../../../domain/models/redux/bus/platform";
+import { getFromSessionStorage, saveToSessionStorage } from "../../../core/functions/session-storange";
 import { IPlatformSessionRepository } from "../../../domain/services/repositories/session/i-platform-session-repository";
-
-
-
-
 
 
 export class PlatformSessionRepository extends IPlatformSessionRepository {
 
     private static instance: PlatformSessionRepository;
-    /* private platformEventRepository = InjectionEventRepository.PlatformEventRepository() */
-    
 
     public constructor() {
         super();
@@ -28,7 +22,6 @@ export class PlatformSessionRepository extends IPlatformSessionRepository {
     public savePlatform(params: IPlatformReduxDTO, config: IConfigDTO): void {
         if (config?.key){
             saveToSessionStorage(config.key, params);
-            
         }
     }
 

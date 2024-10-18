@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { IRolLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { IRolLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../core/classes";
+import { IRolLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { IRolLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 export class RolLoginResponseMapper extends Mapper<IRolLoginResponseEntity, IRolLoginResponseDTO> {
@@ -15,7 +15,7 @@ export class RolLoginResponseMapper extends Mapper<IRolLoginResponseEntity, IRol
         return RolLoginResponseMapper.instance;
     }
 
-    mapFrom(param: IRolLoginResponseEntity): IRolLoginResponseDTO {
+    public mapFrom(param: IRolLoginResponseEntity): IRolLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -25,13 +25,13 @@ export class RolLoginResponseMapper extends Mapper<IRolLoginResponseEntity, IRol
         }
     }
 
-    mapFromList(params: IRolLoginResponseEntity[]): IRolLoginResponseDTO[] {
+    public mapFromList(params: IRolLoginResponseEntity[]): IRolLoginResponseDTO[] {
         return params.map((param: IRolLoginResponseEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IRolLoginResponseDTO): IRolLoginResponseEntity {
+    public mapTo(param: IRolLoginResponseDTO): IRolLoginResponseEntity {
         return {
             id: param.id,
             name: param.name,
@@ -41,7 +41,7 @@ export class RolLoginResponseMapper extends Mapper<IRolLoginResponseEntity, IRol
         }
     }
 
-    mapToList(params: IRolLoginResponseDTO[]): IRolLoginResponseEntity[] {
+    public mapToList(params: IRolLoginResponseDTO[]): IRolLoginResponseEntity[] {
         return params.map((param: IRolLoginResponseDTO) => {
             return this.mapTo(param);
         })

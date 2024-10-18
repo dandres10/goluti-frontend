@@ -2,8 +2,8 @@ import { IConfigDTO } from "../../../../../core/interfaces";
 import { UseCase } from "../../../../../core/interfaces/use-case";
 import { InjectionPlatformReduxMapper } from "../../../../../infrastructure/mappers/redux/injection";
 import { IAuthLoginResponseDTO } from "../../../../../domain/models/apis/platform/business/auth/login";
-import { InjectionPlatformSessionRepository } from "../../../../../infrastructure/repositories/session/injection/injection-platform-session-repository";
 import { InjectionPlatformEventUseCase } from "../../event/injection/injection-platform-event-use-case";
+import { InjectionPlatformSessionRepository } from "../../../../../infrastructure/repositories/session/injection/injection-platform-session-repository";
 
 
 export class SavePlatformUseCase implements UseCase<IAuthLoginResponseDTO, void> {

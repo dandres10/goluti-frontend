@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import { LoginView } from "./login-view";
-import { BUS_EVENTS } from "@/bus/core/const";
 import { AppDispatch } from "@/bus/core/config/redux/store";
 import { KEYS_SESSION } from "@/bus/core/const/keys-session";
 import { SelectorBusRedux } from "@/bus/core/types/selector-bus-redux";
+import { IPlatformReduxDTO } from "@/bus/domain/models/redux/bus/platform";
 import { useAppDispatch, useAppSelector } from "@/bus/core/config/redux/index";
+import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
 import { InjectionReduxFacade } from "@/bus/facade/redux/injection/injection-redux-facade";
 import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
 import { InjectionPlatformBusinessFacade } from "@/bus/facade/apis/platform/injection/business/injection-platform-business-facade";
-import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
-import { IPlatformReduxDTO } from "@/bus/domain/models/redux/bus/platform";
 
 //api
 const _authFacade = InjectionPlatformBusinessFacade.AuthFacade();

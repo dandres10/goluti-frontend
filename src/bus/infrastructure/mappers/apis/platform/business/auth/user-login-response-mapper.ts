@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { IUserLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { IUserLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../core/classes";
+import { IUserLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { IUserLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 
@@ -16,7 +16,7 @@ export class UserLoginResponseMapper extends Mapper<IUserLoginResponseEntity, IU
         return UserLoginResponseMapper.instance;
     }
 
-    mapFrom(param: IUserLoginResponseEntity): IUserLoginResponseDTO {
+    public mapFrom(param: IUserLoginResponseEntity): IUserLoginResponseDTO {
         return {
             id: param.id,
             email: param.email,
@@ -27,13 +27,13 @@ export class UserLoginResponseMapper extends Mapper<IUserLoginResponseEntity, IU
         }
     }
 
-    mapFromList(params: IUserLoginResponseEntity[]): IUserLoginResponseDTO[] {
+    public mapFromList(params: IUserLoginResponseEntity[]): IUserLoginResponseDTO[] {
         return params.map((param: IUserLoginResponseEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IUserLoginResponseDTO): IUserLoginResponseEntity {
+    public mapTo(param: IUserLoginResponseDTO): IUserLoginResponseEntity {
         return {
             id: param.id,
             email: param.email,
@@ -44,7 +44,7 @@ export class UserLoginResponseMapper extends Mapper<IUserLoginResponseEntity, IU
         }
     }
 
-    mapToList(params: IUserLoginResponseDTO[]): IUserLoginResponseEntity[] {
+    public mapToList(params: IUserLoginResponseDTO[]): IUserLoginResponseEntity[] {
         return params.map((param: IUserLoginResponseDTO) => {
             return this.mapTo(param);
         })

@@ -1,7 +1,7 @@
-import { Mapper } from "@/bus/core/classes";
+import { Mapper } from "../../../../../core/classes";
 import { InjectionPlatformReduxMapper } from "../../injection";
-import { IVariationsReduxDTO } from "@/bus/domain/models/redux/bus/platform";
-import { IPlatformVariationsResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
+import { IVariationsReduxDTO } from "../../../../../domain/models/redux/bus/platform";
+import { IPlatformVariationsResponseDTO } from "../../../../../domain/models/apis/platform/business/auth/login";
 
 
 export class VariationsReduxMapper extends Mapper<IPlatformVariationsResponseDTO, IVariationsReduxDTO> {
@@ -21,7 +21,7 @@ export class VariationsReduxMapper extends Mapper<IPlatformVariationsResponseDTO
         return VariationsReduxMapper.instance;
     }
 
-    mapFrom(param: IPlatformVariationsResponseDTO): IVariationsReduxDTO {
+    public mapFrom(param: IPlatformVariationsResponseDTO): IVariationsReduxDTO {
         return {
             currencies: this.currencyReduxMapper.mapFromList(param.currencies),
             locations: this.locationReduxMapper.mapFromList(param.locations),
@@ -29,13 +29,13 @@ export class VariationsReduxMapper extends Mapper<IPlatformVariationsResponseDTO
         }
     }
 
-    mapFromList(params: IPlatformVariationsResponseDTO[]): IVariationsReduxDTO[] {
+    public mapFromList(params: IPlatformVariationsResponseDTO[]): IVariationsReduxDTO[] {
         return params.map((param: IPlatformVariationsResponseDTO) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IVariationsReduxDTO): IPlatformVariationsResponseDTO {
+    public mapTo(param: IVariationsReduxDTO): IPlatformVariationsResponseDTO {
         return {
             currencies: this.currencyReduxMapper.mapToList(param.currencies),
             locations: this.locationReduxMapper.mapToList(param.locations),
@@ -43,7 +43,7 @@ export class VariationsReduxMapper extends Mapper<IPlatformVariationsResponseDTO
         }
     }
 
-    mapToList(params: IVariationsReduxDTO[]): IPlatformVariationsResponseDTO[] {
+    public mapToList(params: IVariationsReduxDTO[]): IPlatformVariationsResponseDTO[] {
         return params.map((param: IVariationsReduxDTO) => {
             return this.mapTo(param);
         })

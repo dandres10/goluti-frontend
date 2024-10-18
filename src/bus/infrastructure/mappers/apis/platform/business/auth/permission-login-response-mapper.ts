@@ -1,6 +1,6 @@
-import { Mapper } from "@/bus/core/classes";
-import { IPermissionLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
-import { IPermissionLoginResponseEntity } from "@/bus/infrastructure/entities/apis/platform/business/auth/login";
+import { Mapper } from "../../../../../../core/classes";
+import { IPermissionLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
+import { IPermissionLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 
 
 
@@ -16,7 +16,7 @@ export class PermissionLoginResponseMapper extends Mapper<IPermissionLoginRespon
         return PermissionLoginResponseMapper.instance;
     }
 
-    mapFrom(param: IPermissionLoginResponseEntity): IPermissionLoginResponseDTO {
+    public mapFrom(param: IPermissionLoginResponseEntity): IPermissionLoginResponseDTO {
         return {
             id: param.id,
             name: param.name,
@@ -25,13 +25,13 @@ export class PermissionLoginResponseMapper extends Mapper<IPermissionLoginRespon
         }
     }
 
-    mapFromList(params: IPermissionLoginResponseEntity[]): IPermissionLoginResponseDTO[] {
+    public mapFromList(params: IPermissionLoginResponseEntity[]): IPermissionLoginResponseDTO[] {
         return params.map((param: IPermissionLoginResponseEntity) => {
             return this.mapFrom(param)
         })
     }
 
-    mapTo(param: IPermissionLoginResponseDTO): IPermissionLoginResponseEntity {
+    public mapTo(param: IPermissionLoginResponseDTO): IPermissionLoginResponseEntity {
         return {
             id: param.id,
             name: param.name,
@@ -40,7 +40,7 @@ export class PermissionLoginResponseMapper extends Mapper<IPermissionLoginRespon
         }
     }
 
-    mapToList(params: IPermissionLoginResponseDTO[]): IPermissionLoginResponseEntity[] {
+    public mapToList(params: IPermissionLoginResponseDTO[]): IPermissionLoginResponseEntity[] {
         return params.map((param: IPermissionLoginResponseDTO) => {
             return this.mapTo(param);
         })

@@ -1,7 +1,7 @@
 import { IConfigDTO } from "../../../../../core/interfaces";
 import { UseCase } from "../../../../../core/interfaces/use-case";
+import { IPlatformReduxDTO } from "../../../../../domain/models/redux/bus/platform";
 import { InjectionPlatformSessionRepository } from "../../../../../infrastructure/repositories/session/injection/injection-platform-session-repository";
-import { IPlatformReduxDTO } from "@/bus/domain/models/redux/bus/platform";
 
 
 export class ReadPlatformUseCase implements UseCase<IConfigDTO, IPlatformReduxDTO | null> {
