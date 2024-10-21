@@ -5,18 +5,23 @@ import { CONST_CORE_DTO } from "../../../../../../core/const/const-core";
 import { InjectionCore } from "../../../../../../core/injection/injection-core";
 import { IAuthLoginResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/login";
 import { IRefreshTokenResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/refresh-token";
+import { ILogoutResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/logout";
 import { IAuthRepository } from "../../../../../../domain/services/repositories/apis/platform/business/i-auth-repository";
+import { ILogoutResponseDTO } from "../../../../../../domain/models/apis/platform/business/auth/logout/i-logout-response-dto";
 import { IRefreshTokenResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/refresh-token";
+import { InjectionLogoutMapper } from "../../../../../../infrastructure/mappers/apis/platform/injection/business/injection-logout-mapper";
 import { IAuthLoginRequestEntity, IAuthLoginResponseEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
 import { InjectionRefreshTokenMapper } from "../../../../../../infrastructure/mappers/apis/platform/injection/business/injection-refresh-token-mapper";
 import { InjectionPlatformBusinessAuthMapper } from "../../../../../../infrastructure/mappers/apis/platform/injection/business/injection-platform-business-auth-mapper";
 
 export class AuthRepository extends IAuthRepository {
-    
+
+
     private static instance: AuthRepository;
     private readonly resolve = InjectionCore.Resolve();
     private readonly authLoginResponseMapper = InjectionPlatformBusinessAuthMapper.AuthLoginResponseMapper();
     private readonly refreshTokenResponseMapper = InjectionRefreshTokenMapper.RefreshTokenResponseMapper();
+    private readonly logoutResponseMapper = InjectionLogoutMapper.LogoutResponseMapper()
 
     private constructor() {
         super();
@@ -53,6 +58,20 @@ export class AuthRepository extends IAuthRepository {
                     const entity = this.resolve.ResolveRequest<IRefreshTokenResponseEntity>(data);
                     if (entity)
                         return this.refreshTokenResponseMapper.mapFrom(entity);
+                    return null
+                });
+
+        return null
+    }
+
+    public async logout(config: IConfigDTO = CONST_CORE_DTO.CONFIG): Promise<ILogoutResponseDTO | null> {
+        if (config.loadService)
+            return platformAxios
+                .post(CONST_PLATFORM_API_ROUTES.AUTH_LOGOUT)
+                .then(({ data }) => {
+                    const entity = this.resolve.ResolveRequest<ILogoutResponseEntity>(data);
+                    if (entity)
+                        return this.logoutResponseMapper.mapFrom(entity);
                     return null
                 });
 

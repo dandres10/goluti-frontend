@@ -33,8 +33,8 @@ export class RefreshTokenResponseMapper extends Mapper<IRefreshTokenResponseEnti
         }
     }
 
-    public mapToList(params: IAuthLoginResponseDTO[]): IRefreshTokenResponseEntity[] {
-        return params.map((param: IAuthLoginResponseDTO) => {
+    public mapToList(params: IRefreshTokenResponseDTO[]): IRefreshTokenResponseEntity[] {
+        return params.map((param: IRefreshTokenResponseDTO) => {
             return this.mapTo(param);
         })
     }

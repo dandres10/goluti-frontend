@@ -11,6 +11,7 @@ import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/busines
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
 import { InjectionPlatformBusinessFacade } from "@/bus/facade/apis/platform/injection/business/injection-platform-business-facade";
 import { IRefreshTokenResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/refresh-token";
+import { ILogoutResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/logout/i-logout-response-dto";
 
 //api
 const _authFacade = InjectionPlatformBusinessFacade.AuthFacade();
@@ -58,8 +59,19 @@ export const LoginLogic = () => {
       .then((res: IRefreshTokenResponseDTO | null) => {
         if (res) {
           console.log("token", res?.token);
+          setTimeout(() => {
+            logout();
+          }, 3000);
         }
       });
+  };
+
+  const logout = async () => {
+    await _authFacade.logout().then((res: ILogoutResponseDTO | null) => {
+      if (res) {
+        console.log("message", res?.message);
+      }
+    });
   };
 
   const work = async () => {
