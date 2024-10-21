@@ -1,23 +1,28 @@
-import { NavbarType } from "./bus/shared/enums";
-import { FooterHomeUI, NavbarUI } from "@/bus/shared/ui/molecules";
-import { RoutesCore } from "./routes/routes-core";
+import { NavbarType } from "@/bus/shared/enums";
 import { BrowserRouter } from "react-router-dom";
-import ReduxProviderBus from "./bus/core/config/redux/redux-provider";
+import { RoutesCore } from "./routes/routes-core";
+import { FooterHomeUI, NavbarUI } from "@/bus/shared/ui/molecules";
+import ReduxProviderOnboarding from "@/onboarding/core/config/redux/redux-provider";
+import ReduxProviderAppointment from "@/appointment/core/config/redux/redux-provider";
 
 function App() {
   return (
     <>
-      <ReduxProviderBus
+      <ReduxProviderAppointment
         children={
-          <BrowserRouter>
-            <NavbarUI
-              id="navbar-core"
-              navbarType={NavbarType.HOME}
-              className="home-view__navbar"
-            />
-            <RoutesCore />
-            <FooterHomeUI id="footer-home" />
-          </BrowserRouter>
+          <ReduxProviderOnboarding
+            children={
+              <BrowserRouter>
+                <NavbarUI
+                  id="navbar-core"
+                  navbarType={NavbarType.HOME}
+                  className="home-view__navbar"
+                />
+                <RoutesCore />
+                <FooterHomeUI id="footer-home" />
+              </BrowserRouter>
+            }
+          />
         }
       />
     </>

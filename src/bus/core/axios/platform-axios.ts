@@ -3,7 +3,7 @@ import { getFromSessionStorage } from "../functions/session-storange";
 import { KEYS_SESSION } from "../const/keys-session";
 
 const PLATFORM = getFromSessionStorage(KEYS_SESSION.PLATFORM);
-console.log(PLATFORM)
+
 
 const HEADER = {
     "Content-Type": "application/json",

@@ -22,7 +22,9 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
-      "@pages/*": ["src/pages/*"],
+      "@onboarding/*": ["src/onboarding/*"],
+      "@appointment/*": ["src/appointment/*"],
+      "@welcome/*": ["src/welcome/*"],
       "@bus/*": ["src/bus/*"]
     }
   },

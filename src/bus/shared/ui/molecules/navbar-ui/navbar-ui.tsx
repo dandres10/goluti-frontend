@@ -42,7 +42,7 @@ export const NavbarUI = (props: INavbarUI) => {
     setOpenMenuHome(false);
   };
   const handleLogin = () => {
-    navigate("/login");
+    navigate("/onboarding/login");
   };
 
   return (
