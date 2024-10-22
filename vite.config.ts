@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
         "@onboarding": path.resolve(__dirname, "./src/onboarding"),
         "@appointment": path.resolve(__dirname, "./src/appointment"),
         "@welcome": path.resolve(__dirname, "./src/welcome"),
-        "@events": path.resolve(__dirname, "./src/events"),
+        "@core": path.resolve(__dirname, "./src/core"),
         "@bus": path.resolve(__dirname, "./src/bus"),
       },
     },

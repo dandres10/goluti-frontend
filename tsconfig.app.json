@@ -25,7 +25,7 @@
       "@onboarding/*": ["src/onboarding/*"],
       "@appointment/*": ["src/appointment/*"],
       "@welcome/*": ["src/welcome/*"],
-      "@events/*": ["src/events/*"],
+      "@core/*": ["src/core/*"],
       "@bus/*": ["src/bus/*"]
     }
   },

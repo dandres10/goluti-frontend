@@ -1,8 +1,8 @@
 import { NavbarType } from "@/bus/shared/enums";
 import { BrowserRouter } from "react-router-dom";
-import { RoutesCore } from "./routes/routes-core";
-import OnboardingEvents from "@/events/onboarding-events";
-import AppointmentEvents from "@/events/appointment-events";
+import { RoutesCore } from "@/core/routes/routes-core";
+import OnboardingEvents from "@/core/events/onboarding-events";
+import AppointmentEvents from "@/core/events/appointment-events";
 import { FooterHomeUI, NavbarUI } from "@/bus/shared/ui/molecules";
 import ReduxProviderOnboarding from "@/onboarding/core/config/redux/redux-provider";
 import ReduxProviderAppointment from "@/appointment/core/config/redux/redux-provider";
