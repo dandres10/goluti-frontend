@@ -8,7 +8,10 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
-        "@pages": path.resolve(__dirname, "./src/pages"),
+        "@onboarding": path.resolve(__dirname, "./src/onboarding"),
+        "@appointment": path.resolve(__dirname, "./src/appointment"),
+        "@welcome": path.resolve(__dirname, "./src/welcome"),
+        "@events": path.resolve(__dirname, "./src/events"),
         "@bus": path.resolve(__dirname, "./src/bus"),
       },
     },

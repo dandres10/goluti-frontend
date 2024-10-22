@@ -1,6 +1,5 @@
 import { IConfigDTO } from "../../../core/interfaces";
-import { IUserReduxDTO } from "../../../domain/models/redux/bus/platform";
-import { IAuthLoginResponseDTO } from "../../../domain/models/apis/platform/business/auth/login";
+import { IPlatformReduxDTO, IUserReduxDTO } from "../../../domain/models/redux/bus/platform";
 import { InjectionPlatformReduxUseCase } from "../../../domain/services/use_cases/redux/injection";
 
 export class PlatformReduxFacade {
@@ -16,7 +15,7 @@ export class PlatformReduxFacade {
     }
 
 
-    public savePlatform(params: IAuthLoginResponseDTO, config: IConfigDTO): void {
+    public savePlatform(params: IPlatformReduxDTO, config: IConfigDTO): void {
         this.savePlatformUseCase.execute(params,config);
     }
 
