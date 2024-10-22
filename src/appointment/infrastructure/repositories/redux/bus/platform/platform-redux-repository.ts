@@ -13,12 +13,12 @@ export class PlatformReduxRepository extends IPlatformReduxRepository {
         return PlatformReduxRepository.instance;
     }
 
-    public savePlatform(
+    public updatePlatform(
         params: IPlatformReduxDTO,
         config: IConfigDTO
     ): void {
         if (config?.dispatch) {
-            config.dispatch(ACTIONS_APPOINTMENT.addPlatformAction(params));
+            config.dispatch(ACTIONS_APPOINTMENT.updatePlatformAction(params));
         }
     };
 

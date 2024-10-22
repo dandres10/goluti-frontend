@@ -4,7 +4,7 @@ import { InjectionPlatformReduxUseCase } from "../../../domain/services/use_case
 
 export class PlatformReduxFacade {
     private static instance: PlatformReduxFacade;
-    private savePlatformUseCase = InjectionPlatformReduxUseCase.SavePlatformUseCase();
+    private updatePlatformUseCase = InjectionPlatformReduxUseCase.UpdatePlatformUseCase();
     private readUserUseCase = InjectionPlatformReduxUseCase.ReadUserUseCase();
 
 
@@ -15,8 +15,8 @@ export class PlatformReduxFacade {
     }
 
 
-    public savePlatform(params: IPlatformReduxDTO, config: IConfigDTO): void {
-        this.savePlatformUseCase.execute(params,config);
+    public updatePlatform(params: IPlatformReduxDTO, config: IConfigDTO): void {
+        this.updatePlatformUseCase.execute(params,config);
     }
 
     public readUser(config: IConfigDTO): IUserReduxDTO | undefined {

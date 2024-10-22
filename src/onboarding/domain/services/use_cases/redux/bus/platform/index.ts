@@ -1,2 +1,2 @@
-export * from './save-platform-use-case'
+export * from './update-platform-use-case'
 export * from './read-user-use-case'

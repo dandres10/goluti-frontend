@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addPlatformReducer } from "./platform/platform.reducer";
+import { updatePlatformReducer } from "./platform/platform.reducer";
 import { IPlatformReduxDTO } from "../../../../domain/models/redux/bus/platform";
 
 
@@ -17,6 +17,6 @@ export const appointmentSlice = createSlice({
   name: keyAppointment,
   initialState,
   reducers: {
-    addPlatformAction: addPlatformReducer,
+    updatePlatformAction: updatePlatformReducer,
   },
 });

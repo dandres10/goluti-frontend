@@ -5,7 +5,13 @@ export const storeAppointment = configureStore({
   reducer: {
     [keyAppointment]: appointmentSlice.reducer
   },
+  devTools: {
+    name: 'goluti - appointment',
+    trace: true, 
+  },
 });
+
+
 
 export type RootState = ReturnType<typeof storeAppointment.getState>;
 export type AppDispatch = typeof storeAppointment.dispatch;

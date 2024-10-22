@@ -1,13 +1,12 @@
 import { IConfigDTO } from "../../../../../../core/interfaces";
 import { UseCase } from "../../../../../../core/interfaces/use-case";
-import { IPlatformReduxDTO } from "../../../../../../domain/models/redux/bus/platform";
+import { IPlatformReduxDTO } from "../../../../../models/redux/bus/platform";
 import { InjectionRepositoriesRedux } from "../../../../../../infrastructure/repositories/redux/injection/injection-repositories-redux";
 
 export class UpdatePlatformUseCase implements UseCase<IPlatformReduxDTO, void> {
 
     private static instance: UpdatePlatformUseCase;
     private platformReduxRepository = InjectionRepositoriesRedux.PlatformReduxRepository()
-    
     
 
 

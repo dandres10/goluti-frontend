@@ -3,6 +3,6 @@ import { IPlatformReduxDTO, IUserReduxDTO } from "../../../../models/redux/bus/p
 
 
 export abstract class IPlatformReduxRepository {
-    abstract savePlatform(params: IPlatformReduxDTO, config: IConfigDTO): void;
+    abstract updatePlatform(params: IPlatformReduxDTO, config: IConfigDTO): void;
     abstract readUser(config: IConfigDTO): IUserReduxDTO | undefined;
 }

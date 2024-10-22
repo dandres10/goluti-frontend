@@ -1,7 +1,7 @@
 import { onboardingSlice } from "../onboarding.slice";
 
-const { addPlatformAction } = onboardingSlice.actions;
+const { updatePlatformAction } = onboardingSlice.actions;
 
 export const ACTIONS_ONBOARDING = {
-  addPlatformAction,
+  updatePlatformAction,
 };

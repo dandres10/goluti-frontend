@@ -5,6 +5,10 @@ export const storeOnboarding = configureStore({
   reducer: {
     [keyOnboarding]: onboardingSlice.reducer
   },
+  devTools: {
+    name: 'goluti - onboarding',
+    trace: true, 
+  },
 });
 
 export type RootState = ReturnType<typeof storeOnboarding.getState>;

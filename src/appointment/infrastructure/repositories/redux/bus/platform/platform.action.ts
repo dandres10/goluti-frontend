@@ -1,7 +1,7 @@
 import { appointmentSlice } from "../appointment.slice";
 
-const { addPlatformAction } = appointmentSlice.actions;
+const { updatePlatformAction } = appointmentSlice.actions;
 
 export const ACTIONS_APPOINTMENT = {
-  addPlatformAction,
+  updatePlatformAction,
 };

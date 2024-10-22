@@ -1,6 +1,6 @@
-import { ReadUserUseCase, SavePlatformUseCase } from "../bus/platform";
+import { ReadUserUseCase, UpdatePlatformUseCase } from "../bus/platform";
 
 export class InjectionPlatformReduxUseCase {
-    public static SavePlatformUseCase() { return SavePlatformUseCase.getInstance() }
+    public static UpdatePlatformUseCase() { return UpdatePlatformUseCase.getInstance() }
     public static ReadUserUseCase() { return ReadUserUseCase.getInstance() }
 }

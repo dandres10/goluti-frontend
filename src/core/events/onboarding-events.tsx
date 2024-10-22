@@ -25,9 +25,7 @@ export const OnboardingEvents = () => {
   const listenerUpdatePlatformEvent = () => {
     _platformEventFacade.listenerUpdatePlatformEvent(
       (message: IPlatformReduxDTO) => {
-        console.log('evento onboarding',message)
-        console.log('evento onboarding',dispatch)
-        _platformReduxFacade.savePlatform(message, { dispatch });
+        _platformReduxFacade.updatePlatform(message, { dispatch });
       }
     );
   };
