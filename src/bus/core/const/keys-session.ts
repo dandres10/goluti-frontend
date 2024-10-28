@@ -1,3 +1,4 @@
 export const KEYS_SESSION = {
-    PLATFORM: "PLATFORM"
+    PLATFORM: "PLATFORM",
+    UI: "UI"
 }

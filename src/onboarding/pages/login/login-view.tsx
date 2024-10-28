@@ -8,11 +8,8 @@ import {
   InputUI,
   LinkUI,
 } from "@/bus/shared/ui/atoms";
-
-interface IFormInput {
-  email: string;
-  password: string;
-}
+import { ILoginLogicProps } from "./login-logic";
+import { IAuthLoginRequestDTO } from "@/appointment/domain/models/apis/platform/business/auth/login";
 
 const schema = yup.object({
   email: yup
@@ -22,40 +19,44 @@ const schema = yup.object({
     .required("Email is mandatory"),
   password: yup
     .string()
-    .min(8, "Minimum password of 8 characters")
+    .min(3, "Minimum password of 8 characters")
     .max(64, "Password maximum of 64 characters")
-    .transform((value, originalValue) => {
+    .transform((value, _) => {
       return value ? value.replace(/[1]/g, "4") : value;
     })
     .required("Password is mandatory"),
 });
 
-export const LoginView = (props: any) => {
+export const LoginView = (props: ILoginLogicProps) => {
+
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
-    setValue,
     trigger,
   } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "marlon@goluti.com",
+      password: "admin",
     },
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<IAuthLoginRequestDTO> = (
+    data: IAuthLoginRequestDTO
+  ) => {
+    console.log(data);
+    props.login(data);
   };
 
   return (
     <div className="login-view">
-      <form
-        className="wrapper-login__container__login__form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="wrapper-login__container__login__form__head">
+      <div className="login-view__head">
+        <h1 className="login-view__head__title">Ingresar</h1>
+      </div>
+
+      <form className="login-view__form" onSubmit={handleSubmit(onSubmit)}>
+        <div className="login-view__form__inputs">
           <InputUI
             id="email"
             name="email"
@@ -84,23 +85,20 @@ export const LoginView = (props: any) => {
 
           <LinkUI
             id="link-password"
-            className="wrapper-login__container__login__form__head__link"
+            className="login-view__form__link"
             text="Forgot password?"
           />
         </div>
 
-        
-          <ButtonUI
-            id="button-form-session"
-            htmlType="submit"
-            type="primary"
-            text="Continue"
-            width="100%"
-            shape="round"
-            disabled={!isValid}
-            className="wrapper-login__container__login__form__submit"
-          />
-     
+        <ButtonUI
+          id="button-form-session"
+          htmlType="submit"
+          type="primary"
+          text="Continue"
+          width="100%"
+          disabled={!isValid}
+          className="login-view__form__inputs"
+        />
       </form>
     </div>
   );

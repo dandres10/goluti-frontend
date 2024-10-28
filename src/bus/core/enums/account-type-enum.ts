@@ -1,0 +1,6 @@
+export enum ACCOUNT_TYPE_ENUM {
+  COLLABORATOR = 'COLLA',
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+  SUPPORT = 'SUPPORT'
+}

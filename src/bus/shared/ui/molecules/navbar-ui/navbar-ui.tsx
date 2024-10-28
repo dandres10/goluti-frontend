@@ -1,9 +1,10 @@
 import { useState } from "react";
 import "./navbar-ui.scss";
-import { NavbarType } from "@/bus/shared/enums";
+import { NAVBAR_TYPE } from "@/bus/shared/enums";
 import { ButtonUI, SelectUI } from "@/bus/shared/ui/atoms/index";
 import {
   AppstoreOutlined,
+  ArrowLeftOutlined,
   AuditOutlined,
   BellOutlined,
   HomeOutlined,
@@ -15,10 +16,13 @@ import { DrawerUI } from "@bus/shared/ui/molecules/index";
 import { useFullWidth } from "@bus/shared/hooks";
 import { MenuHomeUI } from "../menu-home-ui/menu-home-ui";
 import { useNavigate } from "react-router-dom";
+import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
+
+const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 
 export interface INavbarUI {
   id: string;
-  navbarType: NavbarType;
+  navbarType: NAVBAR_TYPE;
   className?: string;
   /*   navigate?: any; */
 }
@@ -43,19 +47,36 @@ export const NavbarUI = (props: INavbarUI) => {
   };
   const handleLogin = () => {
     navigate("/onboarding/login");
+    _uIEventFacade.dispatchUpdateNavbarEvent({ typeNavbar: NAVBAR_TYPE.LOGIN });
+  };
+  const handleBack = () => {
+    navigate("/welcome/home");
+    _uIEventFacade.dispatchUpdateNavbarEvent({ typeNavbar: NAVBAR_TYPE.HOME });
   };
 
   return (
     <div id="home-view__navbar" className={`${props.className} navbar-ui`}>
       <div className="navbar-ui__start">
-        {[NavbarType.HOME].includes(props.navbarType) && fullWidth < 800 ? (
+        {[NAVBAR_TYPE.HOME].includes(props.navbarType) && fullWidth < 800 ? (
           <MenuOutlined
             className="navbar-ui__start__menu"
             onClick={showDrawer}
           />
         ) : null}
 
-        {[NavbarType.DASHBOARD].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.LOGIN].includes(props.navbarType) ? (
+          <ButtonUI
+            id="hv-button-back"
+            className="navbar-ui__start__back"
+            width="2.5rem"
+            color="default"
+            type="text"
+            icon={<ArrowLeftOutlined />}
+            onClick={() => handleBack()}
+          />
+        ) : null}
+
+        {[NAVBAR_TYPE.DASHBOARD].includes(props.navbarType) ? (
           <MenuOutlined
             className="navbar-ui__start__menu"
             onClick={showDrawer}
@@ -68,7 +89,7 @@ export const NavbarUI = (props: INavbarUI) => {
         </div>
       </div>
       <div className="navbar-ui__center">
-        {[NavbarType.HOME].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.HOME].includes(props.navbarType) ? (
           <div className="navbar-ui__center__menu">
             <div className="navbar-ui__center__menu__item--selected">
               Inicio
@@ -79,12 +100,16 @@ export const NavbarUI = (props: INavbarUI) => {
         ) : null}
       </div>
       <div className="navbar-ui__end">
-        {[NavbarType.HOME].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.HOME, NAVBAR_TYPE.LOGIN].includes(props.navbarType) ? (
           <SelectUI
             id="hv-select-language"
             width="6rem"
             variant="borderless"
-            className="navbar-ui__end__language"
+            className={
+              [NAVBAR_TYPE.LOGIN].includes(props.navbarType)
+                ? "navbar-ui__end__language-login"
+                : "navbar-ui__end__language"
+            }
             defaultValue="es"
             options={[
               { value: "es", label: "Español" },
@@ -93,19 +118,19 @@ export const NavbarUI = (props: INavbarUI) => {
           />
         ) : null}
 
-        {[NavbarType.DASHBOARD].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.DASHBOARD].includes(props.navbarType) ? (
           <Badge className="navbar-ui__end__badge" count={99}>
             <BellOutlined style={{ fontSize: "21px" }} />
           </Badge>
         ) : null}
 
-        {[NavbarType.DASHBOARD].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.DASHBOARD].includes(props.navbarType) ? (
           <div className="navbar-ui__end__data">
             <div className="navbar-ui__end__data__text">Hola, Marlon León</div>
           </div>
         ) : null}
 
-        {[NavbarType.HOME].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.HOME].includes(props.navbarType) ? (
           <ButtonUI
             id="hv-button"
             className="navbar-ui__end__getinto"
@@ -115,7 +140,7 @@ export const NavbarUI = (props: INavbarUI) => {
             onClick={() => handleLogin()}
           />
         ) : null}
-        {[NavbarType.DASHBOARD].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.DASHBOARD].includes(props.navbarType) ? (
           <Avatar
             style={{ backgroundColor: "var(--primary-main)" }}
             size={34}

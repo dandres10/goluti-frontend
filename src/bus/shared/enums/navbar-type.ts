@@ -1,5 +1,6 @@
 
-export enum NavbarType {
+export enum NAVBAR_TYPE {
     HOME = "HOME",
-    DASHBOARD = "DASHBOARD"
+    DASHBOARD = "DASHBOARD",
+    LOGIN = "LOGIN"
 }

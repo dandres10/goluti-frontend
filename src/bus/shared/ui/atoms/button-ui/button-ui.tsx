@@ -12,6 +12,7 @@ export interface IButtonUI {
   size?: BaseButtonProps["size"];
   text?: string;
   className?: string;
+  color?: string;
   htmlType?: ButtonProps["htmlType"];
   disabled?: boolean;
   onClick?: () => void;
@@ -44,6 +45,7 @@ export const ButtonUI = (props: IButtonUI): JSX.Element => {
     size,
     text,
     className,
+    color,
     onClick,
     htmlType,
     disabled,
@@ -58,6 +60,7 @@ export const ButtonUI = (props: IButtonUI): JSX.Element => {
         type={type}
         htmlType={htmlType}
         icon={icon}
+        color={color}
         shape={shape}
         size={size}
         onClick={onClick}

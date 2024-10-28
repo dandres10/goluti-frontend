@@ -15,11 +15,16 @@
   &__start {
     display: flex;
     flex-direction: row;
+    align-items: center;
     &__menu {
       margin-right: 0.5rem;
       cursor: pointer;
       padding: 1rem 1rem 1rem 0rem;
       font-size: 20px;
+    }
+
+    &__back {
+      margin-right: 1rem;
     }
 
     &__title-company {
