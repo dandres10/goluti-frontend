@@ -68,7 +68,6 @@ export const NavbarUI = (props: INavbarUI) => {
           <ButtonUI
             id="hv-button-back"
             className="navbar-ui__start__back"
-            width="2.5rem"
             color="default"
             type="text"
             icon={<ArrowLeftOutlined />}

@@ -24,7 +24,8 @@
     }
 
     &__back {
-      margin-right: 1rem;
+      margin-right: 3.9px;
+      width: 2.5rem;
     }
 
     &__title-company {
@@ -109,6 +110,9 @@
     &__start {
       &__menu {
         margin-right: 0;
+      }
+      &__back {
+        margin-right: 2.9px;
       }
     }
 
