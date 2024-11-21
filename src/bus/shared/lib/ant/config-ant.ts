@@ -17,8 +17,8 @@ export const configAnt: ThemeConfig = {
   },
   components: {
     Button: { primaryShadow: "none" },
-    Select: {
-      
+    Table: {
+      cellFontSizeSM: 12,
     },
   },
 };

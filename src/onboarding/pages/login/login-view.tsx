@@ -1,5 +1,6 @@
 import "./login.scss";
 import * as yup from "yup";
+import { ILoginLogicProps } from "./login-logic";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -8,7 +9,6 @@ import {
   InputUI,
   LinkUI,
 } from "@/bus/shared/ui/atoms";
-import { ILoginLogicProps } from "./login-logic";
 import { IAuthLoginRequestDTO } from "@/appointment/domain/models/apis/platform/business/auth/login";
 
 const schema = yup.object({
@@ -28,7 +28,6 @@ const schema = yup.object({
 });
 
 export const LoginView = (props: ILoginLogicProps) => {
-
   const {
     control,
     handleSubmit,
@@ -50,7 +49,8 @@ export const LoginView = (props: ILoginLogicProps) => {
   };
 
   return (
-    <div className="login-view">
+    <>
+      <div className="login-view">
       <div className="login-view__head">
         <h1 className="login-view__head__title">Ingresar</h1>
       </div>
@@ -101,5 +101,7 @@ export const LoginView = (props: ILoginLogicProps) => {
         />
       </form>
     </div>
+    
+    </>
   );
 };

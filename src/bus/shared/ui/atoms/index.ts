@@ -4,3 +4,6 @@ export * from "./link-ui/link-ui";
 export * from "./input-error-ui/input-error-ui"
 export * from "./input-password-ui/input-password-ui"
 export * from "./input-ui/input-ui"
+export * from "./badge-ui/badge-ui"
+export * from "./title-subtitle-ui/title-subtitle"
+export * from "./text-ui/text-ui"

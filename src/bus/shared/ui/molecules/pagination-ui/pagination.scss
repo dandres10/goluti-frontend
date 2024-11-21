@@ -1,0 +1,32 @@
+.pagination {
+  display: flex;
+  flex-direction: row;
+  width: 8rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+
+  &__button {
+    height: 1.5rem;
+    width: 3rem !important;
+  }
+
+  &__pag {
+    text-align: center;
+    min-width: 1rem;
+    max-width: 3rem;
+  }
+
+  &__page {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--Secondary-6);
+    color: var(--Secondary-6);
+    font-size: 14px;
+    border-radius: 6px;
+  }
+}

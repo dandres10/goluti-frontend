@@ -4,21 +4,22 @@ import { SizeType } from "antd/es/config-provider/SizeContext";
 import { InputErrorUI } from "../input-error-ui/input-error-ui";
 import { Control, Controller, FieldValues } from "react-hook-form";
 
-
 export interface IInputUI {
   id: string;
-  status: InputProps["status"];
-  placeholder: string;
+  status?: InputProps["status"];
+  placeholder?: string;
   maxLength: number;
   value?: string | number;
-  errors: any;
-  control: any;
+  errors?: any;
+  control?: any;
   name: string;
-  width: string;
+  width?: string;
   className?: string;
-  onChange: () => {};
-  onBlur?: () => {};
+  onChange: (e: any) => void;
+  onBlur?: (e: any) => void;
   size?: SizeType;
+  onPressEnter?: (e: any) => void;
+  style?: object
 }
 
 /**
@@ -51,37 +52,56 @@ export const InputUI = (props: IInputUI) => {
     width,
     className,
     size,
+    value,
+    onBlur,
+    onPressEnter,
+    style
   } = props;
 
   const typeSize = () => {
     return size === "large" ? "input-core-large" : "input-core";
   };
+ 
 
   return (
-    <Controller
-      key={id}
-      name={name}
-      control={control}
-      render={({ field: { value, onChange, onBlur } }) => (
-        <div className={`${className} ${typeSize()}`}>
-          <ConfigProvider theme={configAnt}>
-            <Input
-              style={{ width }}
-              maxLength={maxLength}
-              status={status}
-              placeholder={placeholder}
-              onChange={(e) => {
-                onChange(e);
-                props.onChange();
-              }}
-              value={value}
-              onBlur={onBlur}
-              size={size}
-            />
-          </ConfigProvider>
-          <InputErrorUI id={id} error={errors?.[name]?.message} />
-        </div>
+    <ConfigProvider theme={configAnt}>
+      {control ? (
+        <Controller
+          key={id}
+          name={name}
+          control={control}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <div className={`${className} ${typeSize()}`}>
+              <ConfigProvider theme={configAnt}>
+                <Input
+                  style={{ width }}
+                  maxLength={maxLength}
+                  status={status}
+                  placeholder={placeholder}
+                  onChange={(e) => {
+                    onChange(e);
+                    props.onChange(e);
+                  }}
+                  value={value}
+                  onBlur={onBlur}
+                  size={size}
+                />
+              </ConfigProvider>
+              <InputErrorUI id={id} error={errors?.[name]?.message} />
+            </div>
+          )}
+        />
+      ) : (
+        <Input
+          value={value} // Muestra un campo vacío cuando page es 0
+          onChange={props.onChange}
+          onBlur={onBlur} // Actualiza la paginación al salir del input
+          onPressEnter={onPressEnter} // Actualiza la paginación al presionar Enter
+          size={size}
+          className={`${className}`}
+        />
       )}
-    />
+    </ConfigProvider>
+    
   );
 };

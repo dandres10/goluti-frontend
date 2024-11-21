@@ -1,0 +1,12 @@
+.ant-table-thead {
+  height: 3.5rem;
+}
+
+.ant-table-cell::before {
+  display: none;
+}
+
+.table-core {
+  position: relative;
+  z-index: 1;
+}

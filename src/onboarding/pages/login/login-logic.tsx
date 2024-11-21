@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useAppSelector } from "@/onboarding/core/config/redux";
 import { LoginView } from "./login-view";
 import { KEYS_SESSION } from "@/bus/core/const/keys-session";
@@ -9,12 +8,12 @@ import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection
 import { InjectionPlatformBusinessFacade } from "@/bus/facade/apis/platform/injection/business/injection-platform-business-facade";
 import { IAuthLoginRequestDTO } from "@/appointment/domain/models/apis/platform/business/auth/login";
 import { IUserReduxDTO } from "@/onboarding/domain/models/redux/bus/platform";
-
+import { useNavigate } from "react-router-dom";
 
 export interface ILoginLogicProps {
-  user: IUserReduxDTO | undefined
-  login: (param: IAuthLoginRequestDTO) => void
-
+  user: IUserReduxDTO | undefined;
+  login: (param: IAuthLoginRequestDTO) => void;
+  handleContinue: () => void;
 }
 
 //api
@@ -28,11 +27,10 @@ export const LoginLogic = () => {
   const selector: SelectorOnboardingRedux = useAppSelector;
   //redux
   const _platformReduxFacade = InjectionReduxFacade.PlatformReduxFacade();
-  const user: IUserReduxDTO | undefined = _platformReduxFacade.readUser({ selector });
-
-  useEffect(() => {
-
-  }, []);
+  const user: IUserReduxDTO | undefined = _platformReduxFacade?.readUser({
+    selector,
+  });
+  const navigate = useNavigate();
 
   const login = async (param: IAuthLoginRequestDTO) => {
     await _authFacade
@@ -42,13 +40,19 @@ export const LoginLogic = () => {
           _injectionSessionFacade.savePlatform(res, {
             key: KEYS_SESSION.PLATFORM,
           });
+          handleContinue();
         }
       });
   };
 
+  const handleContinue = () => {
+    navigate("/commercial/chat");
+  };
+
   const props: ILoginLogicProps = {
     user,
-    login
+    login,
+    handleContinue,
   };
 
   return <LoginView {...props} />;

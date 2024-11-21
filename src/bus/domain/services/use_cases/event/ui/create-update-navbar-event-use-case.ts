@@ -20,8 +20,15 @@ export class CreateUpdateNavbarEventUseCase implements UseCase<IUiReduxDTO, Cust
 
     public execute(param: IUiReduxDTO): CustomEvent<{ message: IUiReduxDTO }> {
 
-        this.uISessionRepository.updateNavbarType(param, { key: KEYS_SESSION.UI })
+        const ui: IUiReduxDTO | null = this.uISessionRepository.readNavbarType({
+            key: KEYS_SESSION.UI,
+        });
 
+        if (ui) {
+            this.uISessionRepository.updateNavbarType(ui, { key: KEYS_SESSION.UI })
+            return this.uiEventRepository.createUpdateNavbarTypeEvent(ui);
+        }
+        this.uISessionRepository.updateNavbarType(param, { key: KEYS_SESSION.UI })
         return this.uiEventRepository.createUpdateNavbarTypeEvent(param);
     }
 }

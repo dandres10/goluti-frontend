@@ -1,0 +1,17 @@
+export enum FC_UI {
+  TITLE_SUBTITLE_UI = "TitleSubtitleUI",
+  SELECT_STATUS_COLOR_UI = "SelectStatusColorUI",
+  SELECT_UI = "SelectUI",
+  LINK_UI = "LinkUI",
+  INPUT_NUMBER_UI = "InputNumberUI",
+  BADGE_UI = "BadgeUI",
+  SEARCH_UI = "SearchUI",
+  BUTTON_UI = "ButtonUI",
+  FREE = "FreeUI",
+  TEXT_UI = "TextUI",
+  USER_TEXT_UI = "UserTextUI",
+  LIST_ICON_TABLE_UI = "ListIconTableUI",
+  ACTION = "ActionTableUI",
+  DATE_PICKER_UI = "DATE_PICKER_UI",
+  TAG_UI = "TAG_UI",
+}
