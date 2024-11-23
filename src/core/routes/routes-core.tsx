@@ -4,7 +4,7 @@ import LoginLogic from "@/onboarding/pages/login/login-logic";
 import { ROUTES } from "./routes";
 import { CommercialLogic } from "@/commercial/pages/home/home-logic";
 import ChatLogic from "@/commercial/pages/chat/chat-logic";
-import VoiceChat from "@/commercial/pages/voice/voice-logic";
+import ChatComponent from "@/commercial/pages/voice/voice-logic";
 
 
 
@@ -20,7 +20,7 @@ export const RoutesCore = () => {
       //commercial
       <Route path={ROUTES.COMMERCIAL_HOME} element={<CommercialLogic />} />
       <Route path={ROUTES.COMMERCIAL_CHAT} element={<ChatLogic />} />
-      <Route path={ROUTES.COMMERCIAL_VOICE} element={<VoiceChat />} />
+      <Route path={ROUTES.COMMERCIAL_VOICE} element={<ChatComponent />} />
       //*
       <Route path="*" element={<Navigate to={ROUTES.WELCOME_HOME} replace />} />
     </Routes>
