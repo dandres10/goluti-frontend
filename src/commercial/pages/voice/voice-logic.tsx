@@ -7,17 +7,21 @@ interface Message {
   audio?: string;
 }
 
+const MESSAGE_TYPES = {
+  ASSISTANT_RESPONSE: "assistant_response",
+  STATUS: "status",
+  CLOSE_CONNECTION: "close_connection",
+  ERROR: "error",
+};
+
 const ChatComponent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
-  const [interactionMode, setInteractionMode] = useState<"text" | "call">(
-    "text"
-  );
-  const [isSessionActive, setIsSessionActive] = useState(true); // Control de sesión
+  const [interactionMode, setInteractionMode] = useState<"text" | "call">("text");
+  const [isSessionActive, setIsSessionActive] = useState(true);
   const [lastProcessedMessage, setLastProcessedMessage] = useState<
     string | null
-  >(null); // Control del último mensaje procesado
+  >(null);
   const recognitionRef = useRef<any | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isAssistantSpeaking = useRef(false);
@@ -26,8 +30,14 @@ const ChatComponent = () => {
   const { sendMessage, lastMessage, readyState } = useWebSocket(
     "ws://localhost:8002/tracking-manager/voice",
     {
-      onOpen: () => console.log("WebSocket conectado"),
-      onClose: () => console.log("WebSocket desconectado"),
+      onOpen: () => {
+        console.log("WebSocket conectado");
+        setIsSessionActive(true);
+      },
+      onClose: () => {
+        console.log("WebSocket desconectado");
+        setIsSessionActive(false);
+      },
       onError: (event) => console.error("Error en WebSocket:", event),
       shouldReconnect: () => true,
     }
@@ -41,7 +51,14 @@ const ChatComponent = () => {
     [ReadyState.UNINSTANTIATED]: "No conectado",
   }[readyState];
 
-  // Mantener el scroll siempre al final del chat
+  const shouldReactivateRecognition = (type: string) => {
+    return (
+      isSessionActive &&
+      interactionMode === "call" &&
+      type !== MESSAGE_TYPES.CLOSE_CONNECTION
+    );
+  };
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -50,13 +67,12 @@ const ChatComponent = () => {
     if (lastMessage !== null) {
       const messageData = lastMessage.data;
 
-      // Evitar procesar mensajes duplicados
       if (messageData === lastProcessedMessage) return;
-      setLastProcessedMessage(messageData); // Actualizar último mensaje procesado
+      setLastProcessedMessage(messageData);
 
       const parsedMessage = JSON.parse(messageData);
 
-      if (parsedMessage.type === "assistant_response") {
+      if (parsedMessage.type === MESSAGE_TYPES.ASSISTANT_RESPONSE) {
         const newMessage: Message = {
           sender: "assistant",
           text: parsedMessage.text,
@@ -64,29 +80,32 @@ const ChatComponent = () => {
         };
         setMessages((prev) => [...prev, newMessage]);
 
-        if (interactionMode === "call" && parsedMessage.audio) {
-          playAssistantAudio(parsedMessage.audio);
+        if (parsedMessage.audio) {
+          playAssistantAudio(parsedMessage.audio, parsedMessage.type);
         }
-      } else if (parsedMessage.type === "status") {
+      } else if (parsedMessage.type === MESSAGE_TYPES.STATUS) {
         const statusMessage: Message = {
           sender: "assistant",
           text: parsedMessage.content,
         };
         setMessages((prev) => [...prev, statusMessage]);
+      } else if (parsedMessage.type === MESSAGE_TYPES.CLOSE_CONNECTION) {
+        const closeMessage: Message = {
+          sender: "assistant",
+          text: parsedMessage.text,
+          audio: parsedMessage.audio,
+        };
+        setMessages((prev) => [...prev, closeMessage]);
 
-        if (interactionMode === "call" && parsedMessage.audio) {
-          playAssistantAudio(parsedMessage.audio);
+        if (parsedMessage.audio) {
+          playAssistantAudio(parsedMessage.audio, parsedMessage.type);
         }
-      } else if (parsedMessage.type === "close_connection") {
-        // Detener el reconocimiento de voz y desactivar la sesión
-        setIsSessionActive(false); // Indicar que la sesión terminó
-        stopVoiceRecognition();
-        console.log("Mensaje de cierre recibido:", parsedMessage.text);
 
-        // Cambiar el estado para prevenir reactivación
+        stopVoiceRecognition();
+        setIsSessionActive(false);
         setInteractionMode("text");
-        console.log("La conversación ha finalizado.");
-      } else if (parsedMessage.type === "error") {
+        console.log("Mensaje de cierre recibido:", parsedMessage.text);
+      } else if (parsedMessage.type === MESSAGE_TYPES.ERROR) {
         console.error("Error recibido:", parsedMessage.content);
       }
     }
@@ -120,21 +139,16 @@ const ChatComponent = () => {
 
     recognition.onstart = () => {
       if (!isSessionActive) {
-        console.log(
-          "Reconocimiento de voz no permitido: la sesión no está activa."
-        );
         recognition.stop();
         return;
       }
-      setIsRecording(true);
       console.log("Reconocimiento de voz activado.");
     };
 
     recognition.onresult = (event: any) => {
-      if (!isSessionActive) return; // Ignorar resultados si la sesión no está activa
-      const transcript = event.results[0][0].transcript;
-      console.log("Usuario dijo:", transcript);
+      if (!isSessionActive) return;
 
+      const transcript = event.results[0][0].transcript;
       const newMessage: Message = { sender: "user", text: transcript };
       setMessages((prev) => [...prev, newMessage]);
 
@@ -148,21 +162,19 @@ const ChatComponent = () => {
 
     recognition.onerror = (event: any) => {
       console.error("Error en el reconocimiento de voz:", event.error);
+
       if (event.error === "no-speech" || event.error === "aborted") {
         console.log("No se detectó habla o se abortó el reconocimiento.");
       }
-      if (isSessionActive) {
-        recognition.start(); // Reactivar solo si la sesión sigue activa
+
+      if (shouldReactivateRecognition(MESSAGE_TYPES.ASSISTANT_RESPONSE)) {
+        recognition.start();
       }
     };
 
     recognition.onend = () => {
-      setIsRecording(false);
-      if (isSessionActive) {
-        console.log("Reactivando reconocimiento de voz...");
-        recognition.start(); // Reactivar solo si la sesión sigue activa
-      } else {
-        console.log("Reconocimiento de voz finalizado y no se reactivará.");
+      if (shouldReactivateRecognition(MESSAGE_TYPES.ASSISTANT_RESPONSE)) {
+        recognition.start();
       }
     };
 
@@ -172,27 +184,28 @@ const ChatComponent = () => {
 
   const stopVoiceRecognition = () => {
     if (recognitionRef.current) {
-      recognitionRef.current.onend = null; // Limpiar eventos para evitar reactivación
+      recognitionRef.current.onend = null;
       recognitionRef.current.onerror = null;
       recognitionRef.current.stop();
-      setIsRecording(false);
+      recognitionRef.current = null;
       console.log("Reconocimiento de voz detenido.");
     }
   };
 
-  const playAssistantAudio = (audioUrl: string) => {
+  const playAssistantAudio = (audioUrl: string, type: string) => {
+    if (!audioUrl || interactionMode != "call") return;
+
     const audio = new Audio(audioUrl);
     audioRef.current = audio;
 
     isAssistantSpeaking.current = true;
-    stopVoiceRecognition(); // Pausar reconocimiento durante la respuesta del asistente
+    stopVoiceRecognition();
 
     audio.onended = () => {
-      console.log("Audio del asistente finalizado");
       isAssistantSpeaking.current = false;
 
-      if (interactionMode === "call" && isSessionActive) {
-        startVoiceRecognition(); // Reactivar reconocimiento
+      if (shouldReactivateRecognition(type)) {
+        startVoiceRecognition();
       }
     };
 
@@ -200,14 +213,13 @@ const ChatComponent = () => {
   };
 
   const switchMode = (mode: "text" | "call") => {
-    setInteractionMode(mode);
     if (mode === "call") {
-      console.log("Iniciando una nueva llamada...");
-      setIsSessionActive(true); // Reactivar la sesión
-      setLastProcessedMessage(null); // Limpiar último mensaje procesado
+      setInteractionMode("call");
+      setIsSessionActive(true);
       startVoiceRecognition();
     } else {
-      console.log("Cambiando a modo texto...");
+      setInteractionMode("text");
+      setIsSessionActive(false);
       stopVoiceRecognition();
     }
   };
