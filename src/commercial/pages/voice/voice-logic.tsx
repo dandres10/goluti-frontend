@@ -17,7 +17,9 @@ const MESSAGE_TYPES = {
 const ChatComponent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [interactionMode, setInteractionMode] = useState<"text" | "call">("text");
+  const [interactionMode, setInteractionMode] = useState<"text" | "call">(
+    "text"
+  );
   const [isSessionActive, setIsSessionActive] = useState(true);
   const [lastProcessedMessage, setLastProcessedMessage] = useState<
     string | null
@@ -71,6 +73,7 @@ const ChatComponent = () => {
       setLastProcessedMessage(messageData);
 
       const parsedMessage = JSON.parse(messageData);
+      console.log("tipo de mensaje", parsedMessage.type);
 
       if (parsedMessage.type === MESSAGE_TYPES.ASSISTANT_RESPONSE) {
         const newMessage: Message = {
@@ -161,14 +164,16 @@ const ChatComponent = () => {
     };
 
     recognition.onerror = (event: any) => {
-      console.error("Error en el reconocimiento de voz:", event.error);
+      /* console.error("Error en el reconocimiento de voz:", event.error); */
 
-      if (event.error === "no-speech" || event.error === "aborted") {
+      /* if (event.error === "no-speech" || event.error === "aborted") {
         console.log("No se detectó habla o se abortó el reconocimiento.");
-      }
+      } */
 
       if (shouldReactivateRecognition(MESSAGE_TYPES.ASSISTANT_RESPONSE)) {
-        recognition.start();
+        if (!recognition) {
+          recognition.start();
+        }
       }
     };
 
@@ -179,7 +184,9 @@ const ChatComponent = () => {
     };
 
     recognitionRef.current = recognition;
-    recognition.start();
+    if (!recognition?.current) {
+      recognition.start();
+    }
   };
 
   const stopVoiceRecognition = () => {
@@ -291,6 +298,11 @@ const ChatComponent = () => {
               placeholder="Escribe tu mensaje..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSendMessage(); 
+                }
+              }}
               style={{
                 flex: 1,
                 padding: "10px",
