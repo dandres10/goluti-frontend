@@ -163,19 +163,19 @@ const ChatComponent = () => {
       );
     };
 
-    recognition.onerror = (event: any) => {
-      /* console.error("Error en el reconocimiento de voz:", event.error); */
+    /* recognition.onerror = (event: any) => {
+      console.error("Error en el reconocimiento de voz:", event.error);
 
-      /* if (event.error === "no-speech" || event.error === "aborted") {
+      if (event.error === "no-speech" || event.error === "aborted") {
         console.log("No se detectó habla o se abortó el reconocimiento.");
-      } */
+      }
 
       if (shouldReactivateRecognition(MESSAGE_TYPES.ASSISTANT_RESPONSE)) {
         if (!recognition) {
           recognition.start();
         }
       }
-    };
+    }; */
 
     recognition.onend = () => {
       if (shouldReactivateRecognition(MESSAGE_TYPES.ASSISTANT_RESPONSE)) {
