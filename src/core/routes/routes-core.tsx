@@ -5,6 +5,7 @@ import { ROUTES } from "./routes";
 import { CommercialLogic } from "@/commercial/pages/home/home-logic";
 import ChatLogic from "@/commercial/pages/chat/chat-logic";
 import ChatComponent from "@/commercial/pages/voice/voice-logic";
+import AppointmentLogic from "@/appointment/pages/home/home-logic";
 
 
 
@@ -21,6 +22,8 @@ export const RoutesCore = () => {
       <Route path={ROUTES.COMMERCIAL_HOME} element={<CommercialLogic />} />
       <Route path={ROUTES.COMMERCIAL_CHAT} element={<ChatLogic />} />
       <Route path={ROUTES.COMMERCIAL_VOICE} element={<ChatComponent />} />
+      //appointment
+      <Route path={ROUTES.APPOINTMENT_HOME} element={<AppointmentLogic />} />
       //*
       <Route path="*" element={<Navigate to={ROUTES.WELCOME_HOME} replace />} />
     </Routes>

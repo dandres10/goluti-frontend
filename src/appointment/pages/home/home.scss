@@ -1,0 +1,141 @@
+.appointment-home {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+
+  &__filter {
+    width: 6rem;
+  }
+}
+
+.filter-core {
+  padding: 0px 10px 0px 10px;
+  width: auto;
+
+  &__head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    padding-top: 10px;
+
+    &__title {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    &__close {
+      padding: 0rem 0rem 1rem 1rem;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+
+    &__create-filter {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    &__titles {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+      margin-left: 0.5rem;
+      font-weight: 600;
+      &__condition {
+        width: 6.4rem;
+      }
+    }
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      height: 83vh;
+      overflow-y: scroll;
+      padding-top: 1rem;
+      padding-right: 1rem;
+
+      &__container {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: space-between;
+
+        &__item {
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+          align-items: self-end;
+          justify-content: space-between;
+          margin-bottom: 1.2rem;
+          padding-right: 1rem;
+          padding-left: 1rem;
+          background-color: var(--Neutral-4);
+          height: 3rem;
+          border-radius: 0.4rem;
+          align-items: center;
+          width: 80%;
+
+          &__dropdown {
+            display: flex;
+            flex-direction: column;
+            &__select {
+              width: 6rem;
+              height: 100%;
+              border-radius: 0;
+            }
+          }
+
+          &__value {
+
+            width: 12rem;
+            margin-top: 10px;
+          }
+        }
+
+        &__delete {
+          display: flex;
+          width: 20%;
+          color: var(--Neutral-7);
+        }
+      }
+
+      &__actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 1rem;
+        margin-top: 2rem;
+
+        &__add {
+          width: 80%;
+        }
+
+        &__apply {
+          width: 80%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .filter-core {
+    &__body {
+      display: flex;
+      flex-direction: column;
+
+      &__form {
+        height: 80vh;
+      }
+    }
+  }
+}

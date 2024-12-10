@@ -46,7 +46,7 @@ export const LoginLogic = () => {
   };
 
   const handleContinue = () => {
-    navigate("/commercial/voice");
+    navigate("/appointment/home");
   };
 
   const props: ILoginLogicProps = {

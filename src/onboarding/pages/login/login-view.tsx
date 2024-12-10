@@ -51,57 +51,56 @@ export const LoginView = (props: ILoginLogicProps) => {
   return (
     <>
       <div className="login-view">
-      <div className="login-view__head">
-        <h1 className="login-view__head__title">Ingresar</h1>
-      </div>
-
-      <form className="login-view__form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="login-view__form__inputs">
-          <InputUI
-            id="email"
-            name="email"
-            control={control}
-            status={errors.email?.message ? "error" : undefined}
-            errors={errors}
-            onChange={() => trigger("email")}
-            placeholder="Email"
-            maxLength={60}
-            width="100%"
-            size="large"
-          />
-
-          <InputPasswordUI
-            id="password"
-            name="password"
-            control={control}
-            status={errors.password?.message ? "error" : undefined}
-            errors={errors}
-            placeholder="Password"
-            onChange={() => trigger("password")}
-            maxLength={64}
-            width="100%"
-            size="large"
-          />
-
-          <LinkUI
-            id="link-password"
-            className="login-view__form__link"
-            text="Forgot password?"
-          />
+        <div className="login-view__head">
+          <h1 className="login-view__head__title">Ingresar</h1>
         </div>
 
-        <ButtonUI
-          id="button-form-session"
-          htmlType="submit"
-          type="primary"
-          text="Continue"
-          width="100%"
-          disabled={!isValid}
-          className="login-view__form__inputs"
-        />
-      </form>
-    </div>
-    
+        <form className="login-view__form" onSubmit={handleSubmit(onSubmit)}>
+          <div className="login-view__form__inputs">
+            <InputUI
+              id="email"
+              name="email"
+              control={control}
+              status={errors.email?.message ? "error" : undefined}
+              errors={errors}
+              onChange={() => trigger("email")}
+              placeholder="Email"
+              maxLength={60}
+              width="100%"
+              size="large"
+            />
+
+            <InputPasswordUI
+              id="password"
+              name="password"
+              control={control}
+              status={errors.password?.message ? "error" : undefined}
+              errors={errors}
+              placeholder="Password"
+              onChange={() => trigger("password")}
+              maxLength={64}
+              width="100%"
+              size="large"
+            />
+
+            <LinkUI
+              id="link-password"
+              className="login-view__form__link"
+              text="Forgot password?"
+            />
+          </div>
+
+          <ButtonUI
+            id="button-form-session"
+            htmlType="submit"
+            type="primary"
+            text="Continue"
+            width="100%"
+            disabled={!isValid}
+            className="login-view__form__inputs"
+          />
+        </form>
+      </div>
     </>
   );
 };

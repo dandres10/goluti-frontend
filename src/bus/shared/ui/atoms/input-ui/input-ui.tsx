@@ -1,3 +1,4 @@
+import "./input.scss";
 import { configAnt } from "../../../lib/ant";
 import { ConfigProvider, Input, InputProps } from "antd";
 import { SizeType } from "antd/es/config-provider/SizeContext";
@@ -19,7 +20,8 @@ export interface IInputUI {
   onBlur?: (e: any) => void;
   size?: SizeType;
   onPressEnter?: (e: any) => void;
-  style?: object
+  style?: object;
+  label?: string;
 }
 
 /**
@@ -55,13 +57,13 @@ export const InputUI = (props: IInputUI) => {
     value,
     onBlur,
     onPressEnter,
-    style
+    style,
+    label,
   } = props;
 
   const typeSize = () => {
     return size === "large" ? "input-core-large" : "input-core";
   };
- 
 
   return (
     <ConfigProvider theme={configAnt}>
@@ -73,6 +75,7 @@ export const InputUI = (props: IInputUI) => {
           render={({ field: { value, onChange, onBlur } }) => (
             <div className={`${className} ${typeSize()}`}>
               <ConfigProvider theme={configAnt}>
+                {label ? <div className="label-input-core">{label}</div> : null}
                 <Input
                   style={{ width }}
                   maxLength={maxLength}
@@ -102,6 +105,5 @@ export const InputUI = (props: IInputUI) => {
         />
       )}
     </ConfigProvider>
-    
   );
 };

@@ -4,6 +4,7 @@ export enum ROUTES {
     ONBOARDING_LOGIN = '/onboarding/login',
     COMMERCIAL_HOME = '/commercial/home',
     COMMERCIAL_CHAT = '/commercial/chat',
-    COMMERCIAL_VOICE = '/commercial/voice'
+    COMMERCIAL_VOICE = '/commercial/voice',
+    APPOINTMENT_HOME = '/appointment/home'
 }
 
