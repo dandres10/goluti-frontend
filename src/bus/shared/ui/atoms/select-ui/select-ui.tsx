@@ -1,12 +1,11 @@
-import { ConfigProvider } from "antd";
-
-import { Select } from "../../../lib/ant/config-components-ant";
-import { useEffect, useState } from "react";
 import "./select-ui.scss";
+import { useEffect } from "react";
+import { ConfigProvider } from "antd";
 import { Controller } from "react-hook-form";
-import { InputErrorUI } from "../input-error-ui/input-error-ui";
-import { SizeType } from "antd/es/config-provider/SizeContext";
 import { configAnt } from "@/bus/shared/lib/ant";
+import { SizeType } from "antd/es/config-provider/SizeContext";
+import { InputErrorUI } from "../input-error-ui/input-error-ui";
+import { Select } from "../../../lib/ant/config-components-ant";
 
 export interface IDataSourceDTO {
   value: number | string;
@@ -15,12 +14,9 @@ export interface IDataSourceDTO {
 
 export interface ISelectUI {
   id: string;
-  defaultValue?: string | number;
   dataSource: IDataSourceDTO[];
-  width?: number;
   variant?: any;
   disabled?: boolean;
-  fontSize?: string;
   errors?: any;
   size?: SizeType;
   control?: any;
@@ -28,8 +24,8 @@ export interface ISelectUI {
   className?: string;
   label?: string;
   onChange: (e: any) => void;
-  onBlur?: (e: any) => void;
   placeholder?: string;
+  status?: any;
 }
 
 /**
@@ -40,21 +36,18 @@ export interface ISelectUI {
  */
 export const SelectUI = (props: ISelectUI) => {
   const {
-    defaultValue,
     dataSource,
-    width,
     id,
     variant,
     disabled,
-    fontSize,
     errors,
     control,
     name,
     className,
     label,
-    onBlur,
     size,
     placeholder,
+    status,
   } = props;
 
   useEffect(() => {}, []);
@@ -67,38 +60,37 @@ export const SelectUI = (props: ISelectUI) => {
           control={control}
           render={({ field: { value, onChange, onBlur } }) => (
             <div className={`${className}`}>
-             
-                {label ? (
-                  <div className="label-select-core">{label}</div>
-                ) : null}
-                <Select
-                  popupMatchSelectWidth={false}
-                  className={`${className}`}
-                  key={`${id}`}
-                  defaultValue={defaultValue}
-                  size={size}
-                  variant={variant}
-                  onChange={(e) => {
-                    onChange(e);
-                    props.onChange(e);
-                  }}
-                  onBlur={onBlur}
-                  disabled={disabled}
-                  placeholder={placeholder}
-                  options={dataSource}
-                >
-                  {/* {dataSource.map((item) => (
-                    <Select.Option
-                      key={`${id}${item.id}`}
-                      value={item.id}
-                     
-                    >
-                      <div style={{ fontSize }}>{item.value}</div>
-                    </Select.Option>
-                  ))} */}
-                </Select>
-                <InputErrorUI id={`${id}`} error={errors?.[name]?.message} />
-            
+              {label ? <div className="label-select-core">{label}</div> : null}
+              <Select
+                showSearch
+                status={status}
+                allowClear={true}
+                virtual={true}
+                optionFilterProp="label"
+                filterSort={(optionA, optionB) =>
+                  (optionA?.label ?? "")
+                    .toString()
+                    .toLowerCase()
+                    .localeCompare(
+                      (optionB?.label ?? "").toString().toLowerCase()
+                    )
+                }
+                popupMatchSelectWidth={false}
+                className={`${className}`}
+                key={`${id}`}
+                size={size}
+                variant={variant}
+                onChange={(e) => {
+                  onChange(e);
+                  props.onChange(e);
+                }}
+                onBlur={onBlur}
+                disabled={disabled}
+                placeholder={placeholder}
+                defaultValue={value}
+                options={dataSource}
+              ></Select>
+              <InputErrorUI id={`${id}`} error={errors} />
             </div>
           )}
         />
@@ -106,6 +98,7 @@ export const SelectUI = (props: ISelectUI) => {
         <div>
           {label ? <div className="label-select-core">{label}</div> : null}
           <Select
+            status={status}
             popupMatchSelectWidth={false}
             className={`${className}`}
             key={`${id}`}
@@ -117,16 +110,7 @@ export const SelectUI = (props: ISelectUI) => {
             }}
             disabled={disabled}
             options={dataSource}
-          >
-            {/* {dataSource?.map((item) => (
-              <Select.Option
-                key={`${id}${item.id}`}
-                value={item.id}
-              >
-                <div style={{ fontSize }}>{item.value}</div>
-              </Select.Option>
-            ))} */}
-          </Select>
+          ></Select>
         </div>
       )}
     </ConfigProvider>

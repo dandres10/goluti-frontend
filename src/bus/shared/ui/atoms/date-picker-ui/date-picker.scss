@@ -1,0 +1,11 @@
+.slider-core {
+  &__range {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.date-picker-core > .ant-picker-input > input {
+  font-size: 11px !important;
+}

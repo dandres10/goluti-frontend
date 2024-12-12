@@ -69,34 +69,101 @@
         align-items: baseline;
         justify-content: space-between;
 
-        &__item {
+        &__item-range {
           display: flex;
           flex-direction: row;
           gap: 1rem;
           align-items: self-end;
           justify-content: space-between;
           margin-bottom: 1.2rem;
-          padding-right: 1rem;
-          padding-left: 1rem;
           background-color: var(--Neutral-4);
-          height: 3rem;
+          height: auto;
           border-radius: 0.4rem;
           align-items: center;
-          width: 80%;
+          padding: 1rem 1rem 1rem 0rem;
+          width: 85%;
+          margin-bottom: 1rem;
 
           &__dropdown {
             display: flex;
             flex-direction: column;
             &__select {
               width: 6rem;
-              height: 100%;
+              height: 5vh;
               border-radius: 0;
             }
           }
 
-          &__value {
+          &__range-date {
+            display: flex;
+            flex-direction: column;
+            &__date {
+              width: 11.4rem;
+              margin-top: 8px;
+            }
+          }
 
-            width: 12rem;
+          &__range-currency {
+            display: flex;
+            flex-direction: column;
+            &__currency {
+              width: 11.4rem;
+              margin-top: 8px;
+            }
+          }
+          &__range-number {
+            display: flex;
+            flex-direction: column;
+            &__number {
+              width: 11.4rem;
+              margin-top: 8px;
+            }
+          }
+        }
+
+        &__item {
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+          align-items: self-end;
+          justify-content: space-between;
+          padding-left: 1rem;
+          background-color: var(--Neutral-4);
+          border-radius: 0.4rem;
+          align-items: center;
+          padding: 1rem 1rem 1rem 0rem;
+          width: 85%;
+          margin-bottom: 1rem;
+          height: auto;
+
+          &__dropdown {
+            display: flex;
+            flex-direction: column;
+
+            &__select {
+              width: 6rem;
+              height: 5vh;
+              border-radius: 0;
+            }
+          }
+
+          &__select {
+            width: 11.3rem;
+            margin-top: 6px;
+          }
+
+          &__date {
+            width: 11.4rem;
+            margin-top: 8px;
+          }
+
+          &__value {
+            width: 11.4rem;
+            margin-top: 10px;
+          }
+
+          &__number {
+            width: 11.4rem;
             margin-top: 10px;
           }
         }

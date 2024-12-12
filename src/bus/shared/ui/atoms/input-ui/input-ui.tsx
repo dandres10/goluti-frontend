@@ -1,9 +1,9 @@
 import "./input.scss";
 import { configAnt } from "../../../lib/ant";
+import { Controller } from "react-hook-form";
 import { ConfigProvider, Input, InputProps } from "antd";
 import { SizeType } from "antd/es/config-provider/SizeContext";
 import { InputErrorUI } from "../input-error-ui/input-error-ui";
-import { Control, Controller, FieldValues } from "react-hook-form";
 
 export interface IInputUI {
   id: string;
@@ -20,7 +20,6 @@ export interface IInputUI {
   onBlur?: (e: any) => void;
   size?: SizeType;
   onPressEnter?: (e: any) => void;
-  style?: object;
   label?: string;
 }
 
@@ -57,13 +56,8 @@ export const InputUI = (props: IInputUI) => {
     value,
     onBlur,
     onPressEnter,
-    style,
     label,
   } = props;
-
-  const typeSize = () => {
-    return size === "large" ? "input-core-large" : "input-core";
-  };
 
   return (
     <ConfigProvider theme={configAnt}>
@@ -73,10 +67,11 @@ export const InputUI = (props: IInputUI) => {
           name={name}
           control={control}
           render={({ field: { value, onChange, onBlur } }) => (
-            <div className={`${className} ${typeSize()}`}>
+            <div className={`${className}`}>
               <ConfigProvider theme={configAnt}>
                 {label ? <div className="label-input-core">{label}</div> : null}
                 <Input
+                  allowClear={true}
                   style={{ width }}
                   maxLength={maxLength}
                   status={status}
@@ -90,7 +85,7 @@ export const InputUI = (props: IInputUI) => {
                   size={size}
                 />
               </ConfigProvider>
-              <InputErrorUI id={id} error={errors?.[name]?.message} />
+              <InputErrorUI id={id} error={errors} />
             </div>
           )}
         />

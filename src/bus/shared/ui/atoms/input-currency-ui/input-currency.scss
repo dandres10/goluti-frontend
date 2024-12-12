@@ -1,0 +1,15 @@
+.css-dev-only-do-not-override-vmp5t6
+  .ant-input-number
+  .ant-input-number-handler-wrap
+  .ant-input-number-handler {
+  display: none;
+}
+
+.ant-input-number-handler-wrap {
+  display: none;
+}
+
+:where(.css-dev-only-do-not-override-vmp5t6).ant-input-number
+  .ant-input-number-handler-wrap {
+  display: none;
+}
