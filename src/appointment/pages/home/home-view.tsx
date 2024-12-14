@@ -1,121 +1,144 @@
 import "./home.scss";
 import * as yup from "yup";
-
-import { yupResolver } from "@hookform/resolvers/yup";
 import { IAppointmentLogicProps } from "./home-logic";
-import { useForm } from "react-hook-form";
-import { ButtonUI, InputUI, SelectUI } from "@/bus/shared/ui/atoms";
+import { ButtonUI } from "@/bus/shared/ui/atoms";
 import { DrawerUI } from "@/bus/shared/ui/molecules";
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import { FilterUI } from "@/bus/shared/ui/molecules/filter-ui/filter-ui";
+import { CONDITION_TYPE_ENUM } from "@/bus/core/enums/condition-type-enum";
+import { ATOM_TYPE_UI_ENUM } from "@/bus/core/enums/atom-type-ui-enum";
+import { IConditionTypeDTO } from "@/appointment/core/interfaces/i-condition-type-dto";
+import { CONDITION_VALUE } from "@/appointment/core/enums/condition-type-enum";
+import { IFilterDTO } from "@/bus/core/interfaces/i-filter-dto";
 dayjs.extend(isSameOrAfter);
-import { Button, Dropdown } from "antd";
-import { DatePickerUI } from "@/bus/shared/ui/atoms/date-picker-ui/date-picker-ui";
-import { InputNumberUI } from "@/bus/shared/ui/atoms/input-number-ui/input-number-ui";
-import { InputCurrencyUI } from "@/bus/shared/ui/atoms/input-currency-ui/input-currency-ui";
-import { useEffect } from "react";
+
+const conditionTypes: IConditionTypeDTO[] = [
+  {
+    value: CONDITION_TYPE_ENUM.EQUALS,
+    label: CONDITION_VALUE[CONDITION_TYPE_ENUM.EQUALS],
+  },
+  {
+    value: CONDITION_TYPE_ENUM.DIFFERENT_THAN,
+    label: CONDITION_VALUE[CONDITION_TYPE_ENUM.DIFFERENT_THAN],
+  },
+  {
+    value: CONDITION_TYPE_ENUM.GREATER_THAN,
+    label: CONDITION_VALUE[CONDITION_TYPE_ENUM.GREATER_THAN],
+  },
+  {
+    value: CONDITION_TYPE_ENUM.GREATER_THAN_OR_EQUAL_TO,
+    label: CONDITION_VALUE[CONDITION_TYPE_ENUM.GREATER_THAN_OR_EQUAL_TO],
+  },
+];
 
 const emailSchema = yup.object({
   condition: yup.string(),
-  email: yup
+  value: yup
     .string()
     .required("El correo es requerido")
     .matches(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/, "Correo invalido")
     .email("Correo invalido"),
-  typeFC: yup.string(),
+  dataSource: yup.object(),
 });
 
 const countriesSchema = yup.object({
   condition: yup.string(),
-  country: yup.string().required("El Pais es requerido"),
+  value: yup.string().required("El Pais es requerido"),
+  dataSource: yup.object(),
 });
 
 const dateSchema = yup.object({
   condition: yup.string(),
-  date: yup
+  value: yup
     .date()
     .required("La fecha es requerida")
     .typeError("Debe ser una fecha válida")
     .nonNullable("La fecha es requerida")
     .min("2024-12-11", "La fecha debe ser mayor o igual a hoy"),
+  dataSource: yup.object(),
 });
 
 const rangeDateSchema = yup.object({
   condition: yup.string(),
-  dateInit: yup
+  initialValue: yup
     .date()
     .required("La fecha es requerida")
     .typeError("Debe ser una fecha válida")
     .nonNullable("La fecha es requerida")
     .min("2024-12-11", "La fecha debe ser mayor o igual a hoy"),
-  dateFin: yup
+  finalValue: yup
     .date()
     .required("La fecha es requerida")
     .typeError("Debe ser una fecha válida")
     .nonNullable("La fecha es requerida")
     .min("2024-12-11", "La fecha debe ser mayor o igual a hoy")
     .test("validate-range-fin", "Rango no valido", function (value) {
-      const { dateInit } = this.parent;
-      if (!dateInit || !value) return true;
-      return dayjs(value).isSameOrAfter(dayjs(dateInit));
+      const { initialValue } = this.parent;
+      if (!initialValue || !value) return true;
+      return dayjs(value).isSameOrAfter(dayjs(initialValue));
     }),
+  dataSource: yup.object(),
 });
 
 const currencySchema = yup.object({
   condition: yup.string(),
-  creditLimit: yup
+  value: yup
     .number()
     .required("El valor es requerido")
     .nonNullable("El valor es requerido")
     .max(100000000000, "El valor esta fuera del rango"),
+  dataSource: yup.object(),
 });
 
 const rangeCurrencySchema = yup.object({
   condition: yup.string(),
-  initialCurrency: yup
+  initialValue: yup
     .number()
     .required("El valor es requerido")
     .nonNullable("El valor es requerido")
     .max(100000000000, "El valor esta fuera del rango"),
-  finalCurrency: yup
+  finalValue: yup
     .number()
     .required("El valor es requerido")
     .nonNullable("El valor es requerido")
     .max(100000000000, "El valor esta fuera del rango")
     .test("validate-range-currency", "Rango no valido", function (value) {
-      const { initialCurrency } = this.parent;
-      if (!initialCurrency || !value) return true;
-      return !(initialCurrency > value);
+      const { initialValue } = this.parent;
+      if (!initialValue || !value) return true;
+      return !(initialValue > value);
     }),
+  dataSource: yup.object(),
 });
 
 const numberSchema = yup.object({
   condition: yup.string(),
-  numbers: yup
+  value: yup
     .number()
     .required("El numero es requerido")
     .max(100000000000, "El valor esta fuera del rango"),
+  dataSource: yup.object(),
 });
 
 const rangeNumberSchema = yup.object({
   condition: yup.string(),
-  initialNumber: yup
+  initialValue: yup
     .number()
     .required("El numero es requerido")
     .max(100000000000, "El valor esta fuera del rango"),
-  finalNumber: yup
+  finalValue: yup
     .number()
     .required("El numero es requerido")
     .max(100000000000, "El valor esta fuera del rango")
     .test("validate-range-number", "Rango no valido", function (value) {
-      const { initialNumber } = this.parent;
-      if (!initialNumber || !value) return true;
-      return !(initialNumber > value);
+      const { initialValue } = this.parent;
+      if (!initialValue || !value) return true;
+      return !(initialValue > value);
     }),
+  dataSource: yup.object(),
 });
 
-const masterSchema = yup.object({
+const schema = yup.object({
   emailSchema,
   countriesSchema,
   dateSchema,
@@ -126,51 +149,90 @@ const masterSchema = yup.object({
   rangeNumberSchema,
 });
 
-export const AppointmentView = (props: IAppointmentLogicProps) => {
-  const { showDrawer, onClose, open, conditionTypes, conditions, items } =
-    props;
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors, isValid },
-    trigger,
-    getValues,
-  } = useForm({
-    defaultValues: {
-      emailSchema: { condition: "==", email: undefined, typeFC: "InputUI" },
-      dateSchema: { condition: "==", date: undefined },
-      countriesSchema: { condition: "==", country: undefined },
-      rangeDateSchema: {
-        condition: "==",
-        dateInit: undefined,
-        dateFin: undefined,
-      },
-      currencySchema: { condition: "==", creditLimit: undefined },
-      rangeCurrencySchema: {
-        condition: "==",
-        initialCurrency: undefined,
-        finalCurrency: undefined,
-      },
-      numberSchema: { condition: "==", numbers: undefined },
-      rangeNumberSchema: {
-        condition: "==",
-        initialNumber: undefined,
-        finalNumber: undefined,
-      },
+const defaultValues = {
+  emailSchema: {
+    condition: CONDITION_TYPE_ENUM.EQUALS,
+    value: undefined,
+    dataSource: {
+      atomTypeUI: ATOM_TYPE_UI_ENUM.INPUT_UI,
+      field: "email",
+      placeholder: "email",
     },
-    resolver: yupResolver(masterSchema),
-  });
+  },
+  countriesSchema: {
+    condition: CONDITION_TYPE_ENUM.EQUALS,
+    value: undefined,
+    dataSource: {
+      atomTypeUI: ATOM_TYPE_UI_ENUM.SELECT_UI,
+      field: "country",
+      placeholder: "pais",
+      dataSource: conditionTypes,
+    },
+  },
+  dateSchema: {
+    condition: CONDITION_TYPE_ENUM.EQUALS,
+    value: undefined,
+    dataSource: {
+      atomTypeUI: ATOM_TYPE_UI_ENUM.DATE_PICKER_UI,
+      field: "date",
+      placeholder: "fecha",
+    },
+  },
+  rangeDateSchema: {
+    condition: CONDITION_TYPE_ENUM.BETWEEN,
+    initialValue: undefined,
+    finalValue: undefined,
+    dataSource: {
+      atomTypeUI: ATOM_TYPE_UI_ENUM.DATE_PICKER_UI,
+      field: "dateRange",
+      placeholderInitialValue: "fecha inicio",
+      placeholderFinalValue: "fecha final",
+    },
+  },
+  currencySchema: {
+    condition: CONDITION_TYPE_ENUM.EQUALS,
+    value: undefined,
+    dataSource: {
+      atomTypeUI: ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI,
+      field: "amount",
+      placeholder: "monto",
+    },
+  },
+  rangeCurrencySchema: {
+    condition: CONDITION_TYPE_ENUM.BETWEEN,
+    initialValue: undefined,
+    finalValue: undefined,
+    dataSource: {
+      atomTypeUI: ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI,
+      field: "amount-card-range",
+      placeholderInitialValue: "monto inicial",
+      placeholderFinalValue: "monto final",
+    },
+  },
+  numberSchema: {
+    condition: CONDITION_TYPE_ENUM.EQUALS,
+    value: undefined,
+    dataSource: {
+      atomTypeUI: ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI,
+      field: "amount-card",
+      placeholder: "numero",
+    },
+  },
+  rangeNumberSchema: {
+    condition: CONDITION_TYPE_ENUM.BETWEEN,
+    initialValue: undefined,
+    finalValue: undefined,
+    dataSource: {
+      atomTypeUI: ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI,
+      field: "amount-card-we",
+      placeholderInitialValue: "numero inicial",
+      placeholderFinalValue: "numero final",
+    },
+  },
+};
 
-  useEffect(() => {
-    console.log(masterSchema);
-    console.log(getValues("emailSchema"));
-  }, []);
-
-  const onSubmit = (data: any) => {
-    console.log("es valido el formuario", isValid);
-    console.log("datos", data);
-  };
+export const AppointmentView = (props: IAppointmentLogicProps) => {
+  const { showDrawer, onClose, open, conditions, items, onSubmit } = props;
 
   const onChangeTraceability = () => {
     console.log("asdfasdf");
@@ -191,508 +253,13 @@ export const AppointmentView = (props: IAppointmentLogicProps) => {
         onClose={onClose}
         open={open}
         component={
-          <div className="filter-core">
-            <div className="filter-core__head">
-              <h3 className="filter-core__head__title">Filtros</h3>
-              <CloseOutlined
-                className="filter-core__head__close"
-                onClick={onClose}
-              />
-            </div>
-            <div className="filter-core__body__titles">
-              <div className="filter-core__body__titles__condition">
-                Condicion
-              </div>
-              <div>Valor</div>
-            </div>
-
-            <div className="filter-core__body">
-              <form
-                className="filter-core__body__form"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                {[1].map((item) => (
-                  <div
-                    key={item}
-                    className="filter-core__body__form__container"
-                  >
-                    <div className="filter-core__body__form__container__item">
-                      {conditionTypes?.length != 0 && (
-                        <Dropdown
-                          menu={items}
-                          placement="bottomLeft"
-                          trigger={["click"]}
-                          className="filter-core__body__form__container__item__dropdown"
-                        >
-                          <Button
-                            type="text"
-                            size="small"
-                            className="filter-core__body__form__container__item__dropdown__select"
-                          >
-                            Igual
-                          </Button>
-                        </Dropdown>
-                      )}
-
-                      <InputUI
-                        id="email"
-                        name="emailSchema.email"
-                        control={control}
-                        status={
-                          errors?.emailSchema?.email?.message
-                            ? "error"
-                            : undefined
-                        }
-                        errors={errors?.emailSchema?.email?.message}
-                        onChange={() => trigger("emailSchema.email")}
-                        placeholder="email"
-                        maxLength={60}
-                        size="small"
-                        className="filter-core__body__form__container__item__value"
-                      />
-                    </div>
-                    <ButtonUI
-                      id="btn-form-filters"
-                      type="text"
-                      size="small"
-                      icon={<CloseOutlined />}
-                      className="filter-core__body__form__container__delete"
-                    />
-                  </div>
-                ))}
-
-                {[1].map((item) => (
-                  <div
-                    key={item}
-                    className="filter-core__body__form__container"
-                  >
-                    <div className="filter-core__body__form__container__item">
-                      {conditionTypes?.length != 0 && (
-                        <Dropdown
-                          menu={items}
-                          placement="bottomLeft"
-                          trigger={["click"]}
-                          className="filter-core__body__form__container__item__dropdown"
-                        >
-                          <Button
-                            type="text"
-                            size="small"
-                            className="filter-core__body__form__container__item__dropdown__select"
-                          >
-                            Igual
-                          </Button>
-                        </Dropdown>
-                      )}
-
-                      <SelectUI
-                        id="country"
-                        name="countriesSchema.country"
-                        control={control}
-                        status={
-                          errors?.countriesSchema?.country?.message
-                            ? "error"
-                            : undefined
-                        }
-                        errors={errors?.countriesSchema?.country?.message}
-                        onChange={() => trigger("countriesSchema.country")}
-                        placeholder="pais"
-                        dataSource={conditionTypes}
-                        size="small"
-                        className="filter-core__body__form__container__item__select"
-                      />
-                    </div>
-                    <ButtonUI
-                      id="btn-form-filters"
-                      type="text"
-                      size="small"
-                      icon={<CloseOutlined />}
-                      className="filter-core__body__form__container__delete"
-                    />
-                  </div>
-                ))}
-
-                {[1].map((item) => (
-                  <div
-                    key={item}
-                    className="filter-core__body__form__container"
-                  >
-                    <div className="filter-core__body__form__container__item">
-                      {conditionTypes?.length != 0 && (
-                        <Dropdown
-                          menu={items}
-                          placement="bottomLeft"
-                          trigger={["click"]}
-                          className="filter-core__body__form__container__item__dropdown"
-                        >
-                          <Button
-                            type="text"
-                            size="small"
-                            className="filter-core__body__form__container__item__dropdown__select"
-                          >
-                            Igual
-                          </Button>
-                        </Dropdown>
-                      )}
-
-                      <DatePickerUI
-                        id="date"
-                        name="dateSchema.date"
-                        control={control}
-                        status={
-                          errors.dateSchema?.date?.message ? "error" : undefined
-                        }
-                        errors={errors.dateSchema?.date?.message}
-                        onChange={() => trigger("dateSchema.date")}
-                        placeholder="fecha"
-                        className="filter-core__body__form__container__item__date"
-                        size="small"
-                      />
-                    </div>
-                    <ButtonUI
-                      id="btn-form-filters"
-                      type="text"
-                      size="small"
-                      icon={<CloseOutlined />}
-                      className="filter-core__body__form__container__delete"
-                    />
-                  </div>
-                ))}
-
-                {[1].map((item) => (
-                  <div
-                    key={item}
-                    className="filter-core__body__form__container"
-                  >
-                    <div className="filter-core__body__form__container__item-range">
-                      {conditionTypes?.length != 0 && (
-                        <Dropdown
-                          menu={items}
-                          placement="bottomLeft"
-                          trigger={["click"]}
-                          className="filter-core__body__form__container__item-range__dropdown"
-                        >
-                          <Button
-                            type="text"
-                            size="small"
-                            className="filter-core__body__form__container__item-range__dropdown__select"
-                          >
-                            Igual
-                          </Button>
-                        </Dropdown>
-                      )}
-
-                      <div className="filter-core__body__form__container__item-range__range-date">
-                        <DatePickerUI
-                          id="dateInit"
-                          name="rangeDateSchema.dateInit"
-                          control={control}
-                          status={
-                            errors.rangeDateSchema?.dateInit?.message
-                              ? "error"
-                              : undefined
-                          }
-                          errors={errors.rangeDateSchema?.dateInit?.message}
-                          onChange={() => trigger("rangeDateSchema.dateInit")}
-                          placeholder="fecha inicio"
-                          className="filter-core__body__form__container__item-range__range-date__date"
-                          size="small"
-                        />
-                        <DatePickerUI
-                          id="dateFin"
-                          name="rangeDateSchema.dateFin"
-                          control={control}
-                          status={
-                            errors.rangeDateSchema?.dateFin?.message
-                              ? "error"
-                              : undefined
-                          }
-                          errors={errors.rangeDateSchema?.dateFin?.message}
-                          onChange={() => trigger("rangeDateSchema.dateFin")}
-                          placeholder="fecha fin"
-                          className="filter-core__body__form__container__item-range__range-date__date"
-                          size="small"
-                        />
-                      </div>
-                    </div>
-                    <ButtonUI
-                      id="btn-form-filters"
-                      type="text"
-                      size="small"
-                      icon={<CloseOutlined />}
-                      className="filter-core__body__form__container__delete"
-                    />
-                  </div>
-                ))}
-
-                {[1].map((item) => (
-                  <div
-                    key={item}
-                    className="filter-core__body__form__container"
-                  >
-                    <div className="filter-core__body__form__container__item">
-                      {conditionTypes?.length != 0 && (
-                        <Dropdown
-                          menu={items}
-                          placement="bottomLeft"
-                          trigger={["click"]}
-                          className="filter-core__body__form__container__item__dropdown"
-                        >
-                          <Button
-                            type="text"
-                            size="small"
-                            className="filter-core__body__form__container__item__dropdown__select"
-                          >
-                            Igual
-                          </Button>
-                        </Dropdown>
-                      )}
-
-                      <InputCurrencyUI
-                        id="credit-limit"
-                        className="filter-core__body__form__container__item__number"
-                        name="currencySchema.creditLimit"
-                        control={control}
-                        size="small"
-                        status={
-                          errors.currencySchema?.creditLimit?.message
-                            ? "error"
-                            : undefined
-                        }
-                        errors={errors.currencySchema?.creditLimit?.message}
-                        placeholder="valor"
-                        onChange={() => trigger("currencySchema.creditLimit")}
-                      />
-                    </div>
-                    <ButtonUI
-                      id="btn-form-filters"
-                      type="text"
-                      size="small"
-                      icon={<CloseOutlined />}
-                      className="filter-core__body__form__container__delete"
-                    />
-                  </div>
-                ))}
-
-                {[1].map((item) => (
-                  <div
-                    key={item}
-                    className="filter-core__body__form__container"
-                  >
-                    <div className="filter-core__body__form__container__item">
-                      {conditionTypes?.length != 0 && (
-                        <Dropdown
-                          menu={items}
-                          placement="bottomLeft"
-                          trigger={["click"]}
-                          className="filter-core__body__form__container__item__dropdown"
-                        >
-                          <Button
-                            type="text"
-                            size="small"
-                            className="filter-core__body__form__container__item__dropdown__select"
-                          >
-                            Igual
-                          </Button>
-                        </Dropdown>
-                      )}
-
-                      <div className="filter-core__body__form__container__item-range__range-currency">
-                        <InputCurrencyUI
-                          id="initialCurrency"
-                          className="filter-core__body__form__container__item-range__range-currency__currency"
-                          name="rangeCurrencySchema.initialCurrency"
-                          control={control}
-                          size="small"
-                          status={
-                            errors.rangeCurrencySchema?.initialCurrency?.message
-                              ? "error"
-                              : undefined
-                          }
-                          errors={
-                            errors.rangeCurrencySchema?.initialCurrency?.message
-                          }
-                          placeholder="valor"
-                          onChange={() =>
-                            trigger("rangeCurrencySchema.initialCurrency")
-                          }
-                        />
-                        <InputCurrencyUI
-                          id="finalCurrency"
-                          className="filter-core__body__form__container__item-range__range-currency__currency"
-                          name="rangeCurrencySchema.finalCurrency"
-                          control={control}
-                          size="small"
-                          status={
-                            errors.rangeCurrencySchema?.finalCurrency?.message
-                              ? "error"
-                              : undefined
-                          }
-                          errors={
-                            errors.rangeCurrencySchema?.finalCurrency?.message
-                          }
-                          placeholder="valor"
-                          onChange={() =>
-                            trigger("rangeCurrencySchema.finalCurrency")
-                          }
-                        />
-                      </div>
-                    </div>
-                    <ButtonUI
-                      id="btn-form-filters"
-                      type="text"
-                      size="small"
-                      icon={<CloseOutlined />}
-                      className="filter-core__body__form__container__delete"
-                    />
-                  </div>
-                ))}
-
-                {[1].map((item) => (
-                  <div
-                    key={item}
-                    className="filter-core__body__form__container"
-                  >
-                    <div className="filter-core__body__form__container__item">
-                      {conditionTypes?.length != 0 && (
-                        <Dropdown
-                          menu={items}
-                          placement="bottomLeft"
-                          trigger={["click"]}
-                          className="filter-core__body__form__container__item__dropdown"
-                        >
-                          <Button
-                            type="text"
-                            size="small"
-                            className="filter-core__body__form__container__item__dropdown__select"
-                          >
-                            Igual
-                          </Button>
-                        </Dropdown>
-                      )}
-
-                      <InputNumberUI
-                        id="numbers"
-                        name="numberSchema.numbers"
-                        control={control}
-                        status={
-                          errors.numberSchema?.numbers?.message
-                            ? "error"
-                            : undefined
-                        }
-                        errors={errors.numberSchema?.numbers?.message}
-                        onChange={() => trigger("numberSchema.numbers")}
-                        placeholder="numero"
-                        size="small"
-                        className="filter-core__body__form__container__item__value"
-                      />
-                    </div>
-                    <ButtonUI
-                      id="btn-form-filters"
-                      type="text"
-                      size="small"
-                      icon={<CloseOutlined />}
-                      className="filter-core__body__form__container__delete"
-                    />
-                  </div>
-                ))}
-
-                {[1].map((item) => (
-                  <div
-                    key={item}
-                    className="filter-core__body__form__container"
-                  >
-                    <div className="filter-core__body__form__container__item">
-                      {conditionTypes?.length != 0 && (
-                        <Dropdown
-                          menu={items}
-                          placement="bottomLeft"
-                          trigger={["click"]}
-                          className="filter-core__body__form__container__item__dropdown"
-                        >
-                          <Button
-                            type="text"
-                            size="small"
-                            className="filter-core__body__form__container__item__dropdown__select"
-                          >
-                            Igual
-                          </Button>
-                        </Dropdown>
-                      )}
-
-                      <div className="filter-core__body__form__container__item-range__range-number">
-                        <InputNumberUI
-                          id="initialNumber"
-                          name="rangeNumberSchema.initialNumber"
-                          control={control}
-                          errors={
-                            errors.rangeNumberSchema?.initialNumber?.message
-                          }
-                          status={
-                            errors.rangeNumberSchema?.initialNumber?.message
-                              ? "error"
-                              : undefined
-                          }
-                          onChange={() =>
-                            trigger("rangeNumberSchema.initialNumber")
-                          }
-                          placeholder="numero"
-                          size="small"
-                          className="filter-core__body__form__container__item-range__range-number__number"
-                        />
-                        <InputNumberUI
-                          id="finalNumber"
-                          name="rangeNumberSchema.finalNumber"
-                          control={control}
-                          errors={
-                            errors.rangeNumberSchema?.finalNumber?.message
-                          }
-                          status={
-                            errors.rangeNumberSchema?.finalNumber?.message
-                              ? "error"
-                              : undefined
-                          }
-                          onChange={() =>
-                            trigger("rangeNumberSchema.finalNumber")
-                          }
-                          placeholder="numero"
-                          size="small"
-                          className="filter-core__body__form__container__item-range__range-number__number"
-                        />
-                      </div>
-                    </div>
-                    <ButtonUI
-                      id="btn-form-filters"
-                      type="text"
-                      size="small"
-                      icon={<CloseOutlined />}
-                      className="filter-core__body__form__container__delete"
-                    />
-                  </div>
-                ))}
-
-                <div className="filter-core__body__form__actions">
-                  <Dropdown
-                    menu={items}
-                    placement="bottomLeft"
-                    trigger={["click"]}
-                    className="filter-core__body__form__actions__add"
-                  >
-                    <Button type="text" icon={<PlusOutlined />}>
-                      Añadir filtro
-                    </Button>
-                  </Dropdown>
-                  <ButtonUI
-                    id="btn-form-filters"
-                    htmlType="submit"
-                    type="primary"
-                    text="Aplicar"
-                    disabled={!isValid}
-                    className="filter-core__body__form__actions__apply"
-                  />
-                </div>
-              </form>
-            </div>
-          </div>
+          <FilterUI
+            id="filter-one"
+            defaultValues={defaultValues}
+            schema={schema}
+            onSubmit={onSubmit}
+            onClose={onClose}
+          />
         }
       />
     </div>

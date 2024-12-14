@@ -1,17 +1,16 @@
 import { useState } from "react";
 import { AppointmentView } from "./home-view";
-import { IConditionTypeDTO } from "@/appointment/core/interfaces/i-condition-type-dto";
-import {
-  CONDITION_TYPE,
-  CONDITION_VALUE,
-} from "@/appointment/core/enums/condition-type-enum";
 import { MenuProps } from "antd";
+import { CONDITION_TYPE_ENUM } from "@/bus/core/enums/condition-type-enum";
+import { CONDITION_VALUE } from "@/appointment/core/enums/condition-type-enum";
+import { IConditionTypeDTO } from "@/appointment/core/interfaces/i-condition-type-dto";
+import { IFilterDTO } from "@/bus/core/interfaces/i-filter-dto";
 
 export interface IAppointmentLogicProps {
   showDrawer: () => void;
   onClose: () => void;
+  onSubmit: (data: IFilterDTO[]) => void;
   open: boolean;
-  conditionTypes: IConditionTypeDTO[];
   conditions: any[];
   items: MenuProps;
 }
@@ -23,24 +22,9 @@ const items: MenuProps = {
   ],
 };
 
-const conditionTypes: IConditionTypeDTO[] = [
-  {
-    value: CONDITION_TYPE.EQUALS,
-    label: CONDITION_VALUE[CONDITION_TYPE.EQUALS],
-  },
-  {
-    value: CONDITION_TYPE.DIFFERENT_THAN,
-    label: CONDITION_VALUE[CONDITION_TYPE.DIFFERENT_THAN],
-  },
-  {
-    value: CONDITION_TYPE.GREATER_THAN,
-    label: CONDITION_VALUE[CONDITION_TYPE.GREATER_THAN],
-  },
-  {
-    value: CONDITION_TYPE.GREATER_THAN_OR_EQUAL_TO,
-    label: CONDITION_VALUE[CONDITION_TYPE.GREATER_THAN_OR_EQUAL_TO],
-  },
-];
+
+
+
 
 const conditions = [
   {
@@ -64,13 +48,17 @@ export const AppointmentLogic = () => {
     setOpen(false);
   };
 
+  const onSubmit = (data: IFilterDTO[]) => {
+    console.log("datos", data);
+  };
+
   const props: IAppointmentLogicProps = {
     showDrawer,
     onClose,
+    onSubmit,
     open,
-    conditionTypes,
     conditions,
-    items,
+    items
   };
 
   return <AppointmentView {...props} />;

@@ -7,7 +7,7 @@ import { InputErrorUI } from "../input-error-ui/input-error-ui";
 
 export interface IDatePickerUI {
   id: string;
-  placeholder: string;
+  placeholder?: string;
   className?: string;
   name?: any;
   errors?: any;
