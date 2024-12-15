@@ -5,7 +5,10 @@ import { ButtonUI } from "@/bus/shared/ui/atoms";
 import { DrawerUI } from "@/bus/shared/ui/molecules";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
-import { FilterUI } from "@/bus/shared/ui/molecules/filter-ui/filter-ui";
+import {
+  DefaultValues,
+  FilterUI,
+} from "@/bus/shared/ui/molecules/filter-ui/filter-ui";
 import { CONDITION_TYPE_ENUM } from "@/bus/core/enums/condition-type-enum";
 import { ATOM_TYPE_UI_ENUM } from "@/bus/core/enums/atom-type-ui-enum";
 import { IConditionTypeDTO } from "@/appointment/core/interfaces/i-condition-type-dto";
@@ -174,7 +177,7 @@ const schema = yup.object({
   rangeTimeAppointmentSchema,
 });
 
-const defaultValues = {
+const defaultValues: DefaultValues = {
   emailSchema: {
     condition: CONDITION_TYPE_ENUM.EQUALS,
     value: undefined,
@@ -291,11 +294,7 @@ const defaultValues = {
 };
 
 export const AppointmentView = (props: IAppointmentLogicProps) => {
-  const { showDrawer, onClose, open, conditions, items, onSubmit } = props;
-
-  const onChangeTraceability = () => {
-    console.log("asdfasdf");
-  };
+  const { showDrawer, onClose, open, onSubmit } = props;
 
   return (
     <div className="appointment-home">

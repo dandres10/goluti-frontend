@@ -87,7 +87,8 @@ export const SelectUI = (props: ISelectUI) => {
                 onBlur={onBlur}
                 disabled={disabled}
                 placeholder={placeholder}
-                defaultValue={value}
+                defaultValue={value ? value : undefined}
+                value={value ? value : undefined}
                 options={dataSource}
               ></Select>
               <InputErrorUI id={`${id}`} error={errors} />

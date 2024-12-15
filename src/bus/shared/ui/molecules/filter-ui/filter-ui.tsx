@@ -20,6 +20,38 @@ import { formatDate } from "@/bus/core/functions/format-date";
 import { TimePickerUI } from "../../atoms/time-picker-ui/time-picker-ui";
 dayjs.extend(isSameOrAfter);
 
+export interface BaseDataSource {
+  atomTypeUI: ATOM_TYPE_UI_ENUM;
+  field: string;
+  placeholder?: string;
+  disabled?: boolean;
+  dataSource?: any[];
+}
+
+export interface RangeDataSource extends BaseDataSource {
+  placeholderInitialValue: string;
+  placeholderFinalValue: string;
+  disabledInitialValue: boolean;
+  disabledFinalValue: boolean;
+}
+
+export interface SingleValueSchema {
+  condition: CONDITION_TYPE_ENUM;
+  value: string | number | undefined;
+  dataSource: BaseDataSource;
+}
+
+export interface RangeValueSchema {
+  condition: CONDITION_TYPE_ENUM.BETWEEN;
+  initialValue: string | number | undefined;
+  finalValue: string | number | undefined;
+  dataSource: RangeDataSource;
+}
+
+export interface DefaultValues {
+  [key: string]: SingleValueSchema | RangeValueSchema;
+}
+
 const conditionTypes: IConditionTypeDTO[] = [
   {
     value: CONDITION_TYPE_ENUM.EQUALS,
@@ -49,25 +81,27 @@ const items: MenuProps = {
 export interface IFilterUI {
   id: string;
   schema: yup.ObjectSchema<any>;
-  defaultValues: any;
+  defaultValues: DefaultValues;
   onSubmit: (filters: IFilterDTO[]) => void;
   onClose: () => void;
 }
 
 export const FilterUI = (props: IFilterUI) => {
-  const { id, schema, defaultValues, onSubmit, onClose } = props;
+  const { id, schema, onSubmit, defaultValues, onClose } = props;
   const [fields, setFields] = useState<string[]>();
+
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
     trigger,
+    reset,
     getValues,
   } = useForm({ defaultValues, resolver: yupResolver(schema) });
 
   useEffect(() => {
     getFields();
-  }, [schema]);
+  }, [schema, defaultValues]);
 
   const getFields = () => {
     if (!schema?.fields) return;
@@ -211,6 +245,51 @@ export const FilterUI = (props: IFilterUI) => {
     return undefined;
   };
 
+  const handleReset = (fieldsToReset?: string[]) => {
+    if (fieldsToReset?.length) {
+      const updatedValues = { ...defaultValues };
+      fieldsToReset.forEach((field) => {
+        if (updatedValues[field]) {
+          if ("value" in updatedValues[field]) {
+            updatedValues[field] = {
+              ...updatedValues[field],
+              value: undefined,
+            };
+          }
+          if (
+            "initialValue" in updatedValues[field] &&
+            "finalValue" in updatedValues[field]
+          ) {
+            updatedValues[field] = {
+              ...updatedValues[field],
+              initialValue: undefined,
+              finalValue: undefined,
+            };
+          }
+        }
+      });
+      reset(updatedValues);
+    } else {
+      const clearedValues = Object.keys(defaultValues).reduce(
+        (acc: DefaultValues, key) => {
+          const field = defaultValues[key];
+          if ("value" in field) {
+            acc[key] = { ...field, value: undefined };
+          } else if ("initialValue" in field && "finalValue" in field) {
+            acc[key] = {
+              ...field,
+              initialValue: undefined,
+              finalValue: undefined,
+            };
+          }
+          return acc;
+        },
+        {} as DefaultValues
+      );
+      reset(clearedValues);
+    }
+  };
+
   const onSubmitFilter = (data: any) => {
     let filters: IFilterDTO[] = [];
     const schemaFields = Object.keys(data);
@@ -263,6 +342,10 @@ export const FilterUI = (props: IFilterUI) => {
     onSubmit(filters);
   };
 
+  const deleteFilter = (field: string) => {
+    console.log(field);
+  };
+
   return (
     <div key={id} className="filter-core">
       <div className="filter-core__head">
@@ -272,6 +355,14 @@ export const FilterUI = (props: IFilterUI) => {
       <div className="filter-core__body__titles">
         <div className="filter-core__body__titles__condition">Condicion</div>
         <div>Valor</div>
+        <ButtonUI
+          id="btn-form-filters-clear"
+          type="text"
+          size="small"
+          text="Limpiar todo"
+          onClick={() => handleReset()}
+          className="filter-core__body__titles__clear"
+        />
       </div>
 
       <div className="filter-core__body">
@@ -505,6 +596,7 @@ export const FilterUI = (props: IFilterUI) => {
                   id="btn-form-filters"
                   type="text"
                   size="small"
+                  onClick={() => deleteFilter(field)}
                   icon={<CloseOutlined />}
                   className="filter-core__body__form__container__delete"
                 />
@@ -527,7 +619,7 @@ export const FilterUI = (props: IFilterUI) => {
               htmlType="submit"
               type="primary"
               text="Aplicar"
-              disabled={!isValid}
+              /* disabled={!isValid} */
               className="filter-core__body__form__actions__apply"
             />
           </div>

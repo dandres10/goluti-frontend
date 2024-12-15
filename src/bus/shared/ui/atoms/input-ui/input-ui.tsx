@@ -4,6 +4,7 @@ import { Controller } from "react-hook-form";
 import { ConfigProvider, Input, InputProps } from "antd";
 import { SizeType } from "antd/es/config-provider/SizeContext";
 import { InputErrorUI } from "../input-error-ui/input-error-ui";
+import { useEffect } from "react";
 
 export interface IInputUI {
   id: string;
@@ -21,8 +22,7 @@ export interface IInputUI {
   size?: SizeType;
   onPressEnter?: (e: any) => void;
   label?: string;
-  disabled?: boolean
-
+  disabled?: boolean;
 }
 
 /**
@@ -59,8 +59,9 @@ export const InputUI = (props: IInputUI) => {
     onBlur,
     onPressEnter,
     label,
-    disabled
+    disabled,
   } = props;
+
 
   return (
     <ConfigProvider theme={configAnt}>

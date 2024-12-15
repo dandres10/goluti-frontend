@@ -24,33 +24,31 @@
   --divider-8: #b0b0b0;
   --error-red-6: #f5222d;
   --conditional-divider: #0000000f;
+  --scroll: #bfbfbf;
 }
 
 body {
   margin: 0;
 }
 
-/* Para navegadores basados en WebKit (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
-  width: 7px; /* Mantén el ancho del scroll */
+  width: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent; /* Hace la pista invisible */
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--Neutral-6); /* Color del "thumb" */
-  border-radius: 10px; /* Opcional: redondea el "thumb" */
+  background: var(--scroll);
+  border-radius: 10px;
 }
 
-/* Para Firefox */
 .scrollable-container {
-  scrollbar-width: thin; /* Hacer que el "thumb" sea fino */
-  scrollbar-color: var(--Neutral-6) transparent; /* Color del "thumb", pista transparente */
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll) transparent;
 }
 
-/* Para IE y Edge antiguo */
 .scrollable-container {
-  -ms-overflow-style: none; /* No hay soporte granular para este caso en IE/Edge antiguo */
+  -ms-overflow-style: none;
 }

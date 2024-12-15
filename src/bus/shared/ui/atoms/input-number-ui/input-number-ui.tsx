@@ -95,6 +95,7 @@ export const InputNumberUI = (props: IInputNumberUI) => {
                 disabled={disabled}
                 placeholder={placeholder}
                 defaultValue={value ? value : undefined}
+                value={value ? value : undefined}
               />
               <InputErrorUI id={id} error={errors} />
             </div>

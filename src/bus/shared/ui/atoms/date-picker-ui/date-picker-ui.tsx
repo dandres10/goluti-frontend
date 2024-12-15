@@ -59,21 +59,24 @@ export const DatePickerUI = (props: IDatePickerUI): JSX.Element => {
           control={control}
           render={({ field: { value, onBlur, onChange } }) => (
             <div className={`input-core`}>
-              <DatePicker
-                key={id}
-                status={status}
-                className={`${className}`}
-                onChange={(e) => {
-                  onChange(e);
-                  props.onChange(e);
-                }}
-                placeholder={placeholder}
-                format={"YYYY-MM-DD"}
-                size={size}
-                onBlur={onBlur}
-                defaultValue={value ? dayjs(value) : undefined}
-                disabled={disabled}
-              />
+              <ConfigProvider theme={configAnt}>
+                <DatePicker
+                  key={id}
+                  status={status}
+                  className={`${className}`}
+                  onChange={(e) => {
+                    onChange(e);
+                    props.onChange(e);
+                  }}
+                  placeholder={placeholder}
+                  format={"YYYY-MM-DD"}
+                  size={size}
+                  onBlur={onBlur}
+                  defaultValue={value ? dayjs(value) : undefined}
+                  value={value ? dayjs(value) : undefined} 
+                  disabled={disabled}
+                />
+              </ConfigProvider>
               <InputErrorUI id={id} error={errors} />
             </div>
           )}

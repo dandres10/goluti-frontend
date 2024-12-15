@@ -130,6 +130,7 @@ export const InputCurrencyUI = (props: IInputCurrencyUI) => {
                 disabled={disabled}
                 placeholder={placeholder}
                 defaultValue={value ? value : undefined}
+                value={value ? value : undefined}
               />
               <InputErrorUI id={id} error={errors} />
             </div>
