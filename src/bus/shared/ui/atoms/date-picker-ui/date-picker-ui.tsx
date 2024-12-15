@@ -1,5 +1,6 @@
 import "./date-picker.scss";
 import esES from "antd/lib/locale/es_ES";
+import dayjs from "dayjs";
 import { Controller } from "react-hook-form";
 import { configAnt } from "@/bus/shared/lib/ant";
 import { DatePicker, ConfigProvider } from "antd";
@@ -16,6 +17,7 @@ export interface IDatePickerUI {
   onChange: (value: any) => {};
   size: any;
   status?: any;
+  disabled?: boolean;
 }
 
 /**
@@ -36,8 +38,17 @@ export interface IDatePickerUI {
  * @returns {JSX.Element} The rendered date picker input.
  */
 export const DatePickerUI = (props: IDatePickerUI): JSX.Element => {
-  const { id, placeholder, className, control, name, errors, size, status } =
-    props;
+  const {
+    id,
+    placeholder,
+    className,
+    control,
+    name,
+    errors,
+    size,
+    status,
+    disabled,
+  } = props;
 
   return (
     <ConfigProvider theme={configAnt} locale={esES}>
@@ -46,7 +57,7 @@ export const DatePickerUI = (props: IDatePickerUI): JSX.Element => {
           key={id}
           name={name}
           control={control}
-          render={({ field: { onBlur, onChange } }) => (
+          render={({ field: { value, onBlur, onChange } }) => (
             <div className={`input-core`}>
               <DatePicker
                 key={id}
@@ -60,6 +71,8 @@ export const DatePickerUI = (props: IDatePickerUI): JSX.Element => {
                 format={"YYYY-MM-DD"}
                 size={size}
                 onBlur={onBlur}
+                defaultValue={value ? dayjs(value) : undefined}
+                disabled={disabled}
               />
               <InputErrorUI id={id} error={errors} />
             </div>

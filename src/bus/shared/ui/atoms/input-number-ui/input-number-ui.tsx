@@ -77,7 +77,7 @@ export const InputNumberUI = (props: IInputNumberUI) => {
           key={id}
           name={name}
           control={control}
-          render={({ field: { onChange, onBlur } }) => (
+          render={({ field: { value, onChange, onBlur } }) => (
             <div className={`input-core`}>
               <InputNumber
                 key={id}
@@ -94,6 +94,7 @@ export const InputNumberUI = (props: IInputNumberUI) => {
                 onKeyDown={onKeyDown}
                 disabled={disabled}
                 placeholder={placeholder}
+                defaultValue={value ? value : undefined}
               />
               <InputErrorUI id={id} error={errors} />
             </div>

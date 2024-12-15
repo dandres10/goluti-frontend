@@ -21,6 +21,8 @@ export interface IInputUI {
   size?: SizeType;
   onPressEnter?: (e: any) => void;
   label?: string;
+  disabled?: boolean
+
 }
 
 /**
@@ -57,6 +59,7 @@ export const InputUI = (props: IInputUI) => {
     onBlur,
     onPressEnter,
     label,
+    disabled
   } = props;
 
   return (
@@ -83,6 +86,7 @@ export const InputUI = (props: IInputUI) => {
                   value={value}
                   onBlur={onBlur}
                   size={size}
+                  disabled={disabled}
                 />
               </ConfigProvider>
               <InputErrorUI id={id} error={errors} />

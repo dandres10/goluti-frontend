@@ -2,7 +2,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
   --primary-main: #6c63ff;
-  --Secondary-1: #cfe1fc;
+  --Secondary-1: #ebe8ff;
   --Secondary-2: #1b254a;
   --Secondary-2-2: #b2cffa;
   --Secondary-3: #78aaf5;
@@ -28,4 +28,29 @@
 
 body {
   margin: 0;
+}
+
+/* Para navegadores basados en WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 7px; /* Mantén el ancho del scroll */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Hace la pista invisible */
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--Neutral-6); /* Color del "thumb" */
+  border-radius: 10px; /* Opcional: redondea el "thumb" */
+}
+
+/* Para Firefox */
+.scrollable-container {
+  scrollbar-width: thin; /* Hacer que el "thumb" sea fino */
+  scrollbar-color: var(--Neutral-6) transparent; /* Color del "thumb", pista transparente */
+}
+
+/* Para IE y Edge antiguo */
+.scrollable-container {
+  -ms-overflow-style: none; /* No hay soporte granular para este caso en IE/Edge antiguo */
 }

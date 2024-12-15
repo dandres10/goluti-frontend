@@ -10,7 +10,6 @@ import { CONDITION_TYPE_ENUM } from "@/bus/core/enums/condition-type-enum";
 import { ATOM_TYPE_UI_ENUM } from "@/bus/core/enums/atom-type-ui-enum";
 import { IConditionTypeDTO } from "@/appointment/core/interfaces/i-condition-type-dto";
 import { CONDITION_VALUE } from "@/appointment/core/enums/condition-type-enum";
-import { IFilterDTO } from "@/bus/core/interfaces/i-filter-dto";
 dayjs.extend(isSameOrAfter);
 
 const conditionTypes: IConditionTypeDTO[] = [
@@ -138,6 +137,30 @@ const rangeNumberSchema = yup.object({
   dataSource: yup.object(),
 });
 
+const timeAppointmentSchema = yup.object({
+  condition: yup.string(),
+  value: yup.string().required("La hora es requerida"),
+  dataSource: yup.object(),
+});
+
+const rangeTimeAppointmentSchema = yup.object({
+  condition: yup.string(),
+  initialValue: yup
+    .string()
+    .required("La hora es requerida")
+    .matches(/^([01]\d|2[0-3]):[0-5]\d$/, "Debe estar en formato HH:mm"),
+  finalValue: yup
+    .string()
+    .required("La hora es requerida")
+    .matches(/^([01]\d|2[0-3]):[0-5]\d$/, "Debe estar en formato HH:mm")
+    .test("is-greater", "Rango no valido", function (finalValue) {
+      const { initialValue } = this.parent;
+      if (!initialValue || !finalValue) return true;
+      return finalValue > initialValue;
+    }),
+  dataSource: yup.object(),
+});
+
 const schema = yup.object({
   emailSchema,
   countriesSchema,
@@ -147,6 +170,8 @@ const schema = yup.object({
   rangeCurrencySchema,
   numberSchema,
   rangeNumberSchema,
+  timeAppointmentSchema,
+  rangeTimeAppointmentSchema,
 });
 
 const defaultValues = {
@@ -157,6 +182,7 @@ const defaultValues = {
       atomTypeUI: ATOM_TYPE_UI_ENUM.INPUT_UI,
       field: "email",
       placeholder: "email",
+      disabled: false,
     },
   },
   countriesSchema: {
@@ -167,6 +193,7 @@ const defaultValues = {
       field: "country",
       placeholder: "pais",
       dataSource: conditionTypes,
+      disabled: false,
     },
   },
   dateSchema: {
@@ -176,6 +203,7 @@ const defaultValues = {
       atomTypeUI: ATOM_TYPE_UI_ENUM.DATE_PICKER_UI,
       field: "date",
       placeholder: "fecha",
+      disabled: false,
     },
   },
   rangeDateSchema: {
@@ -187,6 +215,8 @@ const defaultValues = {
       field: "dateRange",
       placeholderInitialValue: "fecha inicio",
       placeholderFinalValue: "fecha final",
+      disabledInitialValue: false,
+      disabledFinalValue: false,
     },
   },
   currencySchema: {
@@ -196,6 +226,7 @@ const defaultValues = {
       atomTypeUI: ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI,
       field: "amount",
       placeholder: "monto",
+      disabled: false,
     },
   },
   rangeCurrencySchema: {
@@ -207,6 +238,8 @@ const defaultValues = {
       field: "amount-card-range",
       placeholderInitialValue: "monto inicial",
       placeholderFinalValue: "monto final",
+      disabledInitialValue: false,
+      disabledFinalValue: false,
     },
   },
   numberSchema: {
@@ -216,6 +249,7 @@ const defaultValues = {
       atomTypeUI: ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI,
       field: "amount-card",
       placeholder: "numero",
+      disabled: false,
     },
   },
   rangeNumberSchema: {
@@ -227,6 +261,31 @@ const defaultValues = {
       field: "amount-card-we",
       placeholderInitialValue: "numero inicial",
       placeholderFinalValue: "numero final",
+      disabledInitialValue: false,
+      disabledFinalValue: false,
+    },
+  },
+  timeAppointmentSchema: {
+    condition: CONDITION_TYPE_ENUM.EQUALS,
+    value: undefined,
+    dataSource: {
+      atomTypeUI: ATOM_TYPE_UI_ENUM.TIME_PICKER_UI,
+      field: "time_appointment",
+      placeholder: "hora",
+      disabled: false,
+    },
+  },
+  rangeTimeAppointmentSchema: {
+    condition: CONDITION_TYPE_ENUM.BETWEEN,
+    initialValue: undefined,
+    finalValue: undefined,
+    dataSource: {
+      atomTypeUI: ATOM_TYPE_UI_ENUM.TIME_PICKER_UI,
+      field: "time_appointment_range",
+      placeholderInitialValue: "numero inicial",
+      placeholderFinalValue: "numero final",
+      disabledInitialValue: false,
+      disabledFinalValue: false,
     },
   },
 };

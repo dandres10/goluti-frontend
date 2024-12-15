@@ -15,6 +15,7 @@ export enum ATOM_TYPE_UI_ENUM {
     DATE_PICKER_UI = "DatePickerUI",
     TAG_UI = "TAG_UI",
     INPUT_UI = "InputUI",
-    INPUT_CURRENCY_UI = "InputCurrencyUI"
+    INPUT_CURRENCY_UI = "InputCurrencyUI",
+    TIME_PICKER_UI = "TimePickerUI"
 
 }

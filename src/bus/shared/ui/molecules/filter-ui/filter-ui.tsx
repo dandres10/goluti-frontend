@@ -17,6 +17,7 @@ import { CONDITION_TYPE_ENUM } from "@/bus/core/enums/condition-type-enum";
 import { useEffect, useState } from "react";
 import { ATOM_TYPE_UI_ENUM } from "@/bus/core/enums/atom-type-ui-enum";
 import { formatDate } from "@/bus/core/functions/format-date";
+import { TimePickerUI } from "../../atoms/time-picker-ui/time-picker-ui";
 dayjs.extend(isSameOrAfter);
 
 const conditionTypes: IConditionTypeDTO[] = [
@@ -76,6 +77,18 @@ export const FilterUI = (props: IFilterUI) => {
 
   const getAtomTypeUI = (field: string): string => {
     return getValues(field)?.dataSource?.atomTypeUI ?? "";
+  };
+
+  const isDisabled = (field: string, fieldNumber?: number): boolean => {
+    const disabled = getValues(field)?.dataSource?.disabled;
+    const disabledInitialValue =
+      getValues(field)?.dataSource?.disabledInitialValue;
+    const disabledFinalValue = getValues(field)?.dataSource?.disabledFinalValue;
+
+    if (disabled) return disabled;
+    if (disabledInitialValue && fieldNumber == 1) return disabledInitialValue;
+    if (disabledFinalValue && fieldNumber == 2) return disabledFinalValue;
+    return false;
   };
 
   const getPlaceholder = (
@@ -159,6 +172,18 @@ export const FilterUI = (props: IFilterUI) => {
     return (
       getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI &&
       isRange(field)
+    );
+  };
+
+  const timePickerUIRangeFieldRules = (field: string) => {
+    return (
+      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.TIME_PICKER_UI && isRange(field)
+    );
+  };
+  const timePickerUIFieldRules = (field: string) => {
+    return (
+      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.TIME_PICKER_UI &&
+      !isRange(field)
     );
   };
 
@@ -288,7 +313,8 @@ export const FilterUI = (props: IFilterUI) => {
                       placeholder={getPlaceholder(field)}
                       maxLength={60}
                       size="small"
-                      className="filter-core__body__form__container__item__value"
+                      className="filter-core__body__form__container__item__text"
+                      disabled={isDisabled(field)}
                     />
                   )) ||
                     (selectUIFieldRules(field) && (
@@ -303,6 +329,7 @@ export const FilterUI = (props: IFilterUI) => {
                         dataSource={getDataSource(field)}
                         size="small"
                         className="filter-core__body__form__container__item__select"
+                        disabled={isDisabled(field)}
                       />
                     )) ||
                     (datePickerUIFieldRules(field) && (
@@ -316,6 +343,7 @@ export const FilterUI = (props: IFilterUI) => {
                         placeholder={getPlaceholder(field)}
                         className="filter-core__body__form__container__item__date"
                         size="small"
+                        disabled={isDisabled(field)}
                       />
                     )) ||
                     (datePickerUIRangeFieldRules(field) && (
@@ -330,6 +358,7 @@ export const FilterUI = (props: IFilterUI) => {
                           placeholder={getPlaceholder(field, 1)}
                           className="filter-core__body__form__container__item-range__range-date__date"
                           size="small"
+                          disabled={isDisabled(field, 1)}
                         />
                         <DatePickerUI
                           id={`${field}`}
@@ -341,6 +370,7 @@ export const FilterUI = (props: IFilterUI) => {
                           placeholder={getPlaceholder(field, 2)}
                           className="filter-core__body__form__container__item-range__range-date__date"
                           size="small"
+                          disabled={isDisabled(field, 2)}
                         />
                       </div>
                     )) ||
@@ -355,6 +385,7 @@ export const FilterUI = (props: IFilterUI) => {
                         size="small"
                         placeholder={getPlaceholder(field)}
                         className="filter-core__body__form__container__item__number"
+                        disabled={isDisabled(field)}
                       />
                     )) ||
                     (inputCurrencyUIRangeFieldRules(field) && (
@@ -369,6 +400,7 @@ export const FilterUI = (props: IFilterUI) => {
                           size="small"
                           className="filter-core__body__form__container__item-range__range-currency__currency"
                           placeholder={getPlaceholder(field, 1)}
+                          disabled={isDisabled(field, 1)}
                         />
                         <InputCurrencyUI
                           id={`${field}`}
@@ -380,6 +412,7 @@ export const FilterUI = (props: IFilterUI) => {
                           size="small"
                           className="filter-core__body__form__container__item-range__range-currency__currency"
                           placeholder={getPlaceholder(field, 2)}
+                          disabled={isDisabled(field, 2)}
                         />
                       </div>
                     )) ||
@@ -394,6 +427,7 @@ export const FilterUI = (props: IFilterUI) => {
                         placeholder={getPlaceholder(field)}
                         size="small"
                         className="filter-core__body__form__container__item__value"
+                        disabled={isDisabled(field)}
                       />
                     )) ||
                     (inputNumberUIRangeFieldRules(field) && (
@@ -408,6 +442,7 @@ export const FilterUI = (props: IFilterUI) => {
                           placeholder={getPlaceholder(field, 1)}
                           size="small"
                           className="filter-core__body__form__container__item-range__range-number__number"
+                          disabled={isDisabled(field, 1)}
                         />
                         <InputNumberUI
                           id={`${field}`}
@@ -419,6 +454,49 @@ export const FilterUI = (props: IFilterUI) => {
                           placeholder={getPlaceholder(field, 2)}
                           size="small"
                           className="filter-core__body__form__container__item-range__range-number__number"
+                          disabled={isDisabled(field, 2)}
+                        />
+                      </div>
+                    )) ||
+                    (timePickerUIFieldRules(field) && (
+                      <TimePickerUI
+                        id={`${field}`}
+                        name={`${field}.value`}
+                        control={control}
+                        status={status(errors?.[field])}
+                        errors={setErrors(errors?.[field])}
+                        onChange={() => trigger(`${field}.value`)}
+                        placeholder={getPlaceholder(field)}
+                        size="small"
+                        className="filter-core__body__form__container__item__value"
+                        disabled={isDisabled(field)}
+                      />
+                    )) ||
+                    (timePickerUIRangeFieldRules(field) && (
+                      <div className="filter-core__body__form__container__item-range__range-time">
+                        <TimePickerUI
+                          id={`${field}`}
+                          name={`${field}.initialValue`}
+                          control={control}
+                          status={status(errors?.[field], 1)}
+                          errors={setErrors(errors?.[field], 1)}
+                          onChange={() => trigger(`${field}.initialValue`)}
+                          placeholder={getPlaceholder(field, 1)}
+                          size="small"
+                          className="filter-core__body__form__container__item-range__range-time__time"
+                          disabled={isDisabled(field, 1)}
+                        />
+                        <TimePickerUI
+                          id={`${field}`}
+                          name={`${field}.finalValue`}
+                          control={control}
+                          status={status(errors?.[field], 2)}
+                          errors={setErrors(errors?.[field], 2)}
+                          onChange={() => trigger(`${field}.finalValue`)}
+                          placeholder={getPlaceholder(field, 2)}
+                          size="small"
+                          className="filter-core__body__form__container__item-range__range-time__time"
+                          disabled={isDisabled(field, 2)}
                         />
                       </div>
                     ))}

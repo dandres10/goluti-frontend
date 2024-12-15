@@ -62,7 +62,7 @@ export const LoginView = (props: ILoginLogicProps) => {
               name="email"
               control={control}
               status={errors.email?.message ? "error" : undefined}
-              errors={errors}
+              errors={errors.email?.message}
               onChange={() => trigger("email")}
               placeholder="Email"
               maxLength={60}
