@@ -24,6 +24,7 @@ export interface ISelectUI {
   className?: string;
   label?: string;
   onChange: (e: any) => void;
+  onBlur?: () => void;
   placeholder?: string;
   status?: any;
 }
@@ -84,7 +85,10 @@ export const SelectUI = (props: ISelectUI) => {
                   onChange(e);
                   props.onChange(e);
                 }}
-                onBlur={onBlur}
+                onBlur={() => {
+                  onBlur();
+                  props?.onBlur && props.onBlur();
+                }}
                 disabled={disabled}
                 placeholder={placeholder}
                 defaultValue={value ? value : undefined}

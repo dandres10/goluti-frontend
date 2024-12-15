@@ -87,8 +87,9 @@ export interface IFilterUI {
 }
 
 export const FilterUI = (props: IFilterUI) => {
-  const { id, schema, onSubmit, defaultValues, onClose } = props;
+  const { id, onSubmit, schema, defaultValues, onClose } = props;
   const [fields, setFields] = useState<string[]>();
+  const [dynamicSchema, setSchema] = useState(schema);
 
   const {
     control,
@@ -97,7 +98,7 @@ export const FilterUI = (props: IFilterUI) => {
     trigger,
     reset,
     getValues,
-  } = useForm({ defaultValues, resolver: yupResolver(schema) });
+  } = useForm({ defaultValues, resolver: yupResolver(dynamicSchema) });
 
   useEffect(() => {
     getFields();
@@ -154,70 +155,20 @@ export const FilterUI = (props: IFilterUI) => {
     return false;
   };
 
-  const intpuUIFieldRules = (field: string) => {
-    return (
-      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.INPUT_UI && !isRange(field)
-    );
-  };
+  const fieldRules = (
+    field: string,
+    type: ATOM_TYPE_UI_ENUM,
+    isRangeCheck: boolean = false,
+    hasDataSourceCheck: boolean = false
+  ) => {
+    const atomType = getAtomTypeUI(field);
+    const isRangeField = isRange(field);
+    const hasDataSource = hasSelectDataSource(field);
 
-  const selectUIFieldRules = (field: string) => {
     return (
-      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.SELECT_UI &&
-      !isRange(field) &&
-      hasSelectDataSource(field)
-    );
-  };
-
-  const datePickerUIFieldRules = (field: string) => {
-    return (
-      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.DATE_PICKER_UI &&
-      !isRange(field)
-    );
-  };
-
-  const datePickerUIRangeFieldRules = (field: string) => {
-    return (
-      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.DATE_PICKER_UI && isRange(field)
-    );
-  };
-
-  const inputCurrencyUIFieldRules = (field: string) => {
-    return (
-      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI &&
-      !isRange(field)
-    );
-  };
-
-  const inputCurrencyUIRangeFieldRules = (field: string) => {
-    return (
-      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI &&
-      isRange(field)
-    );
-  };
-
-  const inputNumberUIFieldRules = (field: string) => {
-    return (
-      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI &&
-      !isRange(field)
-    );
-  };
-
-  const inputNumberUIRangeFieldRules = (field: string) => {
-    return (
-      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI &&
-      isRange(field)
-    );
-  };
-
-  const timePickerUIRangeFieldRules = (field: string) => {
-    return (
-      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.TIME_PICKER_UI && isRange(field)
-    );
-  };
-  const timePickerUIFieldRules = (field: string) => {
-    return (
-      getAtomTypeUI(field) == ATOM_TYPE_UI_ENUM.TIME_PICKER_UI &&
-      !isRange(field)
+      atomType === type &&
+      (isRangeCheck ? isRangeField : !isRangeField) &&
+      (!hasDataSourceCheck || hasDataSource)
     );
   };
 
@@ -246,48 +197,21 @@ export const FilterUI = (props: IFilterUI) => {
   };
 
   const handleReset = (fieldsToReset?: string[]) => {
-    if (fieldsToReset?.length) {
-      const updatedValues = { ...defaultValues };
-      fieldsToReset.forEach((field) => {
-        if (updatedValues[field]) {
-          if ("value" in updatedValues[field]) {
-            updatedValues[field] = {
-              ...updatedValues[field],
-              value: undefined,
-            };
-          }
-          if (
-            "initialValue" in updatedValues[field] &&
-            "finalValue" in updatedValues[field]
-          ) {
-            updatedValues[field] = {
-              ...updatedValues[field],
-              initialValue: undefined,
-              finalValue: undefined,
-            };
-          }
-        }
-      });
-      reset(updatedValues);
-    } else {
-      const clearedValues = Object.keys(defaultValues).reduce(
-        (acc: DefaultValues, key) => {
-          const field = defaultValues[key];
-          if ("value" in field) {
-            acc[key] = { ...field, value: undefined };
-          } else if ("initialValue" in field && "finalValue" in field) {
-            acc[key] = {
-              ...field,
-              initialValue: undefined,
-              finalValue: undefined,
-            };
-          }
-          return acc;
-        },
-        {} as DefaultValues
-      );
-      reset(clearedValues);
-    }
+    const fields = fieldsToReset?.length
+      ? fieldsToReset
+      : Object.keys(defaultValues);
+    const clearedValues = fields.reduce((acc: any, key) => {
+      const field = defaultValues[key];
+      if (field) {
+        acc[key] = { ...field };
+        if ("value" in field) acc[key].value = undefined;
+        if ("initialValue" in field) acc[key].initialValue = undefined;
+        if ("finalValue" in field) acc[key].finalValue = undefined;
+      }
+      return acc;
+    }, {} as DefaultValues);
+
+    reset(clearedValues);
   };
 
   const onSubmitFilter = (data: any) => {
@@ -343,7 +267,38 @@ export const FilterUI = (props: IFilterUI) => {
   };
 
   const deleteFilter = (field: string) => {
-    console.log(field);
+    const currentValues = getValues();
+    const updatedValues = Object.keys(currentValues).reduce(
+      (acc: DefaultValues, key) => {
+        if (key !== field) {
+          acc[key] = currentValues[key];
+        }
+        return acc;
+      },
+      {}
+    );
+    const updatedSchema = updateSchema(dynamicSchema, field);
+    setSchema(updatedSchema);
+    setFields(fields?.filter((item) => item !== field));
+    reset(updatedValues);
+  };
+
+  const updateSchema = (
+    currentSchema: yup.ObjectSchema<any>,
+    fieldToRemove: string
+  ): yup.ObjectSchema<any> => {
+    // Obtener todas las claves del esquema actual
+    const remainingFields = Object.keys(currentSchema.fields).filter(
+      (key) => key !== fieldToRemove
+    );
+
+    // Crear un nuevo esquema con los campos restantes
+    const newShape = remainingFields.reduce((acc: any, key) => {
+      acc[key] = currentSchema.fields[key];
+      return acc;
+    }, {});
+
+    return yup.object().shape(newShape);
   };
 
   return (
@@ -393,7 +348,7 @@ export const FilterUI = (props: IFilterUI) => {
                       </Button>
                     </Dropdown>
                   )}
-                  {(intpuUIFieldRules(field) && (
+                  {(fieldRules(field, ATOM_TYPE_UI_ENUM.INPUT_UI) && (
                     <InputUI
                       id={`${field}`}
                       name={`${field}.value`}
@@ -408,7 +363,12 @@ export const FilterUI = (props: IFilterUI) => {
                       disabled={isDisabled(field)}
                     />
                   )) ||
-                    (selectUIFieldRules(field) && (
+                    (fieldRules(
+                      field,
+                      ATOM_TYPE_UI_ENUM.SELECT_UI,
+                      false,
+                      true
+                    ) && (
                       <SelectUI
                         id={`${field}`}
                         name={`${field}.value`}
@@ -423,7 +383,7 @@ export const FilterUI = (props: IFilterUI) => {
                         disabled={isDisabled(field)}
                       />
                     )) ||
-                    (datePickerUIFieldRules(field) && (
+                    (fieldRules(field, ATOM_TYPE_UI_ENUM.DATE_PICKER_UI) && (
                       <DatePickerUI
                         id={`${field}`}
                         name={`${field}.value`}
@@ -437,7 +397,11 @@ export const FilterUI = (props: IFilterUI) => {
                         disabled={isDisabled(field)}
                       />
                     )) ||
-                    (datePickerUIRangeFieldRules(field) && (
+                    (fieldRules(
+                      field,
+                      ATOM_TYPE_UI_ENUM.DATE_PICKER_UI,
+                      true
+                    ) && (
                       <div className="filter-core__body__form__container__item-range__range-date">
                         <DatePickerUI
                           id={`${field}`}
@@ -465,7 +429,7 @@ export const FilterUI = (props: IFilterUI) => {
                         />
                       </div>
                     )) ||
-                    (inputCurrencyUIFieldRules(field) && (
+                    (fieldRules(field, ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI) && (
                       <InputCurrencyUI
                         id={`${field}`}
                         name={`${field}.value`}
@@ -479,7 +443,11 @@ export const FilterUI = (props: IFilterUI) => {
                         disabled={isDisabled(field)}
                       />
                     )) ||
-                    (inputCurrencyUIRangeFieldRules(field) && (
+                    (fieldRules(
+                      field,
+                      ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI,
+                      true
+                    ) && (
                       <div className="filter-core__body__form__container__item-range__range-currency">
                         <InputCurrencyUI
                           id={`${field}`}
@@ -507,7 +475,7 @@ export const FilterUI = (props: IFilterUI) => {
                         />
                       </div>
                     )) ||
-                    (inputNumberUIFieldRules(field) && (
+                    (fieldRules(field, ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI) && (
                       <InputNumberUI
                         id={`${field}`}
                         name={`${field}.value`}
@@ -521,7 +489,11 @@ export const FilterUI = (props: IFilterUI) => {
                         disabled={isDisabled(field)}
                       />
                     )) ||
-                    (inputNumberUIRangeFieldRules(field) && (
+                    (fieldRules(
+                      field,
+                      ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI,
+                      true
+                    ) && (
                       <div className="filter-core__body__form__container__item-range__range-number">
                         <InputNumberUI
                           id={`${field}`}
@@ -549,7 +521,7 @@ export const FilterUI = (props: IFilterUI) => {
                         />
                       </div>
                     )) ||
-                    (timePickerUIFieldRules(field) && (
+                    (fieldRules(field, ATOM_TYPE_UI_ENUM.TIME_PICKER_UI) && (
                       <TimePickerUI
                         id={`${field}`}
                         name={`${field}.value`}
@@ -563,7 +535,11 @@ export const FilterUI = (props: IFilterUI) => {
                         disabled={isDisabled(field)}
                       />
                     )) ||
-                    (timePickerUIRangeFieldRules(field) && (
+                    (fieldRules(
+                      field,
+                      ATOM_TYPE_UI_ENUM.TIME_PICKER_UI,
+                      true
+                    ) && (
                       <div className="filter-core__body__form__container__item-range__range-time">
                         <TimePickerUI
                           id={`${field}`}
@@ -596,7 +572,9 @@ export const FilterUI = (props: IFilterUI) => {
                   id="btn-form-filters"
                   type="text"
                   size="small"
-                  onClick={() => deleteFilter(field)}
+                  onClick={() => {
+                    deleteFilter(field);
+                  }}
                   icon={<CloseOutlined />}
                   className="filter-core__body__form__container__delete"
                 />
@@ -619,7 +597,7 @@ export const FilterUI = (props: IFilterUI) => {
               htmlType="submit"
               type="primary"
               text="Aplicar"
-              /* disabled={!isValid} */
+              disabled={!isValid}
               className="filter-core__body__form__actions__apply"
             />
           </div>
