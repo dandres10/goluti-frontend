@@ -55,7 +55,7 @@
       height: 83vh;
       overflow-y: scroll;
       padding-top: 1rem;
-      padding-right: 1rem;
+      padding-right: 0.5rem;
 
       &__container {
         display: flex;
@@ -78,21 +78,13 @@
           width: 85%;
           margin-bottom: 1rem;
 
-          &__dropdown {
-            display: flex;
-            flex-direction: column;
-            &__select {
-              width: 6rem;
-              height: 5vh;
-              border-radius: 0;
-            }
-          }
+          
 
           &__range-date {
             display: flex;
             flex-direction: column;
             &__date {
-              width: 11.4rem;
+              width: 11rem;
               margin-top: 8px;
             }
           }
@@ -101,7 +93,7 @@
             display: flex;
             flex-direction: column;
             &__currency {
-              width: 11.4rem;
+              width: 11rem;
               margin-top: 8px;
             }
           }
@@ -109,7 +101,7 @@
             display: flex;
             flex-direction: column;
             &__number {
-              width: 11.4rem;
+              width: 11rem;
               margin-top: 8px;
             }
           }
@@ -118,7 +110,7 @@
             display: flex;
             flex-direction: column;
             &__time {
-              width: 11.4rem;
+              width: 11rem;
               margin-top: 8px;
             }
           }
@@ -130,12 +122,11 @@
           gap: 1rem;
           align-items: self-end;
           justify-content: space-between;
-          padding-left: 1rem;
           background-color: var(--Neutral-2);
           border-radius: 0.4rem;
           align-items: center;
-          padding: 1rem 1rem 1rem 0rem;
-          width: 85%;
+          padding: 1rem 1rem 1rem 1rem;
+          width: 82%;
           margin-bottom: 1rem;
           height: auto;
 
@@ -143,29 +134,23 @@
             background-color: var(--Neutral-4);
           }
 
-          &__dropdown {
-            display: flex;
-            flex-direction: column;
-
-            &__select {
-              width: 6rem;
-              height: 5vh;
-              border-radius: 0;
-            }
+          &__condition {
+            width: 90px;
+            height: 50px;
           }
 
           &__select {
-            width: 11.3rem;
+            width: 11rem;
             margin-top: 6px;
           }
 
           &__date {
-            width: 11.4rem;
+            width: 11rem;
             margin-top: 8px;
           }
 
           &__value {
-            width: 11.4rem;
+            width: 11rem;
             margin-top: 10px;
           }
 
@@ -175,7 +160,7 @@
           }
 
           &__number {
-            width: 11.4rem;
+            width: 11rem;
             margin-top: 10px;
           }
         }
@@ -183,6 +168,7 @@
         &__delete {
           display: flex;
           width: 20%;
+      
           color: var(--Neutral-7);
         }
       }

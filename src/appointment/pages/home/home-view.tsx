@@ -15,7 +15,7 @@ import { IConditionTypeDTO } from "@/appointment/core/interfaces/i-condition-typ
 import { CONDITION_VALUE } from "@/appointment/core/enums/condition-type-enum";
 dayjs.extend(isSameOrAfter);
 
-const conditionTypes: IConditionTypeDTO[] = [
+const countries: IConditionTypeDTO[] = [
   {
     value: CONDITION_TYPE_ENUM.EQUALS,
     label: CONDITION_VALUE[CONDITION_TYPE_ENUM.EQUALS],
@@ -177,6 +177,16 @@ const schema = yup.object({
   rangeTimeAppointmentSchema,
 });
 
+const conditionTypes: any[] = [
+  { label: "Igual =", key: CONDITION_TYPE_ENUM.EQUALS },
+  { label: "Difer ≠", key: CONDITION_TYPE_ENUM.DIFFERENT_THAN },
+  { label: "Mayor >", key: CONDITION_TYPE_ENUM.GREATER_THAN },
+  { label: "Menor <", key: CONDITION_TYPE_ENUM.LESS_THAN },
+  { label: "Entre", key: CONDITION_TYPE_ENUM.BETWEEN },
+  { label: "MyIgual ≥", key: CONDITION_TYPE_ENUM.GREATER_THAN_OR_EQUAL_TO },
+  { label: "MnIgual ≤", key: CONDITION_TYPE_ENUM.LESS_THAN_OR_EQUAL_TO },
+];
+
 const defaultValues: DefaultValues = {
   emailSchema: {
     condition: CONDITION_TYPE_ENUM.EQUALS,
@@ -186,6 +196,7 @@ const defaultValues: DefaultValues = {
       field: "email",
       placeholder: "email",
       disabled: false,
+      conditionDataSource: conditionTypes,
     },
   },
   countriesSchema: {
@@ -195,8 +206,9 @@ const defaultValues: DefaultValues = {
       atomTypeUI: ATOM_TYPE_UI_ENUM.SELECT_UI,
       field: "country",
       placeholder: "pais",
-      dataSource: conditionTypes,
+      dataSource: countries,
       disabled: false,
+      conditionDataSource: conditionTypes,
     },
   },
   dateSchema: {
@@ -207,6 +219,7 @@ const defaultValues: DefaultValues = {
       field: "date",
       placeholder: "fecha",
       disabled: false,
+      conditionDataSource: conditionTypes,
     },
   },
   rangeDateSchema: {
@@ -220,6 +233,7 @@ const defaultValues: DefaultValues = {
       placeholderFinalValue: "fecha final",
       disabledInitialValue: false,
       disabledFinalValue: false,
+      conditionDataSource: conditionTypes,
     },
   },
   currencySchema: {
@@ -230,6 +244,7 @@ const defaultValues: DefaultValues = {
       field: "amount",
       placeholder: "monto",
       disabled: false,
+      conditionDataSource: conditionTypes,
     },
   },
   rangeCurrencySchema: {
@@ -243,6 +258,7 @@ const defaultValues: DefaultValues = {
       placeholderFinalValue: "monto final",
       disabledInitialValue: false,
       disabledFinalValue: false,
+      conditionDataSource: conditionTypes,
     },
   },
   numberSchema: {
@@ -253,6 +269,7 @@ const defaultValues: DefaultValues = {
       field: "amount-card",
       placeholder: "numero",
       disabled: false,
+      conditionDataSource: conditionTypes,
     },
   },
   rangeNumberSchema: {
@@ -266,6 +283,7 @@ const defaultValues: DefaultValues = {
       placeholderFinalValue: "numero final",
       disabledInitialValue: false,
       disabledFinalValue: false,
+      conditionDataSource: conditionTypes,
     },
   },
   timeAppointmentSchema: {
@@ -276,6 +294,7 @@ const defaultValues: DefaultValues = {
       field: "time_appointment",
       placeholder: "hora",
       disabled: false,
+      conditionDataSource: conditionTypes,
     },
   },
   rangeTimeAppointmentSchema: {
@@ -289,6 +308,7 @@ const defaultValues: DefaultValues = {
       placeholderFinalValue: "numero final",
       disabledInitialValue: false,
       disabledFinalValue: false,
+      conditionDataSource: conditionTypes,
     },
   },
 };

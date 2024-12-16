@@ -3,8 +3,8 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IFilterDTO } from "@/bus/core/interfaces/i-filter-dto";
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Dropdown, MenuProps } from "antd";
+import { CloseOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Dropdown, MenuProps, Space } from "antd";
 import { IConditionTypeDTO } from "@/appointment/core/interfaces/i-condition-type-dto";
 import { CONDITION_VALUE } from "@/appointment/core/enums/condition-type-enum";
 import { ButtonUI, InputUI, SelectUI } from "../../atoms";
@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { ATOM_TYPE_UI_ENUM } from "@/bus/core/enums/atom-type-ui-enum";
 import { formatDate } from "@/bus/core/functions/format-date";
 import { TimePickerUI } from "../../atoms/time-picker-ui/time-picker-ui";
+import { DropdownSelectUI } from "../../atoms/dropdown-select-ui/dropdown-select-ui";
 dayjs.extend(isSameOrAfter);
 
 export interface BaseDataSource {
@@ -26,6 +27,7 @@ export interface BaseDataSource {
   placeholder?: string;
   disabled?: boolean;
   dataSource?: any[];
+  conditionDataSource?: any[];
 }
 
 export interface RangeDataSource extends BaseDataSource {
@@ -70,13 +72,6 @@ const conditionTypes: IConditionTypeDTO[] = [
     label: CONDITION_VALUE[CONDITION_TYPE_ENUM.GREATER_THAN_OR_EQUAL_TO],
   },
 ];
-
-const items: MenuProps = {
-  items: [
-    { label: "Correo colaborador", key: "email_collaboration" },
-    { label: "Correo client", key: "email_client" },
-  ],
-};
 
 export interface IFilterUI {
   id: string;
@@ -144,12 +139,14 @@ export const FilterUI = (props: IFilterUI) => {
   };
 
   const isRange = (field: string): boolean => {
+    if (!field) return false;
     const object = getValues(field);
     if ("initialValue" in object && "finalValue" in object) return true;
     return false;
   };
 
   const hasSelectDataSource = (field: string): boolean => {
+    if (!field) return false;
     const object = getValues(field);
     if ("dataSource" in object?.dataSource) return true;
     return false;
@@ -175,6 +172,11 @@ export const FilterUI = (props: IFilterUI) => {
   const getDataSource = (field: string) => {
     const object = getValues(field);
     return object?.dataSource?.dataSource;
+  };
+
+  const getConditionDataSource = (field: string) => {
+    const object = getValues(field);
+    return object?.dataSource?.conditionDataSource;
   };
 
   const status = (errorSchema: any, fieldNumber?: number) => {
@@ -287,18 +289,20 @@ export const FilterUI = (props: IFilterUI) => {
     currentSchema: yup.ObjectSchema<any>,
     fieldToRemove: string
   ): yup.ObjectSchema<any> => {
-    // Obtener todas las claves del esquema actual
     const remainingFields = Object.keys(currentSchema.fields).filter(
       (key) => key !== fieldToRemove
     );
 
-    // Crear un nuevo esquema con los campos restantes
     const newShape = remainingFields.reduce((acc: any, key) => {
       acc[key] = currentSchema.fields[key];
       return acc;
     }, {});
 
     return yup.object().shape(newShape);
+  };
+
+  const onclickCondition = (codition: any) => {
+    console.log(codition);
   };
 
   return (
@@ -332,22 +336,15 @@ export const FilterUI = (props: IFilterUI) => {
                 className="filter-core__body__form__container"
               >
                 <div className="filter-core__body__form__container__item">
-                  {conditionTypes?.length != 0 && (
-                    <Dropdown
-                      menu={items}
-                      placement="bottomLeft"
-                      trigger={["click"]}
-                      className="filter-core__body__form__container__item__dropdown"
-                    >
-                      <Button
-                        type="text"
-                        size="small"
-                        className="filter-core__body__form__container__item__dropdown__select"
-                      >
-                        Igual
-                      </Button>
-                    </Dropdown>
-                  )}
+                  <DropdownSelectUI
+                    id={`${field}`}
+                    name={`${field}.condition`}
+                    control={control}
+                    errors={setErrors(errors?.[field])}
+                    onChange={() => trigger(`${field}.condition`)}
+                    dataSource={getConditionDataSource(field)}
+                    className="filter-core__body__form__container__item__condition"
+                  />
                   {(fieldRules(field, ATOM_TYPE_UI_ENUM.INPUT_UI) && (
                     <InputUI
                       id={`${field}`}
@@ -582,7 +579,7 @@ export const FilterUI = (props: IFilterUI) => {
             ))}
 
           <div className="filter-core__body__form__actions">
-            <Dropdown
+            {/* <Dropdown
               menu={items}
               placement="bottomLeft"
               trigger={["click"]}
@@ -591,13 +588,13 @@ export const FilterUI = (props: IFilterUI) => {
               <Button type="text" icon={<PlusOutlined />}>
                 Añadir filtro
               </Button>
-            </Dropdown>
+            </Dropdown> */}
             <ButtonUI
               id="btn-form-filters"
               htmlType="submit"
               type="primary"
               text="Aplicar"
-              disabled={!isValid}
+              disabled={!isValid || !(fields?.length !== 0)}
               className="filter-core__body__form__actions__apply"
             />
           </div>
