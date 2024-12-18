@@ -8,6 +8,7 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import {
   DefaultValues,
   FilterUI,
+  FieldsFilter,
 } from "@/bus/shared/ui/molecules/filter-ui/filter-ui";
 import { CONDITION_TYPE_ENUM } from "@/bus/core/enums/condition-type-enum";
 import { ATOM_TYPE_UI_ENUM } from "@/bus/core/enums/atom-type-ui-enum";
@@ -228,7 +229,7 @@ const defaultValues: DefaultValues = {
     finalValue: undefined,
     dataSource: {
       atomTypeUI: ATOM_TYPE_UI_ENUM.DATE_PICKER_UI,
-      field: "dateRange",
+      field: "date",
       placeholderInitialValue: "fecha inicio",
       placeholderFinalValue: "fecha final",
       disabledInitialValue: false,
@@ -253,7 +254,7 @@ const defaultValues: DefaultValues = {
     finalValue: undefined,
     dataSource: {
       atomTypeUI: ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI,
-      field: "amount-card-range",
+      field: "amount",
       placeholderInitialValue: "monto inicial",
       placeholderFinalValue: "monto final",
       disabledInitialValue: false,
@@ -278,7 +279,7 @@ const defaultValues: DefaultValues = {
     finalValue: undefined,
     dataSource: {
       atomTypeUI: ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI,
-      field: "amount-card-we",
+      field: "amount-card",
       placeholderInitialValue: "numero inicial",
       placeholderFinalValue: "numero final",
       disabledInitialValue: false,
@@ -303,7 +304,7 @@ const defaultValues: DefaultValues = {
     finalValue: undefined,
     dataSource: {
       atomTypeUI: ATOM_TYPE_UI_ENUM.TIME_PICKER_UI,
-      field: "time_appointment_range",
+      field: "time_appointment",
       placeholderInitialValue: "numero inicial",
       placeholderFinalValue: "numero final",
       disabledInitialValue: false,
@@ -312,6 +313,14 @@ const defaultValues: DefaultValues = {
     },
   },
 };
+
+export const fields: any[] = [
+  { key: "email", label: "Correo" },
+  { key: "country", label: "Pais" },
+  { key: "date", label: "Fecha" },
+  { key: "amount", label: "Monto" },
+  { key: "time_appointment", label: "Hora cita" },
+];
 
 export const AppointmentView = (props: IAppointmentLogicProps) => {
   const { showDrawer, onClose, open, onSubmit } = props;
@@ -334,6 +343,7 @@ export const AppointmentView = (props: IAppointmentLogicProps) => {
           <FilterUI
             id="filter-one"
             defaultValues={defaultValues}
+            fields={fields}
             schema={schema}
             onSubmit={onSubmit}
             onClose={onClose}

@@ -1,6 +1,7 @@
 export enum ATOM_TYPE_UI_ENUM {
     TITLE_SUBTITLE_UI = "TitleSubtitleUI",
     SELECT_STATUS_COLOR_UI = "SelectStatusColorUI",
+    DROPDOWN_SELECT_UI = "DropdownSelectUI",
     SELECT_UI = "SelectUI",
     LINK_UI = "LinkUI",
     INPUT_NUMBER_UI = "InputNumberUI",

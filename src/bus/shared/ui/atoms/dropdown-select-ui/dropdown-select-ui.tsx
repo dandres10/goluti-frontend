@@ -16,7 +16,7 @@ export interface IDropdownSelectUI {
   control?: any;
   onChange: (value: any) => void;
   disabled?: boolean;
-  dataSource: MenuProps["items"];
+  dataSource: any;
 }
 
 export const DropdownSelectUI = (props: IDropdownSelectUI) => {
