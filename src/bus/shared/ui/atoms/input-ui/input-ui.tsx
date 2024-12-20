@@ -62,7 +62,6 @@ export const InputUI = (props: IInputUI) => {
     disabled,
   } = props;
 
-
   return (
     <ConfigProvider theme={configAnt}>
       {control ? (
@@ -90,7 +89,7 @@ export const InputUI = (props: IInputUI) => {
                   disabled={disabled}
                 />
               </ConfigProvider>
-              <InputErrorUI id={id} error={errors} />
+              {errors && <InputErrorUI id={id} error={errors} />}
             </div>
           )}
         />

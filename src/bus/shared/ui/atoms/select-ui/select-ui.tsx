@@ -14,7 +14,7 @@ export interface IDataSourceDTO {
 
 export interface ISelectUI {
   id: string;
-  dataSource: IDataSourceDTO[];
+  dataSource?: IDataSourceDTO[];
   variant?: any;
   disabled?: boolean;
   errors?: any;

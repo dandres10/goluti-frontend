@@ -31,26 +31,23 @@ export interface BaseDataSource {
   disabled?: boolean;
   dataSource?: any[];
   conditionDataSource?: any[];
-}
-
-export interface RangeDataSource extends BaseDataSource {
-  placeholderInitialValue: string;
-  placeholderFinalValue: string;
-  disabledInitialValue: boolean;
-  disabledFinalValue: boolean;
+  placeholderInitialValue?: string;
+  placeholderFinalValue?: string;
+  disabledInitialValue?: boolean;
+  disabledFinalValue?: boolean;
 }
 
 export interface SingleValueSchema {
   condition?: CONDITION_TYPE_ENUM;
   value: string | number | undefined;
-  dataSource: BaseDataSource;
+  dataSource?: BaseDataSource;
 }
 
 export interface RangeValueSchema {
   condition: CONDITION_TYPE_ENUM.BETWEEN;
   initialValue: string | number | undefined;
   finalValue: string | number | undefined;
-  dataSource: RangeDataSource;
+  dataSource?: BaseDataSource;
 }
 
 export interface DefaultValues {
@@ -74,9 +71,8 @@ export interface IFilterUI {
 export const FilterUI = (props: IFilterUI) => {
   const { id, onSubmit, schema, defaultValues, fields, onClose } = props;
   const [schemaFieldsCore, setSchemaFieldsCore] = useState<string[]>();
-  const [dynamicSchema, setSchema] = useState(schema);
-  const [dynamicDefaultValues, setDynamicDefaultValues] =
-    useState(defaultValues);
+  const [dynamicSchema, setSchema] = useState(() => yup.object().shape({}));
+  const [dynamicDefaultValues, setDynamicDefaultValues] = useState({});
   const defaultValuesFilter: any = {
     fieldsFilterSchema: {
       value: "email",
@@ -96,13 +92,23 @@ export const FilterUI = (props: IFilterUI) => {
     trigger,
     reset,
     getValues,
-  } = useForm({
+  } = useForm<DefaultValues>({
     defaultValues: dynamicDefaultValues,
     resolver: yupResolver(dynamicSchema),
   });
 
   useEffect(() => {
-    addSchemaField(dynamicSchema, "fieldsFilterSchema", fieldsFilterSchema);
+    if (dynamicSchema && dynamicDefaultValues) {
+      reset(dynamicDefaultValues, { keepValues: false });
+    }
+  }, [dynamicDefaultValues, dynamicSchema, reset]);
+
+  useEffect(() => {
+    addFieldToSchema(
+      "fieldsFilterSchema",
+      fieldsFilterSchema,
+      defaultValuesFilter["fieldsFilterSchema"]
+    );
   }, []);
 
   useEffect(() => {
@@ -212,9 +218,10 @@ export const FilterUI = (props: IFilterUI) => {
   const handleReset = (fieldsToReset?: string[]) => {
     const fields = fieldsToReset?.length
       ? fieldsToReset
-      : Object.keys(defaultValues);
+      : Object.keys(dynamicDefaultValues);
     const clearedValues = fields.reduce((acc: any, key) => {
       const field = defaultValues[key];
+
       if (field) {
         acc[key] = { ...field };
         if ("value" in field) acc[key].value = undefined;
@@ -224,7 +231,10 @@ export const FilterUI = (props: IFilterUI) => {
       return acc;
     }, {} as DefaultValues);
 
-    reset(clearedValues);
+    setDynamicDefaultValues({
+      ...clearedValues,
+      ["fieldsFilterSchema"]: defaultValuesFilter["fieldsFilterSchema"],
+    });
   };
 
   const onSubmitFilter = (data: any) => {
@@ -276,6 +286,8 @@ export const FilterUI = (props: IFilterUI) => {
       }
     });
 
+    filters = filters?.filter((filter) => filter.field !== "fields");
+
     onSubmit(filters);
   };
 
@@ -290,12 +302,12 @@ export const FilterUI = (props: IFilterUI) => {
       },
       {}
     );
+    setDynamicDefaultValues(updatedValues);
     const updatedSchema = deleteSchema(dynamicSchema, field);
     setSchema(updatedSchema);
     setSchemaFieldsCore(
       schemaFieldsCore?.filter((item: any) => item !== field)
     );
-    reset(updatedValues);
   };
 
   const deleteSchema = (
@@ -314,28 +326,46 @@ export const FilterUI = (props: IFilterUI) => {
     return yup.object().shape(newShape);
   };
 
-  const addSchemaField = (
-    currentSchema: yup.ObjectSchema<any>,
-    fieldKey: string,
-    fieldSchema: yup.Schema<any>
-  ): void => {
-    const updatedFields = { ...currentSchema.fields };
-    updatedFields[fieldKey] = fieldSchema;
+  const onclickCondition = (field: any) => {
+    const schemaFields = Object.keys(schema.fields);
+    let schemaSearch: any;
+    let getElement!: string;
 
-    const updatedSchema = yup.object().shape(updatedFields);
+    for (const element of schemaFields) {
+      const hasSchema =
+        defaultValues[element]?.condition !== CONDITION_TYPE_ENUM.BETWEEN &&
+        defaultValues[element]?.dataSource?.field === field;
+      if (hasSchema) {
+        schemaSearch = schema.fields[element];
+        getElement = element;
+        break;
+      }
+    }
 
-    const updatedDefaultValues = {
-      ...dynamicDefaultValues,
-      [fieldKey]: defaultValuesFilter[fieldKey],
-    };
-
-    setSchema(updatedSchema);
-    setDynamicDefaultValues(dynamicDefaultValues);
-    reset(updatedDefaultValues);
+    addFieldToSchema(getElement, schemaSearch, defaultValues[getElement]);
   };
 
-  const onclickCondition = (codition: any) => {
-    console.log(codition);
+  const addFieldToSchema = (
+    fieldKey: string,
+    fieldSchema: yup.Schema<any>,
+    fieldDefaultValue: any
+  ) => {
+    setSchema((prevSchema) => {
+      const updatedFields = { ...prevSchema.fields, [fieldKey]: fieldSchema };
+      return yup.object().shape(updatedFields);
+    });
+    setDynamicDefaultValues({
+      ...getValues(),
+      [fieldKey]: fieldDefaultValue,
+    });
+  };
+
+  const handleChangeCondition = (
+    field: string,
+    condition: CONDITION_TYPE_ENUM
+  ) => {
+    console.log(field);
+    console.log(condition);
   };
 
   return (
@@ -376,7 +406,10 @@ export const FilterUI = (props: IFilterUI) => {
                       name={`${field}.condition`}
                       control={control}
                       errors={setErrors(errors?.[field])}
-                      onChange={() => trigger(`${field}.condition`)}
+                      onChange={(e) => {
+                        trigger(`${field}.condition`);
+                        handleChangeCondition(field, e);
+                      }}
                       dataSource={getConditionDataSource(field)}
                       className="filter-core__body__form__container__item__condition"
                     />
@@ -626,14 +659,18 @@ export const FilterUI = (props: IFilterUI) => {
                 onclickCondition(e);
               }}
               dataSource={getDataSource("fieldsFilterSchema")}
-              className="filter-core__body__form__container__item__condition"
+              className="filter-core__body__form__actions__add"
             />
             <ButtonUI
               id="btn-form-filters"
               htmlType="submit"
               type="primary"
               text="Aplicar"
-              disabled={!isValid || !(schemaFieldsCore?.length !== 0)}
+              disabled={
+                !isValid ||
+                !(schemaFieldsCore?.length !== 0) ||
+                !(schemaFieldsCore && schemaFieldsCore?.length > 1)
+              }
               className="filter-core__body__form__actions__apply"
             />
           </div>
