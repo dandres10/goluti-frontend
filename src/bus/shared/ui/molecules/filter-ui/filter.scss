@@ -33,29 +33,58 @@
       margin-bottom: 2rem;
     }
 
+    &__titles-empity {
+      height: 2rem;
+      padding: 1.5rem 1rem 1.5rem 1rem;
+      border-radius: 7px;
+      margin-bottom: 0.5rem;
+    }
+
     &__titles {
       display: flex;
       flex-direction: row;
       gap: 1rem;
       margin-bottom: 0.5rem;
-      margin-left: 0.5rem;
       font-weight: 600;
-      &__condition {
-        width: 6.4rem;
+      align-items: center;
+      justify-content: space-between;
+      height: 2rem;
+      background-color: var(--Neutral-4);
+      padding: 1.5rem 1rem 1.5rem 1rem;
+      border-radius: 7px;
+
+      &__head {
+        display: flex;
+        flex-direction: row;
+        gap: 3rem;
       }
 
       &__clear {
-        width: 8rem;
+        width: 7rem;
+        height: 2rem;
       }
     }
 
     &__form {
       display: flex;
       flex-direction: column;
-      height: 83vh;
+      height: 66vh;
       overflow-y: scroll;
       padding-top: 1rem;
       padding-right: 0.5rem;
+
+      &__empty {
+        display: flex;
+        flex-direction: column;
+        height: 80vh;
+        align-items: center;
+        justify-content: center;
+        font-size: large;
+        font-weight: 500;
+        text-align: center;
+        color: var(--Neutral-6);
+        gap: 1rem;
+      }
 
       &__container {
         display: flex;
@@ -118,7 +147,6 @@
           display: flex;
           flex-direction: row;
           gap: 1rem;
-          align-items: self-end;
           justify-content: space-between;
           background-color: var(--Neutral-2);
           border-radius: 0.4rem;
@@ -154,7 +182,6 @@
 
           &__text {
             width: 13.5rem;
-            margin-top: 10px;
           }
 
           &__number {

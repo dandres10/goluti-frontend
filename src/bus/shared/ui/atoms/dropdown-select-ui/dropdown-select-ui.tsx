@@ -6,6 +6,7 @@ import { Controller } from "react-hook-form";
 import "./dropdown-select.scss";
 
 import { configAnt } from "@/bus/shared/lib/ant";
+import { PlusOutlined } from "@ant-design/icons";
 
 export interface IDropdownSelectUI {
   id: string;
@@ -17,11 +18,23 @@ export interface IDropdownSelectUI {
   onChange: (value: any) => void;
   disabled?: boolean;
   dataSource: any;
+  fixedText?: string;
+  icon?: React.ReactNode;
 }
 
 export const DropdownSelectUI = (props: IDropdownSelectUI) => {
-  const { id, size, className, name, errors, control, disabled, dataSource } =
-    props;
+  const {
+    id,
+    size,
+    className,
+    name,
+    errors,
+    control,
+    disabled,
+    dataSource,
+    fixedText,
+    icon,
+  } = props;
 
   const getKeyByValue = (value: any): string => {
     const item: any = dataSource?.find((item: any) => item?.key === value);
@@ -50,8 +63,8 @@ export const DropdownSelectUI = (props: IDropdownSelectUI) => {
                 trigger={["click"]}
                 disabled={disabled}
               >
-                <Button key={id} type="text" size="small">
-                  <Space>{getKeyByValue(value)}</Space>
+                <Button key={id} type="text"  size="small" icon={icon} >
+                  <Space>{fixedText ? fixedText : getKeyByValue(value)}</Space>
                 </Button>
               </Dropdown>
             </div>

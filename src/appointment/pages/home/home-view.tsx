@@ -8,7 +8,6 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import {
   DefaultValues,
   FilterUI,
-  FieldsFilter,
 } from "@/bus/shared/ui/molecules/filter-ui/filter-ui";
 import { CONDITION_TYPE_ENUM } from "@/bus/core/enums/condition-type-enum";
 import { ATOM_TYPE_UI_ENUM } from "@/bus/core/enums/atom-type-ui-enum";

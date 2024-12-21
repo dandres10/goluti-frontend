@@ -3,7 +3,12 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IFilterDTO } from "@/bus/core/interfaces/i-filter-dto";
-import { CloseOutlined } from "@ant-design/icons";
+import {
+  CaretDownOutlined,
+  CloseOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { ButtonUI, InputUI, SelectUI } from "../../atoms";
 import { DatePickerUI } from "../../atoms/date-picker-ui/date-picker-ui";
 import { InputCurrencyUI } from "../../atoms/input-currency-ui/input-currency-ui";
@@ -19,7 +24,17 @@ import { DropdownSelectUI } from "../../atoms/dropdown-select-ui/dropdown-select
 
 dayjs.extend(isSameOrAfter);
 
+const actionsFilter: any[] = [
+  { key: "cleanAll", label: "Limpiar todo" },
+  { key: "deleteEverything", label: "Borrar todo" },
+];
+
 const fieldsFilterSchema = yup.object({
+  value: yup.string(),
+  dataSource: yup.object(),
+});
+
+const actionsFilterSchema = yup.object({
   value: yup.string(),
   dataSource: yup.object(),
 });
@@ -75,11 +90,20 @@ export const FilterUI = (props: IFilterUI) => {
   const [dynamicDefaultValues, setDynamicDefaultValues] = useState({});
   const defaultValuesFilter: any = {
     fieldsFilterSchema: {
-      value: "email",
+      value: undefined,
       dataSource: {
         atomTypeUI: ATOM_TYPE_UI_ENUM.DROPDOWN_SELECT_UI,
         field: "fields",
         dataSource: fields,
+        disabled: false,
+      },
+    },
+    actionsFilterSchema: {
+      value: undefined,
+      dataSource: {
+        atomTypeUI: ATOM_TYPE_UI_ENUM.DROPDOWN_SELECT_UI,
+        field: "actionsFilter",
+        dataSource: actionsFilter,
         disabled: false,
       },
     },
@@ -98,26 +122,33 @@ export const FilterUI = (props: IFilterUI) => {
   });
 
   useEffect(() => {
-    if (dynamicSchema && dynamicDefaultValues) {
-      reset(dynamicDefaultValues, { keepValues: false });
-    }
-  }, [dynamicDefaultValues, dynamicSchema, reset]);
+    const newDefaults = {
+      ...defaultValuesFilter,
+      fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
+      actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
+    };
 
-  useEffect(() => {
-    addFieldToSchema(
-      "fieldsFilterSchema",
-      fieldsFilterSchema,
-      defaultValuesFilter["fieldsFilterSchema"]
-    );
+    const newSchemaFields = {
+      ...dynamicSchema.fields,
+      fieldsFilterSchema: fieldsFilterSchema,
+      actionsFilterSchema: actionsFilterSchema,
+    };
+
+    setDynamicDefaultValues(newDefaults);
+    setSchema(yup.object().shape(newSchemaFields));
   }, []);
 
   useEffect(() => {
+    reset(dynamicDefaultValues);
+  }, [dynamicDefaultValues]);
+
+  useEffect(() => {
     getSchemaFields();
-  }, [dynamicSchema]);
+  }, [dynamicDefaultValues]);
 
   const getSchemaFields = () => {
-    if (!dynamicSchema?.fields) return;
-    const schemaFields = Object.keys(dynamicSchema.fields);
+    if (!getValues()) return;
+    const schemaFields = Object.keys(getValues());
     setSchemaFieldsCore(schemaFields);
   };
 
@@ -218,7 +249,7 @@ export const FilterUI = (props: IFilterUI) => {
   const handleReset = (fieldsToReset?: string[]) => {
     const fields = fieldsToReset?.length
       ? fieldsToReset
-      : Object.keys(dynamicDefaultValues);
+      : schemaFieldsCore ?? [];
     const clearedValues = fields.reduce((acc: any, key) => {
       const field = defaultValues[key];
 
@@ -231,10 +262,14 @@ export const FilterUI = (props: IFilterUI) => {
       return acc;
     }, {} as DefaultValues);
 
-    setDynamicDefaultValues({
+    const newDefaultValues = {
       ...clearedValues,
-      ["fieldsFilterSchema"]: defaultValuesFilter["fieldsFilterSchema"],
-    });
+      fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
+      actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
+    };
+
+    setDynamicDefaultValues(newDefaultValues);
+    reset(newDefaultValues);
   };
 
   const onSubmitFilter = (data: any) => {
@@ -286,7 +321,9 @@ export const FilterUI = (props: IFilterUI) => {
       }
     });
 
-    filters = filters?.filter((filter) => filter.field !== "fields");
+    filters = filters?.filter(
+      (filter) => !["fields", "actionsFilter"].includes(filter.field)
+    );
 
     onSubmit(filters);
   };
@@ -368,33 +405,80 @@ export const FilterUI = (props: IFilterUI) => {
     console.log(condition);
   };
 
+  const handleActions = (e: any) => {
+    if (e === "cleanAll") {
+      handleReset();
+    }
+    if (e === "deleteEverything") {
+    }
+  };
+
+  const isEmpity = () => {
+    return schemaFieldsCore?.length === 2;
+  };
+
   return (
     <div key={id} className="filter-core">
       <div className="filter-core__head">
         <h3 className="filter-core__head__title">Filtros</h3>
         <CloseOutlined className="filter-core__head__close" onClick={onClose} />
       </div>
-      <div className="filter-core__body__titles">
-        <div className="filter-core__body__titles__condition">Condicion</div>
-        <div>Valor</div>
-        <ButtonUI
-          id="btn-form-filters-clear"
-          type="text"
-          size="small"
-          text="Limpiar todo"
-          onClick={() => handleReset()}
-          className="filter-core__body__titles__clear"
-        />
-      </div>
+      {isEmpity() ? (
+        <div className="filter-core__body__titles-empity"></div>
+      ) : (
+        <div className="filter-core__body__titles">
+          <div className="filter-core__body__titles__head">
+            <div className="filter-core__body__titles__head__key">
+              Condicion
+            </div>
+            <div className="filter-core__body__titles__head_value">Valor</div>
+          </div>
+          <DropdownSelectUI
+            id="btn-form-filters-actions"
+            name="actionsFilterSchema.value"
+            control={control}
+            onChange={(e) => {
+              trigger("actionsFilterSchema.value");
+              handleActions(e);
+            }}
+            dataSource={getDataSource("actionsFilterSchema")}
+            className="filter-core__body__titles__clear"
+            fixedText="Acciones"
+            icon={<CaretDownOutlined />}
+          />
+        </div>
+      )}
 
       <div className="filter-core__body">
-        <form
-          className="filter-core__body__form"
-          onSubmit={handleSubmit(onSubmitFilter)}
-        >
+        <form className="filter-core__body__form">
+          {isEmpity() && (
+            <div className="filter-core__body__form__empty">
+              <div>
+                No tienes filtros seleccionados. ¿Por qué no pruebas agregar
+                uno?
+              </div>
+              <DropdownSelectUI
+                id="fields-filter"
+                name="fieldsFilterSchema.value"
+                control={control}
+                onChange={(e) => {
+                  trigger("fieldsFilterSchema.value");
+                  onclickCondition(e);
+                }}
+                dataSource={getDataSource("fieldsFilterSchema")}
+                className="filter-core__body__form__actions__add"
+                fixedText="Agregar filtro"
+                icon={<PlusOutlined />}
+              />
+            </div>
+          )}
+
           {schemaFieldsCore &&
             schemaFieldsCore
-              .filter((x) => x !== "fieldsFilterSchema")
+              .filter(
+                (x) =>
+                  !["fieldsFilterSchema", "actionsFilterSchema"].includes(x)
+              )
               .map((field, index) => (
                 <div
                   key={`${field}${index}`}
@@ -648,7 +732,8 @@ export const FilterUI = (props: IFilterUI) => {
                   />
                 </div>
               ))}
-
+        </form>
+        {!isEmpity() && (
           <div className="filter-core__body__form__actions">
             <DropdownSelectUI
               id="fields-filter"
@@ -660,21 +745,23 @@ export const FilterUI = (props: IFilterUI) => {
               }}
               dataSource={getDataSource("fieldsFilterSchema")}
               className="filter-core__body__form__actions__add"
+              fixedText="Agregar filtro"
+              icon={<PlusOutlined />}
             />
             <ButtonUI
               id="btn-form-filters"
-              htmlType="submit"
               type="primary"
               text="Aplicar"
+              onClick={handleSubmit(onSubmitFilter)}
               disabled={
                 !isValid ||
                 !(schemaFieldsCore?.length !== 0) ||
-                !(schemaFieldsCore && schemaFieldsCore?.length > 1)
+                !(schemaFieldsCore && schemaFieldsCore?.length > 2)
               }
               className="filter-core__body__form__actions__apply"
             />
           </div>
-        </form>
+        )}
       </div>
     </div>
   );
