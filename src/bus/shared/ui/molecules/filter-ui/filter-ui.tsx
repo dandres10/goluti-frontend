@@ -6,7 +6,6 @@ import { IFilterDTO } from "@/bus/core/interfaces/i-filter-dto";
 import {
   CaretDownOutlined,
   CloseOutlined,
-  EditOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
 import { ButtonUI, InputUI, SelectUI } from "../../atoms";
@@ -122,21 +121,24 @@ export const FilterUI = (props: IFilterUI) => {
   });
 
   useEffect(() => {
+    init();
+  }, []);
+
+  const init = () => {
+    setSchemaFieldsCore([]);
     const newDefaults = {
       ...defaultValuesFilter,
       fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
       actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
     };
-
     const newSchemaFields = {
-      ...dynamicSchema.fields,
       fieldsFilterSchema: fieldsFilterSchema,
       actionsFilterSchema: actionsFilterSchema,
     };
-
-    setDynamicDefaultValues(newDefaults);
     setSchema(yup.object().shape(newSchemaFields));
-  }, []);
+    setDynamicDefaultValues(newDefaults);
+    reset(newDefaults);
+  };
 
   useEffect(() => {
     reset(dynamicDefaultValues);
@@ -410,6 +412,7 @@ export const FilterUI = (props: IFilterUI) => {
       handleReset();
     }
     if (e === "deleteEverything") {
+      init();
     }
   };
 
