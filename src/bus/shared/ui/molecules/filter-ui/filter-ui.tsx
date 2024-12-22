@@ -149,7 +149,7 @@ export const FilterUI = (props: IFilterUI) => {
     });
   }, [dynamicDefaultValues, dynamicSchema]);
 
-  useEffect(() => {
+    useEffect(() => {
     console.log("Dynamic Default Values:", dynamicDefaultValues);
     console.log("Dynamic Schema:", dynamicSchema.fields);
     console.log("Current Values:", getValues());
@@ -261,24 +261,27 @@ export const FilterUI = (props: IFilterUI) => {
 
   const handleReset = () => {
     // Crear valores vacíos para todos los campos
-    const emptyValues = Object.keys(dynamicSchema.fields).reduce((acc: any, key) => {
-      const field = defaultValues[key];
-      if (field) {
-        acc[key] = { ...field };
-        if ("value" in field) acc[key].value = undefined;
-        if ("initialValue" in field) acc[key].initialValue = undefined;
-        if ("finalValue" in field) acc[key].finalValue = undefined;
-      }
-      return acc;
-    }, {} as DefaultValues);
-  
+    const emptyValues = Object.keys(dynamicSchema.fields).reduce(
+      (acc: any, key) => {
+        const field = defaultValues[key];
+        if (field) {
+          acc[key] = { ...field };
+          if ("value" in field) acc[key].value = undefined;
+          if ("initialValue" in field) acc[key].initialValue = undefined;
+          if ("finalValue" in field) acc[key].finalValue = undefined;
+        }
+        return acc;
+      },
+      {} as DefaultValues
+    );
+
     // Incluir los esquemas que siempre deben mantenerse
     const newDefaultValues = {
       ...emptyValues,
       fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
       actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
     };
-  
+
     // Crear un esquema vacío con los valores predeterminados necesarios
     const updatedSchema = yup.object().shape({
       fieldsFilterSchema: fieldsFilterSchema,
@@ -291,11 +294,11 @@ export const FilterUI = (props: IFilterUI) => {
         return acc;
       }, {}),
     });
-  
+
     // Actualizar estados dinámicos
     setDynamicDefaultValues(newDefaultValues);
     setSchema(updatedSchema);
-  
+
     // Resetear el formulario con valores vacíos
     reset(newDefaultValues, {
       keepErrors: false,
@@ -736,7 +739,9 @@ export const FilterUI = (props: IFilterUI) => {
                           control={control}
                           status={status(errors?.[field])}
                           errors={setErrors(errors?.[field])}
-                          onChange={() => trigger(`${field}.value`)}
+                          onChange={() => {
+                            trigger(`${field}.value`);
+                          }}
                           placeholder={getPlaceholder(field)}
                           size="small"
                           className="filter-core__body__form__container__item__value"

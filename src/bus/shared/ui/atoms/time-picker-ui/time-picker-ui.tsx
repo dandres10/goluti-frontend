@@ -52,7 +52,6 @@ export const TimePickerUI = (props: IDatePickerUI): JSX.Element => {
                 format={format}
                 onBlur={onBlur}
                 onChange={(e) => {
-                  console.log(e)
                   const hour = e?.format(format);
                   onChange(hour);
                   props.onChange(hour);
