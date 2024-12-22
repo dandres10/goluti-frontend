@@ -93,7 +93,7 @@ const currencySchema = yup.object({
   dataSource: yup.object(),
 });
 
-const rangeCurrencySchema = yup.object({
+const currencySchemaRange = yup.object({
   condition: yup.string(),
   initialValue: yup
     .number()
@@ -170,7 +170,7 @@ const schema = yup.object({
   dateSchema,
   rangeDateSchema,
   currencySchema,
-  rangeCurrencySchema,
+  currencySchemaRange,
   numberSchema,
   rangeNumberSchema,
   timeAppointmentSchema,
@@ -247,7 +247,7 @@ const defaultValues: DefaultValues = {
       conditionDataSource: conditionTypes,
     },
   },
-  rangeCurrencySchema: {
+  currencySchemaRange: {
     condition: CONDITION_TYPE_ENUM.BETWEEN,
     initialValue: undefined,
     finalValue: undefined,

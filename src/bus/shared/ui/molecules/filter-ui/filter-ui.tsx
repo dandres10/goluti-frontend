@@ -125,7 +125,7 @@ export const FilterUI = (props: IFilterUI) => {
   }, []);
 
   const init = () => {
-    setSchemaFieldsCore([]);
+    setSchemaFieldsCore([]); // Limpiar los campos
     const newDefaults = {
       ...defaultValuesFilter,
       fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
@@ -137,20 +137,31 @@ export const FilterUI = (props: IFilterUI) => {
     };
     setSchema(yup.object().shape(newSchemaFields));
     setDynamicDefaultValues(newDefaults);
-    reset(newDefaults);
+    setTimeout(() => {
+      reset(newDefaults, { keepValues: false });
+    }, 0); // Asegurar sincronización
   };
 
   useEffect(() => {
-    reset(dynamicDefaultValues);
-  }, [dynamicDefaultValues]);
+    reset(dynamicDefaultValues, {
+      keepErrors: false,
+      keepDirty: false,
+    });
+  }, [dynamicDefaultValues, dynamicSchema]);
+
+  useEffect(() => {
+    console.log("Dynamic Default Values:", dynamicDefaultValues);
+    console.log("Dynamic Schema:", dynamicSchema.fields);
+    console.log("Current Values:", getValues());
+  }, [dynamicDefaultValues, dynamicSchema]);
 
   useEffect(() => {
     getSchemaFields();
-  }, [dynamicDefaultValues]);
+  }, [dynamicSchema, dynamicDefaultValues]); // Incluir dependencias relevantes
 
   const getSchemaFields = () => {
-    if (!getValues()) return;
-    const schemaFields = Object.keys(getValues());
+    if (!dynamicSchema?.fields) return;
+    const schemaFields = Object.keys(dynamicSchema?.fields);
     setSchemaFieldsCore(schemaFields);
   };
 
@@ -248,13 +259,10 @@ export const FilterUI = (props: IFilterUI) => {
     return undefined;
   };
 
-  const handleReset = (fieldsToReset?: string[]) => {
-    const fields = fieldsToReset?.length
-      ? fieldsToReset
-      : schemaFieldsCore ?? [];
-    const clearedValues = fields.reduce((acc: any, key) => {
+  const handleReset = () => {
+    // Crear valores vacíos para todos los campos
+    const emptyValues = Object.keys(dynamicSchema.fields).reduce((acc: any, key) => {
       const field = defaultValues[key];
-
       if (field) {
         acc[key] = { ...field };
         if ("value" in field) acc[key].value = undefined;
@@ -263,15 +271,37 @@ export const FilterUI = (props: IFilterUI) => {
       }
       return acc;
     }, {} as DefaultValues);
-
+  
+    // Incluir los esquemas que siempre deben mantenerse
     const newDefaultValues = {
-      ...clearedValues,
+      ...emptyValues,
       fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
       actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
     };
-
+  
+    // Crear un esquema vacío con los valores predeterminados necesarios
+    const updatedSchema = yup.object().shape({
+      fieldsFilterSchema: fieldsFilterSchema,
+      actionsFilterSchema: actionsFilterSchema,
+      ...Object.keys(newDefaultValues).reduce((acc: any, key) => {
+        if (key in dynamicSchema.fields) {
+          acc[key] =
+            dynamicSchema.fields[key as keyof typeof dynamicSchema.fields];
+        }
+        return acc;
+      }, {}),
+    });
+  
+    // Actualizar estados dinámicos
     setDynamicDefaultValues(newDefaultValues);
-    reset(newDefaultValues);
+    setSchema(updatedSchema);
+  
+    // Resetear el formulario con valores vacíos
+    reset(newDefaultValues, {
+      keepErrors: false,
+      keepDirty: false,
+      keepTouched: false,
+    });
   };
 
   const onSubmitFilter = (data: any) => {
@@ -332,6 +362,8 @@ export const FilterUI = (props: IFilterUI) => {
 
   const deleteFilter = (field: string) => {
     const currentValues = getValues();
+
+    // Actualizar valores dinámicos removiendo el campo eliminado
     const updatedValues = Object.keys(currentValues).reduce(
       (acc: DefaultValues, key) => {
         if (key !== field) {
@@ -339,49 +371,60 @@ export const FilterUI = (props: IFilterUI) => {
         }
         return acc;
       },
-      {}
+      {} as DefaultValues
     );
-    setDynamicDefaultValues(updatedValues);
-    const updatedSchema = deleteSchema(dynamicSchema, field);
-    setSchema(updatedSchema);
-    setSchemaFieldsCore(
-      schemaFieldsCore?.filter((item: any) => item !== field)
+
+    // Crear un nuevo esquema sin el campo eliminado, pero manteniendo fieldsFilterSchema y actionsFilterSchema
+    const updatedSchemaFields = Object.keys(dynamicSchema.fields)
+      .filter((key) => key !== field)
+      .reduce((acc: any, key) => {
+        acc[key] =
+          dynamicSchema.fields[key as keyof typeof dynamicSchema.fields];
+        return acc;
+      }, {});
+
+    // Asegurar que fieldsFilterSchema y actionsFilterSchema se mantengan
+    updatedSchemaFields["fieldsFilterSchema"] = fieldsFilterSchema;
+    updatedSchemaFields["actionsFilterSchema"] = actionsFilterSchema;
+
+    const newSchema = yup.object().shape(updatedSchemaFields);
+
+    // Actualizar estados dinámicos
+    setDynamicDefaultValues({
+      ...updatedValues,
+      fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
+      actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
+    });
+
+    setSchema(newSchema);
+    setSchemaFieldsCore(Object.keys(updatedValues));
+
+    // Sincronizar formulario
+    reset(
+      {
+        ...updatedValues,
+        fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
+        actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
+      },
+      { keepErrors: false, keepDirty: false }
     );
   };
 
-  const deleteSchema = (
-    currentSchema: yup.ObjectSchema<any>,
-    fieldToRemove: string
-  ): yup.ObjectSchema<any> => {
-    const remainingFields = Object.keys(currentSchema.fields).filter(
-      (key) => key !== fieldToRemove
-    );
-
-    const newShape = remainingFields.reduce((acc: any, key) => {
-      acc[key] = currentSchema.fields[key];
-      return acc;
-    }, {});
-
-    return yup.object().shape(newShape);
-  };
-
-  const onclickCondition = (field: any) => {
+  const onclickCondition = (field: any, isRange: boolean = false) => {
     const schemaFields = Object.keys(schema.fields);
-    let schemaSearch: any;
-    let getElement!: string;
+    const fieldKey = isRange
+      ? `${field}Range`
+      : schemaFields.find((element) => {
+          return (
+            defaultValues[element]?.condition !== CONDITION_TYPE_ENUM.BETWEEN &&
+            defaultValues[element]?.dataSource?.field === field
+          );
+        });
 
-    for (const element of schemaFields) {
-      const hasSchema =
-        defaultValues[element]?.condition !== CONDITION_TYPE_ENUM.BETWEEN &&
-        defaultValues[element]?.dataSource?.field === field;
-      if (hasSchema) {
-        schemaSearch = schema.fields[element];
-        getElement = element;
-        break;
-      }
+    if (fieldKey) {
+      const schemaSearch: any = schema.fields[fieldKey];
+      addFieldToSchema(fieldKey, schemaSearch, defaultValues[fieldKey]);
     }
-
-    addFieldToSchema(getElement, schemaSearch, defaultValues[getElement]);
   };
 
   const addFieldToSchema = (
@@ -393,18 +436,23 @@ export const FilterUI = (props: IFilterUI) => {
       const updatedFields = { ...prevSchema.fields, [fieldKey]: fieldSchema };
       return yup.object().shape(updatedFields);
     });
-    setDynamicDefaultValues({
+    const newSchema = {
       ...getValues(),
       [fieldKey]: fieldDefaultValue,
-    });
+    };
+    setDynamicDefaultValues(newSchema);
   };
 
   const handleChangeCondition = (
     field: string,
     condition: CONDITION_TYPE_ENUM
   ) => {
-    console.log(field);
-    console.log(condition);
+    if (condition === CONDITION_TYPE_ENUM.BETWEEN) {
+      deleteFilter(field);
+      setTimeout(() => {
+        onclickCondition(field, true);
+      }, 200);
+    }
   };
 
   const handleActions = (e: any) => {
@@ -420,11 +468,16 @@ export const FilterUI = (props: IFilterUI) => {
     return schemaFieldsCore?.length === 2;
   };
 
+  const close = () => {
+    init();
+    onClose();
+  };
+
   return (
     <div key={id} className="filter-core">
       <div className="filter-core__head">
         <h3 className="filter-core__head__title">Filtros</h3>
-        <CloseOutlined className="filter-core__head__close" onClick={onClose} />
+        <CloseOutlined className="filter-core__head__close" onClick={close} />
       </div>
       {isEmpity() ? (
         <div className="filter-core__body__titles-empity"></div>
@@ -735,22 +788,26 @@ export const FilterUI = (props: IFilterUI) => {
                   />
                 </div>
               ))}
+          {!isEmpity() && schemaFieldsCore && (
+            <div className="filter-core__body__form__add-container">
+              <DropdownSelectUI
+                id="fields-filter"
+                name="fieldsFilterSchema.value"
+                control={control}
+                onChange={(e) => {
+                  trigger("fieldsFilterSchema.value");
+                  onclickCondition(e);
+                }}
+                dataSource={getDataSource("fieldsFilterSchema")}
+                className="filter-core__body__form__add-container__add"
+                fixedText="Agregar filtro"
+                icon={<PlusOutlined />}
+              />
+            </div>
+          )}
         </form>
         {!isEmpity() && (
           <div className="filter-core__body__form__actions">
-            <DropdownSelectUI
-              id="fields-filter"
-              name="fieldsFilterSchema.value"
-              control={control}
-              onChange={(e) => {
-                trigger("fieldsFilterSchema.value");
-                onclickCondition(e);
-              }}
-              dataSource={getDataSource("fieldsFilterSchema")}
-              className="filter-core__body__form__actions__add"
-              fixedText="Agregar filtro"
-              icon={<PlusOutlined />}
-            />
             <ButtonUI
               id="btn-form-filters"
               type="primary"

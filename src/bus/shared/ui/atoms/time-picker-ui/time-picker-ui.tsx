@@ -5,7 +5,6 @@ import { configAnt } from "@/bus/shared/lib/ant";
 import { ConfigProvider, TimePicker } from "antd";
 import { InputErrorUI } from "../input-error-ui/input-error-ui";
 import dayjs from "dayjs";
-import { useEffect } from "react";
 
 export interface IDatePickerUI {
   id: string;
@@ -14,7 +13,7 @@ export interface IDatePickerUI {
   name?: any;
   errors?: any;
   control?: any;
-  onChange: (value: any) => {};
+  onChange: (value: any) => void;
   size: any;
   status?: any;
   disabled?: boolean;
@@ -53,6 +52,7 @@ export const TimePickerUI = (props: IDatePickerUI): JSX.Element => {
                 format={format}
                 onBlur={onBlur}
                 onChange={(e) => {
+                  console.log(e)
                   const hour = e?.format(format);
                   onChange(hour);
                   props.onChange(hour);

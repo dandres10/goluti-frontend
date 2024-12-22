@@ -6,7 +6,6 @@ import { Controller } from "react-hook-form";
 
 import "./input-number.scss";
 import { InputErrorUI } from "../input-error-ui/input-error-ui";
-import { formatCurrency } from "@/bus/core/functions/format-currency";
 import { configAnt } from "@/bus/shared/lib/ant";
 
 export interface IInputNumberUI {
@@ -87,6 +86,7 @@ export const InputNumberUI = (props: IInputNumberUI) => {
                 size={size}
                 maxLength={22}
                 onChange={(value) => {
+                  console.log(value)
                   onChange(value);
                   props.onChange(value);
                 }}

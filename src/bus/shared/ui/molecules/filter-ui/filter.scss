@@ -86,6 +86,16 @@
         gap: 1rem;
       }
 
+      &__add-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        &__add {
+          height: 2rem;
+        }
+      }
+
       &__container {
         display: flex;
         flex-direction: row;
