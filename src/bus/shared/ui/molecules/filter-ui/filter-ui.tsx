@@ -149,7 +149,7 @@ export const FilterUI = (props: IFilterUI) => {
     });
   }, [dynamicDefaultValues, dynamicSchema]);
 
-    useEffect(() => {
+  useEffect(() => {
     console.log("Dynamic Default Values:", dynamicDefaultValues);
     console.log("Dynamic Schema:", dynamicSchema.fields);
     console.log("Current Values:", getValues());
@@ -403,14 +403,16 @@ export const FilterUI = (props: IFilterUI) => {
     setSchemaFieldsCore(Object.keys(updatedValues));
 
     // Sincronizar formulario
-    reset(
-      {
-        ...updatedValues,
-        fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
-        actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
-      },
-      { keepErrors: false, keepDirty: false }
-    );
+    setTimeout(() => {
+      reset(
+        {
+          ...updatedValues,
+          fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
+          actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
+        },
+        { keepErrors: false, keepDirty: false }
+      );
+    }, 200);
   };
 
   const onclickCondition = (field: any, isRange: boolean = false) => {
