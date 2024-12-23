@@ -6,13 +6,19 @@ import { DrawerUI } from "@/bus/shared/ui/molecules";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import {
+  conditionTypeDate,
+  conditionTypeNumber,
+  conditionTypeString,
+  conditionTypeTime,
   DefaultValues,
+  filterConditionTypesByKeys,
   FilterUI,
 } from "@/bus/shared/ui/molecules/filter-ui/filter-ui";
 import { CONDITION_TYPE_ENUM } from "@/bus/core/enums/condition-type-enum";
 import { ATOM_TYPE_UI_ENUM } from "@/bus/core/enums/atom-type-ui-enum";
 import { IConditionTypeDTO } from "@/appointment/core/interfaces/i-condition-type-dto";
 import { CONDITION_VALUE } from "@/appointment/core/enums/condition-type-enum";
+import { useEffect, useState } from "react";
 dayjs.extend(isSameOrAfter);
 
 const countries: IConditionTypeDTO[] = [
@@ -164,7 +170,7 @@ const timeAppointmentSchemaRange = yup.object({
   dataSource: yup.object(),
 });
 
-const schema = yup.object({
+const schemaCore = yup.object({
   emailSchema,
   countriesSchema,
   dateSchema,
@@ -177,17 +183,7 @@ const schema = yup.object({
   timeAppointmentSchemaRange,
 });
 
-const conditionTypes: any[] = [
-  { label: "Igual =", key: CONDITION_TYPE_ENUM.EQUALS },
-  { label: "Difer ≠", key: CONDITION_TYPE_ENUM.DIFFERENT_THAN },
-  { label: "Mayor >", key: CONDITION_TYPE_ENUM.GREATER_THAN },
-  { label: "Menor <", key: CONDITION_TYPE_ENUM.LESS_THAN },
-  { label: "Entre", key: CONDITION_TYPE_ENUM.BETWEEN },
-  { label: "MyIgual ≥", key: CONDITION_TYPE_ENUM.GREATER_THAN_OR_EQUAL_TO },
-  { label: "MnIgual ≤", key: CONDITION_TYPE_ENUM.LESS_THAN_OR_EQUAL_TO },
-];
-
-const defaultValues: DefaultValues = {
+const defaultValuesCore: DefaultValues = {
   emailSchema: {
     condition: CONDITION_TYPE_ENUM.EQUALS,
     value: undefined,
@@ -196,7 +192,7 @@ const defaultValues: DefaultValues = {
       field: "email",
       placeholder: "email",
       disabled: false,
-      conditionDataSource: conditionTypes,
+      conditionDataSource: conditionTypeString(),
     },
   },
   countriesSchema: {
@@ -208,7 +204,10 @@ const defaultValues: DefaultValues = {
       placeholder: "pais",
       dataSource: countries,
       disabled: false,
-      conditionDataSource: conditionTypes,
+      conditionDataSource: filterConditionTypesByKeys([
+        CONDITION_TYPE_ENUM.EQUALS,
+        CONDITION_TYPE_ENUM.DIFFERENT_THAN,
+      ]),
     },
   },
   dateSchema: {
@@ -219,7 +218,7 @@ const defaultValues: DefaultValues = {
       field: "date",
       placeholder: "fecha",
       disabled: false,
-      conditionDataSource: conditionTypes,
+      conditionDataSource: conditionTypeDate(),
     },
   },
   dateSchemaRange: {
@@ -233,7 +232,7 @@ const defaultValues: DefaultValues = {
       placeholderFinalValue: "fecha final",
       disabledInitialValue: false,
       disabledFinalValue: false,
-      conditionDataSource: conditionTypes,
+      conditionDataSource: conditionTypeDate(),
     },
   },
   currencySchema: {
@@ -244,7 +243,7 @@ const defaultValues: DefaultValues = {
       field: "amount",
       placeholder: "monto",
       disabled: false,
-      conditionDataSource: conditionTypes,
+      conditionDataSource: conditionTypeNumber(),
     },
   },
   currencySchemaRange: {
@@ -258,7 +257,7 @@ const defaultValues: DefaultValues = {
       placeholderFinalValue: "monto final",
       disabledInitialValue: false,
       disabledFinalValue: false,
-      conditionDataSource: conditionTypes,
+      conditionDataSource: conditionTypeNumber(),
     },
   },
   numberSchema: {
@@ -269,7 +268,7 @@ const defaultValues: DefaultValues = {
       field: "amount-card",
       placeholder: "numero",
       disabled: false,
-      conditionDataSource: conditionTypes,
+      conditionDataSource: conditionTypeNumber(),
     },
   },
   numberSchemaRange: {
@@ -283,7 +282,7 @@ const defaultValues: DefaultValues = {
       placeholderFinalValue: "numero final",
       disabledInitialValue: false,
       disabledFinalValue: false,
-      conditionDataSource: conditionTypes,
+      conditionDataSource: conditionTypeNumber(),
     },
   },
   timeAppointmentSchema: {
@@ -294,7 +293,7 @@ const defaultValues: DefaultValues = {
       field: "time_appointment",
       placeholder: "hora",
       disabled: false,
-      conditionDataSource: conditionTypes,
+      conditionDataSource: conditionTypeTime(),
     },
   },
   timeAppointmentSchemaRange: {
@@ -308,7 +307,7 @@ const defaultValues: DefaultValues = {
       placeholderFinalValue: "numero final",
       disabledInitialValue: false,
       disabledFinalValue: false,
-      conditionDataSource: conditionTypes,
+      conditionDataSource: conditionTypeTime(),
     },
   },
 };
@@ -323,6 +322,16 @@ export const fields: any[] = [
 
 export const AppointmentView = (props: IAppointmentLogicProps) => {
   const { showDrawer, onClose, open, onSubmit } = props;
+  const [schema, setSchema] = useState(schemaCore);
+  const [defaultValues, setDefaultValues] = useState(defaultValuesCore);
+
+  const handleSchema = (schema: any) => {
+    setSchema(schema);
+  };
+
+  const handleDefaultValues = (defaultValues: any) => {
+    setDefaultValues(defaultValues);
+  };
 
   return (
     <div className="appointment-home">
@@ -341,11 +350,13 @@ export const AppointmentView = (props: IAppointmentLogicProps) => {
         component={
           <FilterUI
             id="filter-one"
-            defaultValues={defaultValues}
+            defaultValues={defaultValuesCore}
             fields={fields}
-            schema={schema}
+            schema={schemaCore}
             onSubmit={onSubmit}
             onClose={onClose}
+            onChangeSchema={handleSchema}
+            onChangeDefaultValues={handleDefaultValues}
           />
         }
       />

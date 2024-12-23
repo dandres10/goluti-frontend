@@ -14,7 +14,7 @@ export interface IDatePickerUI {
   errors?: any;
   control?: any;
   onChangeBasic?: (value: any, item: unknown) => void;
-  onChange: (value: any) => {};
+  onChange: (e: any) => void;
   size: any;
   status?: any;
   disabled?: boolean;

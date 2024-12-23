@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { AppointmentView } from "./home-view";
 import { MenuProps } from "antd";
-import { CONDITION_TYPE_ENUM } from "@/bus/core/enums/condition-type-enum";
-import { CONDITION_VALUE } from "@/appointment/core/enums/condition-type-enum";
-import { IConditionTypeDTO } from "@/appointment/core/interfaces/i-condition-type-dto";
 import { IFilterDTO } from "@/bus/core/interfaces/i-filter-dto";
 
 export interface IAppointmentLogicProps {

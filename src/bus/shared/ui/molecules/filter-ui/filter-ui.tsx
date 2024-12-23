@@ -38,6 +38,37 @@ const actionsFilterSchema = yup.object({
   dataSource: yup.object(),
 });
 
+export const conditionTypes: any[] = [
+  { label: "Igual =", key: CONDITION_TYPE_ENUM.EQUALS },
+  { label: "Difer ≠", key: CONDITION_TYPE_ENUM.DIFFERENT_THAN },
+  { label: "Mayor >", key: CONDITION_TYPE_ENUM.GREATER_THAN },
+  { label: "Menor <", key: CONDITION_TYPE_ENUM.LESS_THAN },
+  { label: "Entre", key: CONDITION_TYPE_ENUM.BETWEEN },
+  { label: "MyIgual ≥", key: CONDITION_TYPE_ENUM.GREATER_THAN_OR_EQUAL_TO },
+  { label: "MnIgual ≤", key: CONDITION_TYPE_ENUM.LESS_THAN_OR_EQUAL_TO },
+];
+
+export const filterConditionTypesByKeys = (keys: CONDITION_TYPE_ENUM[]) => {
+  return conditionTypes.filter((item) => keys.includes(item.key));
+};
+
+export const conditionTypeString = () => {
+  return [
+    { label: "Igual =", key: CONDITION_TYPE_ENUM.EQUALS },
+    { label: "Difer ≠", key: CONDITION_TYPE_ENUM.DIFFERENT_THAN },
+  ];
+};
+
+export const conditionTypeNumber = () => {
+  return conditionTypes;
+};
+export const conditionTypeDate = () => {
+  return conditionTypes;
+};
+export const conditionTypeTime = () => {
+  return conditionTypes;
+};
+
 export interface BaseDataSource {
   atomTypeUI: ATOM_TYPE_UI_ENUM;
   field: string;
@@ -80,10 +111,21 @@ export interface IFilterUI {
   fields: FieldsFilter[];
   onSubmit: (filters: IFilterDTO[]) => void;
   onClose: () => void;
+  onChangeSchema: (schema: any) => void;
+  onChangeDefaultValues: (schema: any) => void;
 }
 
 export const FilterUI = (props: IFilterUI) => {
-  const { id, onSubmit, schema, defaultValues, fields, onClose } = props;
+  const {
+    id,
+    onSubmit,
+    schema,
+    defaultValues,
+    fields,
+    onClose,
+    onChangeSchema,
+    onChangeDefaultValues,
+  } = props;
   const [schemaFieldsCore, setSchemaFieldsCore] = useState<string[]>();
   const [dynamicSchema, setSchema] = useState(() => yup.object().shape({}));
   const [dynamicDefaultValues, setDynamicDefaultValues] = useState({});
@@ -148,9 +190,11 @@ export const FilterUI = (props: IFilterUI) => {
       keepErrors: false,
       keepDirty: false,
     });
+    onChangeSchema(dynamicSchema);
+    onChangeDefaultValues(dynamicDefaultValues);
   }, [dynamicDefaultValues, dynamicSchema]);
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     console.log("Dynamic Default Values:", dynamicDefaultValues);
     console.log("Dynamic Schema:", dynamicSchema.fields);
     console.log("Current Values:", getValues());
@@ -356,47 +400,38 @@ export const FilterUI = (props: IFilterUI) => {
   const deleteFilter = (field: string) => {
     const currentValues = getValues();
 
-    // Eliminar el valor del filtro específico
     const updatedValues = Object.keys(currentValues).reduce(
       (acc: DefaultValues, key) => {
         if (key !== field) {
-          acc[key] = currentValues[key]; // Mantener los valores restantes
+          acc[key] = currentValues[key];
         }
         return acc;
       },
       {} as DefaultValues
     );
 
-    // Crear un nuevo esquema sin el campo eliminado
     const updatedSchemaFields = Object.keys(dynamicSchema.fields)
-      .filter((key) => key !== field) // Excluir el campo eliminado
+      .filter((key) => key !== field)
       .reduce((acc: any, key) => {
         acc[key] =
           dynamicSchema.fields[key as keyof typeof dynamicSchema.fields];
         return acc;
       }, {});
 
-    // Asegurar que fieldsFilterSchema y actionsFilterSchema se mantengan
     updatedSchemaFields["fieldsFilterSchema"] = fieldsFilterSchema;
     updatedSchemaFields["actionsFilterSchema"] = actionsFilterSchema;
 
     const newSchema = yup.object().shape(updatedSchemaFields);
 
-    // Sincronizar valores dinámicos
     const newDefaultValues = {
       ...updatedValues,
       fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
       actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
     };
 
-    // Actualizar estados
     setDynamicDefaultValues(newDefaultValues);
     setSchema(newSchema);
-
-    // Resetear el formulario
     reset(newDefaultValues, { keepErrors: false, keepDirty: false });
-
-    // Actualizar los campos visibles
     setSchemaFieldsCore(Object.keys(newDefaultValues));
   };
 
@@ -459,8 +494,12 @@ export const FilterUI = (props: IFilterUI) => {
   };
 
   const close = () => {
-    init();
+    /* init(); */
     onClose();
+  };
+
+  const changeValue = () => {
+    setDynamicDefaultValues(getValues());
   };
 
   return (
@@ -550,7 +589,10 @@ export const FilterUI = (props: IFilterUI) => {
                         control={control}
                         status={status(errors?.[field])}
                         errors={setErrors(errors?.[field])}
-                        onChange={() => trigger(`${field}.value`)}
+                        onChange={() => {
+                          trigger(`${field}.value`);
+                          changeValue();
+                        }}
                         placeholder={getPlaceholder(field)}
                         maxLength={60}
                         size="small"
@@ -570,7 +612,10 @@ export const FilterUI = (props: IFilterUI) => {
                           control={control}
                           status={status(errors?.[field])}
                           errors={setErrors(errors?.[field])}
-                          onChange={() => trigger(`${field}.value`)}
+                          onChange={() => {
+                            trigger(`${field}.value`);
+                            changeValue();
+                          }}
                           placeholder={getPlaceholder(field)}
                           dataSource={getDataSource(field)}
                           size="small"
@@ -585,7 +630,10 @@ export const FilterUI = (props: IFilterUI) => {
                           control={control}
                           status={status(errors?.[field])}
                           errors={setErrors(errors?.[field])}
-                          onChange={() => trigger(`${field}.value`)}
+                          onChange={() => {
+                            trigger(`${field}.value`);
+                            changeValue();
+                          }}
                           placeholder={getPlaceholder(field)}
                           className="filter-core__body__form__container__item__date"
                           size="small"
@@ -604,7 +652,10 @@ export const FilterUI = (props: IFilterUI) => {
                             control={control}
                             status={status(errors?.[field], 1)}
                             errors={setErrors(errors?.[field], 1)}
-                            onChange={() => trigger(`${field}.initialValue`)}
+                            onChange={() => {
+                              trigger(`${field}.initialValue`);
+                              changeValue();
+                            }}
                             placeholder={getPlaceholder(field, 1)}
                             className="filter-core__body__form__container__item-range__range-date__date"
                             size="small"
@@ -616,7 +667,10 @@ export const FilterUI = (props: IFilterUI) => {
                             control={control}
                             status={status(errors?.[field], 2)}
                             errors={setErrors(errors?.[field], 2)}
-                            onChange={() => trigger(`${field}.finalValue`)}
+                            onChange={() => {
+                              trigger(`${field}.finalValue`);
+                              changeValue();
+                            }}
                             placeholder={getPlaceholder(field, 2)}
                             className="filter-core__body__form__container__item-range__range-date__date"
                             size="small"
@@ -634,7 +688,10 @@ export const FilterUI = (props: IFilterUI) => {
                           control={control}
                           status={status(errors?.[field])}
                           errors={setErrors(errors?.[field])}
-                          onChange={() => trigger(`${field}.value`)}
+                          onChange={() => {
+                            trigger(`${field}.value`);
+                            changeValue();
+                          }}
                           size="small"
                           placeholder={getPlaceholder(field)}
                           className="filter-core__body__form__container__item__number"
@@ -653,7 +710,10 @@ export const FilterUI = (props: IFilterUI) => {
                             control={control}
                             status={status(errors?.[field], 1)}
                             errors={setErrors(errors?.[field], 1)}
-                            onChange={() => trigger(`${field}.initialValue`)}
+                            onChange={() => {
+                              trigger(`${field}.initialValue`);
+                              changeValue();
+                            }}
                             size="small"
                             className="filter-core__body__form__container__item-range__range-currency__currency"
                             placeholder={getPlaceholder(field, 1)}
@@ -665,7 +725,10 @@ export const FilterUI = (props: IFilterUI) => {
                             control={control}
                             status={status(errors?.[field], 2)}
                             errors={setErrors(errors?.[field], 2)}
-                            onChange={() => trigger(`${field}.finalValue`)}
+                            onChange={() => {
+                              trigger(`${field}.finalValue`);
+                              changeValue();
+                            }}
                             size="small"
                             className="filter-core__body__form__container__item-range__range-currency__currency"
                             placeholder={getPlaceholder(field, 2)}
@@ -680,7 +743,10 @@ export const FilterUI = (props: IFilterUI) => {
                           control={control}
                           status={status(errors?.[field])}
                           errors={setErrors(errors?.[field])}
-                          onChange={() => trigger(`${field}.value`)}
+                          onChange={() => {
+                            trigger(`${field}.value`);
+                            changeValue();
+                          }}
                           placeholder={getPlaceholder(field)}
                           size="small"
                           className="filter-core__body__form__container__item__value"
@@ -699,7 +765,10 @@ export const FilterUI = (props: IFilterUI) => {
                             control={control}
                             status={status(errors?.[field], 1)}
                             errors={setErrors(errors?.[field], 1)}
-                            onChange={() => trigger(`${field}.initialValue`)}
+                            onChange={() => {
+                              trigger(`${field}.initialValue`);
+                              changeValue();
+                            }}
                             placeholder={getPlaceholder(field, 1)}
                             size="small"
                             className="filter-core__body__form__container__item-range__range-number__number"
@@ -711,7 +780,10 @@ export const FilterUI = (props: IFilterUI) => {
                             control={control}
                             status={status(errors?.[field], 2)}
                             errors={setErrors(errors?.[field], 2)}
-                            onChange={() => trigger(`${field}.finalValue`)}
+                            onChange={() => {
+                              trigger(`${field}.finalValue`);
+                              changeValue();
+                            }}
                             placeholder={getPlaceholder(field, 2)}
                             size="small"
                             className="filter-core__body__form__container__item-range__range-number__number"
@@ -728,6 +800,7 @@ export const FilterUI = (props: IFilterUI) => {
                           errors={setErrors(errors?.[field])}
                           onChange={() => {
                             trigger(`${field}.value`);
+                            changeValue();
                           }}
                           placeholder={getPlaceholder(field)}
                           size="small"
@@ -747,7 +820,10 @@ export const FilterUI = (props: IFilterUI) => {
                             control={control}
                             status={status(errors?.[field], 1)}
                             errors={setErrors(errors?.[field], 1)}
-                            onChange={() => trigger(`${field}.initialValue`)}
+                            onChange={() => {
+                              trigger(`${field}.initialValue`);
+                              changeValue();
+                            }}
                             placeholder={getPlaceholder(field, 1)}
                             size="small"
                             className="filter-core__body__form__container__item-range__range-time__time"
@@ -759,7 +835,10 @@ export const FilterUI = (props: IFilterUI) => {
                             control={control}
                             status={status(errors?.[field], 2)}
                             errors={setErrors(errors?.[field], 2)}
-                            onChange={() => trigger(`${field}.finalValue`)}
+                            onChange={() => {
+                              trigger(`${field}.finalValue`);
+                              changeValue();
+                            }}
                             placeholder={getPlaceholder(field, 2)}
                             size="small"
                             className="filter-core__body__form__container__item-range__range-time__time"
