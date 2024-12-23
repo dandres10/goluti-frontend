@@ -87,6 +87,7 @@ export const FilterUI = (props: IFilterUI) => {
   const [schemaFieldsCore, setSchemaFieldsCore] = useState<string[]>();
   const [dynamicSchema, setSchema] = useState(() => yup.object().shape({}));
   const [dynamicDefaultValues, setDynamicDefaultValues] = useState({});
+  const [formKey, setFormKey] = useState(0);
   const defaultValuesFilter: any = {
     fieldsFilterSchema: {
       value: undefined,
@@ -149,11 +150,11 @@ export const FilterUI = (props: IFilterUI) => {
     });
   }, [dynamicDefaultValues, dynamicSchema]);
 
-  useEffect(() => {
+/*   useEffect(() => {
     console.log("Dynamic Default Values:", dynamicDefaultValues);
     console.log("Dynamic Schema:", dynamicSchema.fields);
     console.log("Current Values:", getValues());
-  }, [dynamicDefaultValues, dynamicSchema]);
+  }, [dynamicDefaultValues, dynamicSchema]); */
 
   useEffect(() => {
     getSchemaFields();
@@ -260,51 +261,40 @@ export const FilterUI = (props: IFilterUI) => {
   };
 
   const handleReset = () => {
-    // Crear valores vacíos para todos los campos
-    const emptyValues = Object.keys(dynamicSchema.fields).reduce(
-      (acc: any, key) => {
-        const field = defaultValues[key];
-        if (field) {
-          acc[key] = { ...field };
-          if ("value" in field) acc[key].value = undefined;
-          if ("initialValue" in field) acc[key].initialValue = undefined;
-          if ("finalValue" in field) acc[key].finalValue = undefined;
-        }
-        return acc;
-      },
-      {} as DefaultValues
-    );
+    const currentValues = getValues();
 
-    // Incluir los esquemas que siempre deben mantenerse
+    const clearedValues = Object.keys(currentValues).reduce((acc: any, key) => {
+      if (key in dynamicSchema.fields) {
+        const field = currentValues[key];
+
+        const clearedField = {
+          ...field,
+          ...(field && "value" in field && { value: undefined }),
+          ...(field && "initialValue" in field && { initialValue: undefined }),
+          ...(field && "finalValue" in field && { finalValue: undefined }),
+        };
+
+        acc[key] = clearedField;
+      }
+      return acc;
+    }, {});
+
     const newDefaultValues = {
-      ...emptyValues,
-      fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
-      actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
+      ...clearedValues,
+      fieldsFilterSchema: defaultValuesFilter.fieldsFilterSchema,
+      actionsFilterSchema: defaultValuesFilter.actionsFilterSchema,
     };
 
-    // Crear un esquema vacío con los valores predeterminados necesarios
-    const updatedSchema = yup.object().shape({
-      fieldsFilterSchema: fieldsFilterSchema,
-      actionsFilterSchema: actionsFilterSchema,
-      ...Object.keys(newDefaultValues).reduce((acc: any, key) => {
-        if (key in dynamicSchema.fields) {
-          acc[key] =
-            dynamicSchema.fields[key as keyof typeof dynamicSchema.fields];
-        }
-        return acc;
-      }, {}),
-    });
-
-    // Actualizar estados dinámicos
-    setDynamicDefaultValues(newDefaultValues);
-    setSchema(updatedSchema);
-
-    // Resetear el formulario con valores vacíos
     reset(newDefaultValues, {
       keepErrors: false,
       keepDirty: false,
       keepTouched: false,
+      keepValues: false,
     });
+
+    setDynamicDefaultValues(newDefaultValues);
+
+    setFormKey((prev) => prev + 1);
   };
 
   const onSubmitFilter = (data: any) => {
@@ -366,20 +356,20 @@ export const FilterUI = (props: IFilterUI) => {
   const deleteFilter = (field: string) => {
     const currentValues = getValues();
 
-    // Actualizar valores dinámicos removiendo el campo eliminado
+    // Eliminar el valor del filtro específico
     const updatedValues = Object.keys(currentValues).reduce(
       (acc: DefaultValues, key) => {
         if (key !== field) {
-          acc[key] = currentValues[key];
+          acc[key] = currentValues[key]; // Mantener los valores restantes
         }
         return acc;
       },
       {} as DefaultValues
     );
 
-    // Crear un nuevo esquema sin el campo eliminado, pero manteniendo fieldsFilterSchema y actionsFilterSchema
+    // Crear un nuevo esquema sin el campo eliminado
     const updatedSchemaFields = Object.keys(dynamicSchema.fields)
-      .filter((key) => key !== field)
+      .filter((key) => key !== field) // Excluir el campo eliminado
       .reduce((acc: any, key) => {
         acc[key] =
           dynamicSchema.fields[key as keyof typeof dynamicSchema.fields];
@@ -392,27 +382,22 @@ export const FilterUI = (props: IFilterUI) => {
 
     const newSchema = yup.object().shape(updatedSchemaFields);
 
-    // Actualizar estados dinámicos
-    setDynamicDefaultValues({
+    // Sincronizar valores dinámicos
+    const newDefaultValues = {
       ...updatedValues,
       fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
       actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
-    });
+    };
 
+    // Actualizar estados
+    setDynamicDefaultValues(newDefaultValues);
     setSchema(newSchema);
-    setSchemaFieldsCore(Object.keys(updatedValues));
 
-    // Sincronizar formulario
-    setTimeout(() => {
-      reset(
-        {
-          ...updatedValues,
-          fieldsFilterSchema: defaultValuesFilter["fieldsFilterSchema"],
-          actionsFilterSchema: defaultValuesFilter["actionsFilterSchema"],
-        },
-        { keepErrors: false, keepDirty: false }
-      );
-    }, 200);
+    // Resetear el formulario
+    reset(newDefaultValues, { keepErrors: false, keepDirty: false });
+
+    // Actualizar los campos visibles
+    setSchemaFieldsCore(Object.keys(newDefaultValues));
   };
 
   const onclickCondition = (field: any, isRange: boolean = false) => {
@@ -511,7 +496,7 @@ export const FilterUI = (props: IFilterUI) => {
       )}
 
       <div className="filter-core__body">
-        <form className="filter-core__body__form">
+        <form key={formKey} className="filter-core__body__form">
           {isEmpity() && (
             <div className="filter-core__body__form__empty">
               <div>

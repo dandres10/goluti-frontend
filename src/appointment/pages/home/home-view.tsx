@@ -61,7 +61,7 @@ const dateSchema = yup.object({
   dataSource: yup.object(),
 });
 
-const rangeDateSchema = yup.object({
+const dateSchemaRange = yup.object({
   condition: yup.string(),
   initialValue: yup
     .date()
@@ -122,7 +122,7 @@ const numberSchema = yup.object({
   dataSource: yup.object(),
 });
 
-const rangeNumberSchema = yup.object({
+const numberSchemaRange = yup.object({
   condition: yup.string(),
   initialValue: yup
     .number()
@@ -146,7 +146,7 @@ const timeAppointmentSchema = yup.object({
   dataSource: yup.object(),
 });
 
-const rangeTimeAppointmentSchema = yup.object({
+const timeAppointmentSchemaRange = yup.object({
   condition: yup.string(),
   initialValue: yup
     .string()
@@ -168,13 +168,13 @@ const schema = yup.object({
   emailSchema,
   countriesSchema,
   dateSchema,
-  rangeDateSchema,
+  dateSchemaRange,
   currencySchema,
   currencySchemaRange,
   numberSchema,
-  rangeNumberSchema,
+  numberSchemaRange,
   timeAppointmentSchema,
-  rangeTimeAppointmentSchema,
+  timeAppointmentSchemaRange,
 });
 
 const conditionTypes: any[] = [
@@ -222,7 +222,7 @@ const defaultValues: DefaultValues = {
       conditionDataSource: conditionTypes,
     },
   },
-  rangeDateSchema: {
+  dateSchemaRange: {
     condition: CONDITION_TYPE_ENUM.BETWEEN,
     initialValue: undefined,
     finalValue: undefined,
@@ -272,7 +272,7 @@ const defaultValues: DefaultValues = {
       conditionDataSource: conditionTypes,
     },
   },
-  rangeNumberSchema: {
+  numberSchemaRange: {
     condition: CONDITION_TYPE_ENUM.BETWEEN,
     initialValue: undefined,
     finalValue: undefined,
@@ -297,7 +297,7 @@ const defaultValues: DefaultValues = {
       conditionDataSource: conditionTypes,
     },
   },
-  rangeTimeAppointmentSchema: {
+  timeAppointmentSchemaRange: {
     condition: CONDITION_TYPE_ENUM.BETWEEN,
     initialValue: undefined,
     finalValue: undefined,
