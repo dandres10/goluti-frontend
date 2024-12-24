@@ -303,8 +303,8 @@ const defaultValuesCore: DefaultValues = {
     dataSource: {
       atomTypeUI: ATOM_TYPE_UI_ENUM.TIME_PICKER_UI,
       field: "time_appointment",
-      placeholderInitialValue: "numero inicial",
-      placeholderFinalValue: "numero final",
+      placeholderInitialValue: "hora inicial",
+      placeholderFinalValue: "hora final",
       disabledInitialValue: false,
       disabledFinalValue: false,
       conditionDataSource: conditionTypeTime(),

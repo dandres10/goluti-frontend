@@ -128,7 +128,7 @@ export const FilterUI = (props: IFilterUI) => {
   } = props;
   const [schemaFieldsCore, setSchemaFieldsCore] = useState<string[]>();
   const [dynamicSchema, setSchema] = useState(() => yup.object().shape({}));
-  const [dynamicDefaultValues, setDynamicDefaultValues] = useState({});
+  const [dynamicDefaultValues, setDynamicDefaultValues] = useState<any>({});
   const [formKey, setFormKey] = useState(0);
   const defaultValuesFilter: any = {
     fieldsFilterSchema: {
@@ -194,11 +194,15 @@ export const FilterUI = (props: IFilterUI) => {
     onChangeDefaultValues(dynamicDefaultValues);
   }, [dynamicDefaultValues, dynamicSchema]);
 
-  /*   useEffect(() => {
+  /*     useEffect(() => {
     console.log("Dynamic Default Values:", dynamicDefaultValues);
     console.log("Dynamic Schema:", dynamicSchema.fields);
     console.log("Current Values:", getValues());
-  }, [dynamicDefaultValues, dynamicSchema]); */
+
+  }, [dynamicDefaultValues, dynamicSchema]);
+    useEffect(() => {
+        console.log("Current schemaFieldsCore:", schemaFieldsCore);
+  }, [schemaFieldsCore]); */
 
   useEffect(() => {
     getSchemaFields();
@@ -435,21 +439,40 @@ export const FilterUI = (props: IFilterUI) => {
     setSchemaFieldsCore(Object.keys(newDefaultValues));
   };
 
-  const onclickCondition = (field: any, isRange: boolean = false) => {
+  const onclickCondition = (
+    field: string,
+    isRange: boolean = false,
+    condition?: CONDITION_TYPE_ENUM
+  ) => {
     const schemaFields = Object.keys(schema.fields);
-    const fieldKey = isRange
-      ? `${field}Range`
-      : schemaFields.find((element) => {
-          return (
-            defaultValues[element]?.condition !== CONDITION_TYPE_ENUM.BETWEEN &&
-            defaultValues[element]?.dataSource?.field === field
-          );
-        });
+    const fieldKey = (() => {
+      if (isRange) {
+        return field.includes("Range") ? field : `${field}Range`;
+      }
+      if (field.includes("Range") || field.includes("Schema")) {
+        return field.replace("Range", "");
+      }
+      return schemaFields.find(
+        (element) =>
+          defaultValues[element]?.condition !== CONDITION_TYPE_ENUM.BETWEEN &&
+          defaultValues[element]?.dataSource?.field === field
+      );
+    })();
 
-    if (fieldKey) {
-      const schemaSearch: any = schema.fields[fieldKey];
-      addFieldToSchema(fieldKey, schemaSearch, defaultValues[fieldKey]);
-    }
+    if (!fieldKey) return;
+
+    const schemaSearch: any = schema.fields[fieldKey];
+    const defaultFieldValues = defaultValues[fieldKey];
+    const dynamicFieldValues = dynamicDefaultValues[fieldKey];
+
+    // Combinar valores dinámicos y por defecto
+    const dynamicDefaultResult = {
+      ...(dynamicFieldValues ?? defaultFieldValues),
+      ...(condition && { condition }),
+    };
+
+    // Agregar al esquema
+    addFieldToSchema(fieldKey, schemaSearch, dynamicDefaultResult);
   };
 
   const addFieldToSchema = (
@@ -475,7 +498,13 @@ export const FilterUI = (props: IFilterUI) => {
     if (condition === CONDITION_TYPE_ENUM.BETWEEN) {
       deleteFilter(field);
       setTimeout(() => {
-        onclickCondition(field, true);
+        onclickCondition(field, true, condition);
+      }, 200);
+    }
+    if (condition !== CONDITION_TYPE_ENUM.BETWEEN) {
+      deleteFilter(field);
+      setTimeout(() => {
+        onclickCondition(field, false, condition);
       }, 200);
     }
   };
@@ -577,6 +606,7 @@ export const FilterUI = (props: IFilterUI) => {
                       errors={setErrors(errors?.[field])}
                       onChange={(e) => {
                         trigger(`${field}.condition`);
+                        changeValue();
                         handleChangeCondition(field, e);
                       }}
                       dataSource={getConditionDataSource(field)}
