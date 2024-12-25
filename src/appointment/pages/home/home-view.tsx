@@ -193,6 +193,7 @@ const defaultValuesCore: DefaultValues = {
       placeholder: "email",
       disabled: false,
       conditionDataSource: conditionTypeString(),
+      label: "Correo",
     },
   },
   countriesSchema: {
@@ -208,6 +209,7 @@ const defaultValuesCore: DefaultValues = {
         CONDITION_TYPE_ENUM.EQUALS,
         CONDITION_TYPE_ENUM.DIFFERENT_THAN,
       ]),
+      label: "Pais",
     },
   },
   dateSchema: {
@@ -219,6 +221,7 @@ const defaultValuesCore: DefaultValues = {
       placeholder: "fecha",
       disabled: false,
       conditionDataSource: conditionTypeDate(),
+      label: "Fecha",
     },
   },
   dateSchemaRange: {
@@ -233,6 +236,7 @@ const defaultValuesCore: DefaultValues = {
       disabledInitialValue: false,
       disabledFinalValue: false,
       conditionDataSource: conditionTypeDate(),
+      label: "Fecha",
     },
   },
   currencySchema: {
@@ -244,6 +248,7 @@ const defaultValuesCore: DefaultValues = {
       placeholder: "monto",
       disabled: false,
       conditionDataSource: conditionTypeNumber(),
+      label: "Monto",
     },
   },
   currencySchemaRange: {
@@ -258,6 +263,7 @@ const defaultValuesCore: DefaultValues = {
       disabledInitialValue: false,
       disabledFinalValue: false,
       conditionDataSource: conditionTypeNumber(),
+      label: "Monto",
     },
   },
   numberSchema: {
@@ -269,6 +275,7 @@ const defaultValuesCore: DefaultValues = {
       placeholder: "numero",
       disabled: false,
       conditionDataSource: conditionTypeNumber(),
+      label: "Numero",
     },
   },
   numberSchemaRange: {
@@ -283,6 +290,7 @@ const defaultValuesCore: DefaultValues = {
       disabledInitialValue: false,
       disabledFinalValue: false,
       conditionDataSource: conditionTypeNumber(),
+      label: "Numero",
     },
   },
   timeAppointmentSchema: {
@@ -294,6 +302,7 @@ const defaultValuesCore: DefaultValues = {
       placeholder: "hora",
       disabled: false,
       conditionDataSource: conditionTypeTime(),
+      label: "Hora",
     },
   },
   timeAppointmentSchemaRange: {
@@ -308,6 +317,7 @@ const defaultValuesCore: DefaultValues = {
       disabledInitialValue: false,
       disabledFinalValue: false,
       conditionDataSource: conditionTypeTime(),
+      label: "Tiempo",
     },
   },
 };

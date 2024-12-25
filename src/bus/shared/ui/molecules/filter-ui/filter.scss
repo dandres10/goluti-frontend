@@ -56,7 +56,7 @@
       &__head {
         display: flex;
         flex-direction: row;
-        gap: 3rem;
+        gap: 4rem;
       }
 
       &__clear {
@@ -163,7 +163,7 @@
           align-items: center;
           padding: 1rem 1rem 1rem 1rem;
           width: 82%;
-          margin-bottom: 1rem;
+          margin-bottom: 2rem;
           height: auto;
 
           &:hover {
@@ -226,6 +226,15 @@
         }
       }
     }
+  }
+}
+
+.container-item {
+  display: flex;
+  flex-direction: column;
+  &__label {
+    margin: 0rem 0rem 0.5rem 1rem;
+    font-weight: 500;
   }
 }
 

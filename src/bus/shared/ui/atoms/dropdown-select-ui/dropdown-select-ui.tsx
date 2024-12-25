@@ -17,7 +17,7 @@ export interface IDropdownSelectUI {
   control?: any;
   onChange: (value: any) => void;
   disabled?: boolean;
-  dataSource: any;
+  dataSource: any[] | undefined;
   fixedText?: string;
   icon?: React.ReactNode;
 }
@@ -61,9 +61,9 @@ export const DropdownSelectUI = (props: IDropdownSelectUI) => {
                   },
                 }}
                 trigger={["click"]}
-                disabled={disabled}
+                disabled={disabled || !(dataSource?.length !== 0)}
               >
-                <Button key={id} type="text"  size="small" icon={icon} >
+                <Button key={id} type="text" size="small" icon={icon}>
                   <Space>{fixedText ? fixedText : getKeyByValue(value)}</Space>
                 </Button>
               </Dropdown>
