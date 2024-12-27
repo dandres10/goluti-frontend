@@ -35,6 +35,7 @@ export interface INavbarUI {
  */
 export const NavbarUI = (props: INavbarUI) => {
   const [openMenuHome, setOpenMenuHome] = useState(false);
+  const [openTools, setOpenTools] = useState(false);
   const fullWidth = useFullWidth();
   const navigate = useNavigate();
 
@@ -45,9 +46,15 @@ export const NavbarUI = (props: INavbarUI) => {
   const showDrawer = () => {
     setOpenMenuHome(true);
   };
+  const showDrawerTools = () => {
+    setOpenTools(true);
+  };
 
   const onCloseMenuHome = () => {
     setOpenMenuHome(false);
+  };
+  const onCloseTools = () => {
+    setOpenTools(false);
   };
   const handleLogin = () => {
     navigate("/onboarding/login");
@@ -115,6 +122,7 @@ export const NavbarUI = (props: INavbarUI) => {
             type="text"
             size="large"
             text="Barbeer - Suba"
+            onClick={showDrawerTools}
             className="navbar-ui__center__location"
             icon={<AimOutlined />}
           />
@@ -155,6 +163,7 @@ export const NavbarUI = (props: INavbarUI) => {
             type="text"
             size="large"
             className="navbar-ui__end__button-config"
+            onClick={showDrawerTools}
             icon={<AppstoreOutlined style={{ fontSize: "20px" }} />}
           />
         ) : null}
@@ -191,6 +200,13 @@ export const NavbarUI = (props: INavbarUI) => {
             ]}
           />
         }
+      />
+      <DrawerUI
+        id="drawer-tools"
+        placement="right"
+        onClose={onCloseTools}
+        open={openTools}
+        component={<div>hola</div>}
       />
     </div>
   );
