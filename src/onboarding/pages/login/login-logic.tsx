@@ -9,6 +9,8 @@ import { InjectionPlatformBusinessFacade } from "@/bus/facade/apis/platform/inje
 import { IAuthLoginRequestDTO } from "@/appointment/domain/models/apis/platform/business/auth/login";
 import { IUserReduxDTO } from "@/onboarding/domain/models/redux/bus/platform";
 import { useNavigate } from "react-router-dom";
+import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
+import { NAVBAR_TYPE } from "@/bus/shared/enums";
 
 export interface ILoginLogicProps {
   user: IUserReduxDTO | undefined;
@@ -18,6 +20,7 @@ export interface ILoginLogicProps {
 
 //api
 const _authFacade = InjectionPlatformBusinessFacade.AuthFacade();
+const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 //session
 const _injectionSessionFacade = InjectionSessionFacade.PlatformSessionFacade();
 
@@ -46,8 +49,10 @@ export const LoginLogic = () => {
   };
 
   const handleContinue = () => {
-    navigate("/appointment/home");
+    /* navigate("/appointment/home"); */
     /* navigate("/commercial/voice"); */
+    _uIEventFacade.dispatchUpdateNavbarEvent({ typeNavbar: NAVBAR_TYPE.PLATFORM });
+    navigate("/platform/home");
   };
 
   const props: ILoginLogicProps = {

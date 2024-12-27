@@ -56,7 +56,6 @@ export const ButtonUI = (props: IButtonUI): JSX.Element => {
       <Button
         key={id}
         className={className}
-        style={{ width: width }}
         type={type}
         htmlType={htmlType}
         icon={icon}

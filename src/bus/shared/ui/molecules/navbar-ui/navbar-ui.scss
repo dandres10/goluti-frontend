@@ -2,9 +2,9 @@
   position: sticky;
   display: flex;
   flex-direction: row;
-  width: 96%;
+  width: 98%;
   height: 60px;
-  padding: 0% 2% 0px 2%;
+  padding: 0% 1% 0px 1%;
   align-items: center;
   justify-content: space-between;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
@@ -32,7 +32,7 @@
       display: flex;
       flex-direction: row;
       font-weight: bold;
-      font-size: xx-large;
+      font-size: x-large;
       align-items: center;
 
       &__initial {
@@ -71,6 +71,11 @@
         }
       }
     }
+
+    &__location {
+      font-size: medium;
+      font-weight: bold;
+    }
   }
 
   &__end {
@@ -85,31 +90,36 @@
     }
 
     &__data {
-      font-size: 11px;
-      font-weight: bold;
+      &__title {
+        font-size: small;
+      }
+      &__text {
+        font-weight: bold;
+        font-size: 11px;
+      }
+    }
+
+    &__config {
+      font-size: 30px;
     }
   }
 }
 
 @media screen and (max-width: 800px) {
   .navbar-ui {
-    width: 92%;
-    padding: 0% 4% 0px 4%;
-
     &__center {
-      display: none;
+      &__menu {
+        display: none;
+      }
     }
   }
 }
 
 @media screen and (max-width: 430px) {
   .navbar-ui {
-    width: 92%;
-    padding: 0% 4% 0px 4%;
-
     &__start {
       &__menu {
-        margin-right: 0;
+        margin-right: 1rem;
       }
       &__back {
         margin-right: 2.9px;
@@ -123,7 +133,7 @@
       &__getinto {
         height: 2.7rem;
       }
-      &__data {
+      &__data{
         display: none;
       }
     }

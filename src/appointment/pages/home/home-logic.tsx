@@ -12,7 +12,7 @@ export interface IAppointmentLogicProps {
 
 
 export const AppointmentLogic = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const showDrawer = () => {
     setOpen(true);

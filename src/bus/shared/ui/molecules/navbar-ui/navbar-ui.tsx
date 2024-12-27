@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./navbar-ui.scss";
 import { NAVBAR_TYPE } from "@/bus/shared/enums";
-import { ButtonUI, SelectUI } from "@/bus/shared/ui/atoms/index";
+import { ButtonUI } from "@/bus/shared/ui/atoms/index";
 import {
+  AimOutlined,
   AppstoreOutlined,
   ArrowLeftOutlined,
   AuditOutlined,
-  BellOutlined,
+  BankOutlined,
   HomeOutlined,
   MenuOutlined,
   PhoneOutlined,
 } from "@ant-design/icons";
-import { Avatar, Badge } from "antd";
 import { DrawerUI } from "@bus/shared/ui/molecules/index";
 import { useFullWidth } from "@bus/shared/hooks";
 import { MenuHomeUI } from "../menu-home-ui/menu-home-ui";
@@ -38,6 +38,10 @@ export const NavbarUI = (props: INavbarUI) => {
   const fullWidth = useFullWidth();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log(props);
+  }, []);
+
   const showDrawer = () => {
     setOpenMenuHome(true);
   };
@@ -58,9 +62,13 @@ export const NavbarUI = (props: INavbarUI) => {
     <div id="home-view__navbar" className={`${props.className} navbar-ui`}>
       <div className="navbar-ui__start">
         {[NAVBAR_TYPE.HOME].includes(props.navbarType) && fullWidth < 800 ? (
-          <MenuOutlined
-            className="navbar-ui__start__menu"
+          <ButtonUI
+            id="button-menu-core"
+            type="text"
+            size="large"
             onClick={showDrawer}
+            className="navbar-ui__start__menu"
+            icon={<MenuOutlined style={{ fontSize: "20px" }} />}
           />
         ) : null}
 
@@ -75,10 +83,14 @@ export const NavbarUI = (props: INavbarUI) => {
           />
         ) : null}
 
-        {[NAVBAR_TYPE.DASHBOARD].includes(props.navbarType) ? (
-          <MenuOutlined
-            className="navbar-ui__start__menu"
+        {[NAVBAR_TYPE.PLATFORM].includes(props.navbarType) ? (
+          <ButtonUI
+            id="button-menu-core"
+            type="text"
+            size="large"
             onClick={showDrawer}
+            className="navbar-ui__start__menu"
+            icon={<MenuOutlined style={{ fontSize: "20px" }} />}
           />
         ) : null}
 
@@ -97,35 +109,33 @@ export const NavbarUI = (props: INavbarUI) => {
             <div className="navbar-ui__center__menu__item">Contacto</div>
           </div>
         ) : null}
+        {[NAVBAR_TYPE.PLATFORM].includes(props.navbarType) ? (
+          <ButtonUI
+            id="button-filter"
+            type="text"
+            size="large"
+            text="Barbeer - Suba"
+            className="navbar-ui__center__location"
+            icon={<AimOutlined />}
+          />
+        ) : null}
       </div>
       <div className="navbar-ui__end">
         {[NAVBAR_TYPE.HOME, NAVBAR_TYPE.LOGIN].includes(props.navbarType) ? (
-          <SelectUI
-            id="hv-select-language"
-            width="6rem"
-            variant="borderless"
-            className={
-              [NAVBAR_TYPE.LOGIN].includes(props.navbarType)
-                ? "navbar-ui__end__language-login"
-                : "navbar-ui__end__language"
-            }
-            defaultValue="es"
-            options={[
-              { value: "es", label: "Español" },
-              { value: "en", label: "Ingles" },
-            ]}
-          />
+          <div>Idioma</div>
         ) : null}
 
-        {[NAVBAR_TYPE.DASHBOARD].includes(props.navbarType) ? (
+        {/* {[NAVBAR_TYPE.PLATFORM].includes(props.navbarType) ? (
           <Badge className="navbar-ui__end__badge" count={99}>
             <BellOutlined style={{ fontSize: "21px" }} />
+            hola
           </Badge>
-        ) : null}
+        ) : null} */}
 
-        {[NAVBAR_TYPE.DASHBOARD].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.PLATFORM].includes(props.navbarType) ? (
           <div className="navbar-ui__end__data">
-            <div className="navbar-ui__end__data__text">Hola, Marlon León</div>
+            <div className="navbar-ui__end__data__title">Hola,</div>
+            <div className="navbar-ui__end__data__text">Marlon</div>
           </div>
         ) : null}
 
@@ -139,11 +149,13 @@ export const NavbarUI = (props: INavbarUI) => {
             onClick={() => handleLogin()}
           />
         ) : null}
-        {[NAVBAR_TYPE.DASHBOARD].includes(props.navbarType) ? (
-          <Avatar
-            style={{ backgroundColor: "var(--primary-main)" }}
-            size={34}
-            icon={<AppstoreOutlined />}
+        {[NAVBAR_TYPE.PLATFORM].includes(props.navbarType) ? (
+          <ButtonUI
+            id="button-filter"
+            type="text"
+            size="large"
+            className="navbar-ui__end__button-config"
+            icon={<AppstoreOutlined style={{ fontSize: "20px" }} />}
           />
         ) : null}
       </div>

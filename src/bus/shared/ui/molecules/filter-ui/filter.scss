@@ -73,6 +73,12 @@
       padding-top: 1rem;
       padding-right: 0.5rem;
 
+      &__divider {
+        width: 100%;
+        border-bottom: 1px solid var(--Neutral-4);
+        margin-bottom: 1rem;
+      }
+
       &__empty {
         display: flex;
         flex-direction: column;
@@ -163,7 +169,7 @@
           align-items: center;
           padding: 1rem 1rem 1rem 1rem;
           width: 82%;
-          margin-bottom: 2rem;
+          margin-bottom: 1.5rem;
           height: auto;
 
           &:hover {

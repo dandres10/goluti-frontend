@@ -578,9 +578,7 @@ export const FilterUI = (props: IFilterUI) => {
       ) : (
         <div className="filter-core__body__titles">
           <div className="filter-core__body__titles__head">
-            <div className="filter-core__body__titles__head__key">
-              Campo
-            </div>
+            <div className="filter-core__body__titles__head__key">Campo</div>
             <div className="filter-core__body__titles__head_value">Valor</div>
           </div>
           <DropdownSelectUI
@@ -630,311 +628,316 @@ export const FilterUI = (props: IFilterUI) => {
                   !["fieldsFilterSchema", "actionsFilterSchema"].includes(x)
               )
               .map((field, index) => (
-                <div key={index} className="container-item">
-                  <div className="container-item__label">{getLabel(field)}</div>
-                  <div
-                    key={`${field}${index}`}
-                    className="filter-core__body__form__container"
-                  >
-                    <div className="filter-core__body__form__container__item">
-                      <DropdownSelectUI
-                        id={`${field}`}
-                        name={`${field}.condition`}
-                        control={control}
-                        errors={setErrors(errors?.[field])}
-                        onChange={(e) => {
-                          trigger(`${field}.condition`);
-                          changeValue();
-                          handleChangeCondition(field, e);
-                        }}
-                        dataSource={getConditionDataSource(field)}
-                        className="filter-core__body__form__container__item__condition"
-                      />
-                      {(fieldRules(field, ATOM_TYPE_UI_ENUM.INPUT_UI) && (
-                        <InputUI
-                          id={`${field}`}
-                          name={`${field}.value`}
-                          control={control}
-                          status={status(errors?.[field])}
-                          errors={setErrors(errors?.[field])}
-                          onChange={() => {
-                            trigger(`${field}.value`);
-                            changeValue();
-                          }}
-                          placeholder={getPlaceholder(field)}
-                          maxLength={60}
-                          size="small"
-                          className="filter-core__body__form__container__item__text"
-                          disabled={isDisabled(field)}
-                        />
-                      )) ||
-                        (fieldRules(
-                          field,
-                          ATOM_TYPE_UI_ENUM.SELECT_UI,
-                          false,
-                          true
-                        ) && (
-                          <SelectUI
-                            id={`${field}`}
-                            name={`${field}.value`}
-                            control={control}
-                            status={status(errors?.[field])}
-                            errors={setErrors(errors?.[field])}
-                            onChange={() => {
-                              trigger(`${field}.value`);
-                              changeValue();
-                            }}
-                            placeholder={getPlaceholder(field)}
-                            dataSource={getDataSource(field)}
-                            size="small"
-                            className="filter-core__body__form__container__item__select"
-                            disabled={isDisabled(field)}
-                          />
-                        )) ||
-                        (fieldRules(
-                          field,
-                          ATOM_TYPE_UI_ENUM.DATE_PICKER_UI
-                        ) && (
-                          <DatePickerUI
-                            id={`${field}`}
-                            name={`${field}.value`}
-                            control={control}
-                            status={status(errors?.[field])}
-                            errors={setErrors(errors?.[field])}
-                            onChange={() => {
-                              trigger(`${field}.value`);
-                              changeValue();
-                            }}
-                            placeholder={getPlaceholder(field)}
-                            className="filter-core__body__form__container__item__date"
-                            size="small"
-                            disabled={isDisabled(field)}
-                          />
-                        )) ||
-                        (fieldRules(
-                          field,
-                          ATOM_TYPE_UI_ENUM.DATE_PICKER_UI,
-                          true
-                        ) && (
-                          <div className="filter-core__body__form__container__item-range__range-date">
-                            <DatePickerUI
-                              id={`${field}`}
-                              name={`${field}.initialValue`}
-                              control={control}
-                              status={status(errors?.[field], 1)}
-                              errors={setErrors(errors?.[field], 1)}
-                              onChange={() => {
-                                trigger(`${field}.initialValue`);
-                                changeValue();
-                              }}
-                              placeholder={getPlaceholder(field, 1)}
-                              className="filter-core__body__form__container__item-range__range-date__date"
-                              size="small"
-                              disabled={isDisabled(field, 1)}
-                            />
-                            <DatePickerUI
-                              id={`${field}`}
-                              name={`${field}.finalValue`}
-                              control={control}
-                              status={status(errors?.[field], 2)}
-                              errors={setErrors(errors?.[field], 2)}
-                              onChange={() => {
-                                trigger(`${field}.finalValue`);
-                                changeValue();
-                              }}
-                              placeholder={getPlaceholder(field, 2)}
-                              className="filter-core__body__form__container__item-range__range-date__date"
-                              size="small"
-                              disabled={isDisabled(field, 2)}
-                            />
-                          </div>
-                        )) ||
-                        (fieldRules(
-                          field,
-                          ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI
-                        ) && (
-                          <InputCurrencyUI
-                            id={`${field}`}
-                            name={`${field}.value`}
-                            control={control}
-                            status={status(errors?.[field])}
-                            errors={setErrors(errors?.[field])}
-                            onChange={() => {
-                              trigger(`${field}.value`);
-                              changeValue();
-                            }}
-                            size="small"
-                            placeholder={getPlaceholder(field)}
-                            className="filter-core__body__form__container__item__number"
-                            disabled={isDisabled(field)}
-                          />
-                        )) ||
-                        (fieldRules(
-                          field,
-                          ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI,
-                          true
-                        ) && (
-                          <div className="filter-core__body__form__container__item-range__range-currency">
-                            <InputCurrencyUI
-                              id={`${field}`}
-                              name={`${field}.initialValue`}
-                              control={control}
-                              status={status(errors?.[field], 1)}
-                              errors={setErrors(errors?.[field], 1)}
-                              onChange={() => {
-                                trigger(`${field}.initialValue`);
-                                changeValue();
-                              }}
-                              size="small"
-                              className="filter-core__body__form__container__item-range__range-currency__currency"
-                              placeholder={getPlaceholder(field, 1)}
-                              disabled={isDisabled(field, 1)}
-                            />
-                            <InputCurrencyUI
-                              id={`${field}`}
-                              name={`${field}.finalValue`}
-                              control={control}
-                              status={status(errors?.[field], 2)}
-                              errors={setErrors(errors?.[field], 2)}
-                              onChange={() => {
-                                trigger(`${field}.finalValue`);
-                                changeValue();
-                              }}
-                              size="small"
-                              className="filter-core__body__form__container__item-range__range-currency__currency"
-                              placeholder={getPlaceholder(field, 2)}
-                              disabled={isDisabled(field, 2)}
-                            />
-                          </div>
-                        )) ||
-                        (fieldRules(
-                          field,
-                          ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI
-                        ) && (
-                          <InputNumberUI
-                            id={`${field}`}
-                            name={`${field}.value`}
-                            control={control}
-                            status={status(errors?.[field])}
-                            errors={setErrors(errors?.[field])}
-                            onChange={() => {
-                              trigger(`${field}.value`);
-                              changeValue();
-                            }}
-                            placeholder={getPlaceholder(field)}
-                            size="small"
-                            className="filter-core__body__form__container__item__value"
-                            disabled={isDisabled(field)}
-                          />
-                        )) ||
-                        (fieldRules(
-                          field,
-                          ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI,
-                          true
-                        ) && (
-                          <div className="filter-core__body__form__container__item-range__range-number">
-                            <InputNumberUI
-                              id={`${field}`}
-                              name={`${field}.initialValue`}
-                              control={control}
-                              status={status(errors?.[field], 1)}
-                              errors={setErrors(errors?.[field], 1)}
-                              onChange={() => {
-                                trigger(`${field}.initialValue`);
-                                changeValue();
-                              }}
-                              placeholder={getPlaceholder(field, 1)}
-                              size="small"
-                              className="filter-core__body__form__container__item-range__range-number__number"
-                              disabled={isDisabled(field, 1)}
-                            />
-                            <InputNumberUI
-                              id={`${field}`}
-                              name={`${field}.finalValue`}
-                              control={control}
-                              status={status(errors?.[field], 2)}
-                              errors={setErrors(errors?.[field], 2)}
-                              onChange={() => {
-                                trigger(`${field}.finalValue`);
-                                changeValue();
-                              }}
-                              placeholder={getPlaceholder(field, 2)}
-                              size="small"
-                              className="filter-core__body__form__container__item-range__range-number__number"
-                              disabled={isDisabled(field, 2)}
-                            />
-                          </div>
-                        )) ||
-                        (fieldRules(
-                          field,
-                          ATOM_TYPE_UI_ENUM.TIME_PICKER_UI
-                        ) && (
-                          <TimePickerUI
-                            id={`${field}`}
-                            name={`${field}.value`}
-                            control={control}
-                            status={status(errors?.[field])}
-                            errors={setErrors(errors?.[field])}
-                            onChange={() => {
-                              trigger(`${field}.value`);
-                              changeValue();
-                            }}
-                            placeholder={getPlaceholder(field)}
-                            size="small"
-                            className="filter-core__body__form__container__item__value"
-                            disabled={isDisabled(field)}
-                          />
-                        )) ||
-                        (fieldRules(
-                          field,
-                          ATOM_TYPE_UI_ENUM.TIME_PICKER_UI,
-                          true
-                        ) && (
-                          <div className="filter-core__body__form__container__item-range__range-time">
-                            <TimePickerUI
-                              id={`${field}`}
-                              name={`${field}.initialValue`}
-                              control={control}
-                              status={status(errors?.[field], 1)}
-                              errors={setErrors(errors?.[field], 1)}
-                              onChange={() => {
-                                trigger(`${field}.initialValue`);
-                                changeValue();
-                              }}
-                              placeholder={getPlaceholder(field, 1)}
-                              size="small"
-                              className="filter-core__body__form__container__item-range__range-time__time"
-                              disabled={isDisabled(field, 1)}
-                            />
-                            <TimePickerUI
-                              id={`${field}`}
-                              name={`${field}.finalValue`}
-                              control={control}
-                              status={status(errors?.[field], 2)}
-                              errors={setErrors(errors?.[field], 2)}
-                              onChange={() => {
-                                trigger(`${field}.finalValue`);
-                                changeValue();
-                              }}
-                              placeholder={getPlaceholder(field, 2)}
-                              size="small"
-                              className="filter-core__body__form__container__item-range__range-time__time"
-                              disabled={isDisabled(field, 2)}
-                            />
-                          </div>
-                        ))}
+                <div>
+                  <div key={index} className="container-item">
+                    <div className="container-item__label">
+                      {getLabel(field)}
                     </div>
-                    <ButtonUI
-                      id="btn-form-filters"
-                      type="text"
-                      size="small"
-                      onClick={() => {
-                        deleteFilter(field);
-                      }}
-                      icon={<DeleteOutlined />}
-                      className="filter-core__body__form__container__delete"
-                    />
+                    <div
+                      key={`${field}${index}`}
+                      className="filter-core__body__form__container"
+                    >
+                      <div className="filter-core__body__form__container__item">
+                        <DropdownSelectUI
+                          id={`${field}`}
+                          name={`${field}.condition`}
+                          control={control}
+                          errors={setErrors(errors?.[field])}
+                          onChange={(e) => {
+                            trigger(`${field}.condition`);
+                            changeValue();
+                            handleChangeCondition(field, e);
+                          }}
+                          dataSource={getConditionDataSource(field)}
+                          className="filter-core__body__form__container__item__condition"
+                        />
+                        {(fieldRules(field, ATOM_TYPE_UI_ENUM.INPUT_UI) && (
+                          <InputUI
+                            id={`${field}`}
+                            name={`${field}.value`}
+                            control={control}
+                            status={status(errors?.[field])}
+                            errors={setErrors(errors?.[field])}
+                            onChange={() => {
+                              trigger(`${field}.value`);
+                              changeValue();
+                            }}
+                            placeholder={getPlaceholder(field)}
+                            maxLength={60}
+                            size="small"
+                            className="filter-core__body__form__container__item__text"
+                            disabled={isDisabled(field)}
+                          />
+                        )) ||
+                          (fieldRules(
+                            field,
+                            ATOM_TYPE_UI_ENUM.SELECT_UI,
+                            false,
+                            true
+                          ) && (
+                            <SelectUI
+                              id={`${field}`}
+                              name={`${field}.value`}
+                              control={control}
+                              status={status(errors?.[field])}
+                              errors={setErrors(errors?.[field])}
+                              onChange={() => {
+                                trigger(`${field}.value`);
+                                changeValue();
+                              }}
+                              placeholder={getPlaceholder(field)}
+                              dataSource={getDataSource(field)}
+                              size="small"
+                              className="filter-core__body__form__container__item__select"
+                              disabled={isDisabled(field)}
+                            />
+                          )) ||
+                          (fieldRules(
+                            field,
+                            ATOM_TYPE_UI_ENUM.DATE_PICKER_UI
+                          ) && (
+                            <DatePickerUI
+                              id={`${field}`}
+                              name={`${field}.value`}
+                              control={control}
+                              status={status(errors?.[field])}
+                              errors={setErrors(errors?.[field])}
+                              onChange={() => {
+                                trigger(`${field}.value`);
+                                changeValue();
+                              }}
+                              placeholder={getPlaceholder(field)}
+                              className="filter-core__body__form__container__item__date"
+                              size="small"
+                              disabled={isDisabled(field)}
+                            />
+                          )) ||
+                          (fieldRules(
+                            field,
+                            ATOM_TYPE_UI_ENUM.DATE_PICKER_UI,
+                            true
+                          ) && (
+                            <div className="filter-core__body__form__container__item-range__range-date">
+                              <DatePickerUI
+                                id={`${field}`}
+                                name={`${field}.initialValue`}
+                                control={control}
+                                status={status(errors?.[field], 1)}
+                                errors={setErrors(errors?.[field], 1)}
+                                onChange={() => {
+                                  trigger(`${field}.initialValue`);
+                                  changeValue();
+                                }}
+                                placeholder={getPlaceholder(field, 1)}
+                                className="filter-core__body__form__container__item-range__range-date__date"
+                                size="small"
+                                disabled={isDisabled(field, 1)}
+                              />
+                              <DatePickerUI
+                                id={`${field}`}
+                                name={`${field}.finalValue`}
+                                control={control}
+                                status={status(errors?.[field], 2)}
+                                errors={setErrors(errors?.[field], 2)}
+                                onChange={() => {
+                                  trigger(`${field}.finalValue`);
+                                  changeValue();
+                                }}
+                                placeholder={getPlaceholder(field, 2)}
+                                className="filter-core__body__form__container__item-range__range-date__date"
+                                size="small"
+                                disabled={isDisabled(field, 2)}
+                              />
+                            </div>
+                          )) ||
+                          (fieldRules(
+                            field,
+                            ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI
+                          ) && (
+                            <InputCurrencyUI
+                              id={`${field}`}
+                              name={`${field}.value`}
+                              control={control}
+                              status={status(errors?.[field])}
+                              errors={setErrors(errors?.[field])}
+                              onChange={() => {
+                                trigger(`${field}.value`);
+                                changeValue();
+                              }}
+                              size="small"
+                              placeholder={getPlaceholder(field)}
+                              className="filter-core__body__form__container__item__number"
+                              disabled={isDisabled(field)}
+                            />
+                          )) ||
+                          (fieldRules(
+                            field,
+                            ATOM_TYPE_UI_ENUM.INPUT_CURRENCY_UI,
+                            true
+                          ) && (
+                            <div className="filter-core__body__form__container__item-range__range-currency">
+                              <InputCurrencyUI
+                                id={`${field}`}
+                                name={`${field}.initialValue`}
+                                control={control}
+                                status={status(errors?.[field], 1)}
+                                errors={setErrors(errors?.[field], 1)}
+                                onChange={() => {
+                                  trigger(`${field}.initialValue`);
+                                  changeValue();
+                                }}
+                                size="small"
+                                className="filter-core__body__form__container__item-range__range-currency__currency"
+                                placeholder={getPlaceholder(field, 1)}
+                                disabled={isDisabled(field, 1)}
+                              />
+                              <InputCurrencyUI
+                                id={`${field}`}
+                                name={`${field}.finalValue`}
+                                control={control}
+                                status={status(errors?.[field], 2)}
+                                errors={setErrors(errors?.[field], 2)}
+                                onChange={() => {
+                                  trigger(`${field}.finalValue`);
+                                  changeValue();
+                                }}
+                                size="small"
+                                className="filter-core__body__form__container__item-range__range-currency__currency"
+                                placeholder={getPlaceholder(field, 2)}
+                                disabled={isDisabled(field, 2)}
+                              />
+                            </div>
+                          )) ||
+                          (fieldRules(
+                            field,
+                            ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI
+                          ) && (
+                            <InputNumberUI
+                              id={`${field}`}
+                              name={`${field}.value`}
+                              control={control}
+                              status={status(errors?.[field])}
+                              errors={setErrors(errors?.[field])}
+                              onChange={() => {
+                                trigger(`${field}.value`);
+                                changeValue();
+                              }}
+                              placeholder={getPlaceholder(field)}
+                              size="small"
+                              className="filter-core__body__form__container__item__value"
+                              disabled={isDisabled(field)}
+                            />
+                          )) ||
+                          (fieldRules(
+                            field,
+                            ATOM_TYPE_UI_ENUM.INPUT_NUMBER_UI,
+                            true
+                          ) && (
+                            <div className="filter-core__body__form__container__item-range__range-number">
+                              <InputNumberUI
+                                id={`${field}`}
+                                name={`${field}.initialValue`}
+                                control={control}
+                                status={status(errors?.[field], 1)}
+                                errors={setErrors(errors?.[field], 1)}
+                                onChange={() => {
+                                  trigger(`${field}.initialValue`);
+                                  changeValue();
+                                }}
+                                placeholder={getPlaceholder(field, 1)}
+                                size="small"
+                                className="filter-core__body__form__container__item-range__range-number__number"
+                                disabled={isDisabled(field, 1)}
+                              />
+                              <InputNumberUI
+                                id={`${field}`}
+                                name={`${field}.finalValue`}
+                                control={control}
+                                status={status(errors?.[field], 2)}
+                                errors={setErrors(errors?.[field], 2)}
+                                onChange={() => {
+                                  trigger(`${field}.finalValue`);
+                                  changeValue();
+                                }}
+                                placeholder={getPlaceholder(field, 2)}
+                                size="small"
+                                className="filter-core__body__form__container__item-range__range-number__number"
+                                disabled={isDisabled(field, 2)}
+                              />
+                            </div>
+                          )) ||
+                          (fieldRules(
+                            field,
+                            ATOM_TYPE_UI_ENUM.TIME_PICKER_UI
+                          ) && (
+                            <TimePickerUI
+                              id={`${field}`}
+                              name={`${field}.value`}
+                              control={control}
+                              status={status(errors?.[field])}
+                              errors={setErrors(errors?.[field])}
+                              onChange={() => {
+                                trigger(`${field}.value`);
+                                changeValue();
+                              }}
+                              placeholder={getPlaceholder(field)}
+                              size="small"
+                              className="filter-core__body__form__container__item__value"
+                              disabled={isDisabled(field)}
+                            />
+                          )) ||
+                          (fieldRules(
+                            field,
+                            ATOM_TYPE_UI_ENUM.TIME_PICKER_UI,
+                            true
+                          ) && (
+                            <div className="filter-core__body__form__container__item-range__range-time">
+                              <TimePickerUI
+                                id={`${field}`}
+                                name={`${field}.initialValue`}
+                                control={control}
+                                status={status(errors?.[field], 1)}
+                                errors={setErrors(errors?.[field], 1)}
+                                onChange={() => {
+                                  trigger(`${field}.initialValue`);
+                                  changeValue();
+                                }}
+                                placeholder={getPlaceholder(field, 1)}
+                                size="small"
+                                className="filter-core__body__form__container__item-range__range-time__time"
+                                disabled={isDisabled(field, 1)}
+                              />
+                              <TimePickerUI
+                                id={`${field}`}
+                                name={`${field}.finalValue`}
+                                control={control}
+                                status={status(errors?.[field], 2)}
+                                errors={setErrors(errors?.[field], 2)}
+                                onChange={() => {
+                                  trigger(`${field}.finalValue`);
+                                  changeValue();
+                                }}
+                                placeholder={getPlaceholder(field, 2)}
+                                size="small"
+                                className="filter-core__body__form__container__item-range__range-time__time"
+                                disabled={isDisabled(field, 2)}
+                              />
+                            </div>
+                          ))}
+                      </div>
+                      <ButtonUI
+                        id="btn-form-filters"
+                        type="text"
+                        size="small"
+                        onClick={() => {
+                          deleteFilter(field);
+                        }}
+                        icon={<DeleteOutlined />}
+                        className="filter-core__body__form__container__delete"
+                      />
+                    </div>
                   </div>
+                  <div className="filter-core__body__form__divider"></div>
                 </div>
               ))}
           {!isEmpity() && schemaFieldsCore && (

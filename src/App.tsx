@@ -14,6 +14,8 @@ import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-eve
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
 import ReduxProviderCommercial from "./commercial/core/config/redux/redux-provider";
 import CommercialEvents from "./core/events/commercial-events";
+import ReduxProviderPlatform from "./platform/core/config/redux/redux-provider";
+import PlatformEvents from "./core/events/platform-events";
 
 const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 const _uISessionFacade = InjectionSessionFacade.UiSessionFacade();
@@ -41,18 +43,21 @@ function App() {
         <OnboardingEvents />
         <ReduxProviderCommercial>
           <CommercialEvents />
-          <BusEvents />
-          <BrowserRouter>
-            <NavbarUI
-              id="navbar-core"
-              navbarType={navbarType ? navbarType : NAVBAR_TYPE.HOME}
-              className="home-view__navbar"
-            />
-            <RoutesCore />
-            {navbarType && [NAVBAR_TYPE.HOME].includes(navbarType) && (
-              <FooterHomeUI id="footer-home" />
-            )}
-          </BrowserRouter>
+          <ReduxProviderPlatform>
+            <PlatformEvents />
+            <BusEvents />
+            <BrowserRouter>
+              <NavbarUI
+                id="navbar-core"
+                navbarType={navbarType ? navbarType : NAVBAR_TYPE.HOME}
+                className="home-view__navbar"
+              />
+              <RoutesCore />
+              {navbarType && [NAVBAR_TYPE.HOME].includes(navbarType) && (
+                <FooterHomeUI id="footer-home" />
+              )}
+            </BrowserRouter>
+          </ReduxProviderPlatform>
         </ReduxProviderCommercial>
       </ReduxProviderOnboarding>
     </ReduxProviderAppointment>

@@ -1,6 +1,6 @@
 
 export enum NAVBAR_TYPE {
     HOME = "HOME",
-    DASHBOARD = "DASHBOARD",
+    PLATFORM = "PLATFORM",
     LOGIN = "LOGIN"
 }

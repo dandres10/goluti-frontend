@@ -1,5 +1,6 @@
 import { CloseOutlined } from "@ant-design/icons";
 import "@bus/shared/ui/molecules/menu-home-ui/menu-home-ui.scss";
+import { ButtonUI } from "../../atoms";
 
 export interface IDataSourceDTO {
   id: string;
@@ -21,9 +22,13 @@ export const MenuHomeUI = (props: IMenuHomeUI) => {
   return (
     <div className="menu-home" key={id}>
       <div className="menu-home__head">
-        <CloseOutlined
-          className="menu-home__head__close"
+        <ButtonUI
+          id="button-menu-core"
+          type="text"
+          size="large"
           onClick={() => close()}
+          className="menu-home__head__close"
+          icon={<CloseOutlined />}
         />
         <div className="menu-home__head__title-company">
           <div className="menu-home__head__title-company__initial">Go</div>
@@ -37,7 +42,7 @@ export const MenuHomeUI = (props: IMenuHomeUI) => {
             item.selected ? "menu-home__items--selected" : "menu-home__items"
           }
         >
-          <div style={{ fontSize: "20px" }}>{item.icon}</div>
+          <div style={{ fontSize: "18px" }}>{item.icon}</div>
           <div className="menu-home__items__value">{item.value}</div>
         </div>
       ))}
