@@ -6,6 +6,7 @@ import { RoutesCore } from "@/core/routes/routes-core";
 import { KEYS_SESSION } from "@/bus/core/const/keys-session";
 import OnboardingEvents from "@/core/events/onboarding-events";
 import AppointmentEvents from "@/core/events/appointment-events";
+import PlatformEvents from "@core/events/platform-events";
 import { FooterHomeUI, NavbarUI } from "@/bus/shared/ui/molecules";
 import ReduxProviderOnboarding from "@/onboarding/core/config/redux/redux-provider";
 import { IUiReduxDTO } from "./onboarding/domain/models/redux/bus/ui/i-ui-redux-dto";
@@ -14,8 +15,8 @@ import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-eve
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
 import ReduxProviderCommercial from "./commercial/core/config/redux/redux-provider";
 import CommercialEvents from "./core/events/commercial-events";
-import ReduxProviderPlatform from "./platform/core/config/redux/redux-provider";
-import PlatformEvents from "./core/events/platform-events";
+import ReduxProviderPlatform from "@platform/core/config/redux/redux-provider";
+import ReduxProviderBus from "@bus/core/config/redux/redux-provider";
 
 const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 const _uISessionFacade = InjectionSessionFacade.UiSessionFacade();

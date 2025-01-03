@@ -7,6 +7,10 @@ export const storeBus = configureStore({
   reducer: {
     [keyBus]: busSlice.reducer
   },
+  devTools: {
+    name: 'goluti - bus',
+    trace: true, 
+  },
 });
 
 export type RootState = ReturnType<typeof storeBus.getState>;

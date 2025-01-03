@@ -1,9 +1,9 @@
 import { AppDispatch } from "../config/redux/store"
-import { SelectorBusRedux } from "../types/selector-bus-redux"
+import { SelectorCommercialRedux } from "../types/selector-commercial-redux"
 
 export interface IConfigDTO {
     loadService?: boolean
     dispatch?: AppDispatch
-    selector?: SelectorBusRedux
+    selector?: SelectorCommercialRedux
     key?: string
 }

@@ -7,7 +7,6 @@ import {
   AppstoreOutlined,
   ArrowLeftOutlined,
   AuditOutlined,
-  BankOutlined,
   HomeOutlined,
   MenuOutlined,
   PhoneOutlined,
@@ -17,6 +16,8 @@ import { useFullWidth } from "@bus/shared/hooks";
 import { MenuHomeUI } from "../menu-home-ui/menu-home-ui";
 import { useNavigate } from "react-router-dom";
 import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
+import { MenuToolsUI } from "../menu-tools/menu-tools";
+import { ROUTES } from "@/core/routes/routes";
 
 const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 
@@ -24,24 +25,15 @@ export interface INavbarUI {
   id: string;
   navbarType: NAVBAR_TYPE;
   className?: string;
-  /*   navigate?: any; */
 }
 
-/**
- * Functional component that renders a select component.
- *
- * @param {ISelectUI} props - The props for the component.
- * @returns {JSX.Element} The rendered select component.
- */
 export const NavbarUI = (props: INavbarUI) => {
   const [openMenuHome, setOpenMenuHome] = useState(false);
   const [openTools, setOpenTools] = useState(false);
   const fullWidth = useFullWidth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(props);
-  }, []);
+
 
   const showDrawer = () => {
     setOpenMenuHome(true);
@@ -57,11 +49,11 @@ export const NavbarUI = (props: INavbarUI) => {
     setOpenTools(false);
   };
   const handleLogin = () => {
-    navigate("/onboarding/login");
+    navigate(ROUTES.ONBOARDING_LOGIN);
     _uIEventFacade.dispatchUpdateNavbarEvent({ typeNavbar: NAVBAR_TYPE.LOGIN });
   };
   const handleBack = () => {
-    navigate("/welcome/home");
+    navigate(ROUTES.WELCOME_HOME);
     _uIEventFacade.dispatchUpdateNavbarEvent({ typeNavbar: NAVBAR_TYPE.HOME });
   };
 
@@ -206,7 +198,7 @@ export const NavbarUI = (props: INavbarUI) => {
         placement="right"
         onClose={onCloseTools}
         open={openTools}
-        component={<div>hola</div>}
+        component={<MenuToolsUI id="menu-tools" onClose={onCloseTools} />}
       />
     </div>
   );

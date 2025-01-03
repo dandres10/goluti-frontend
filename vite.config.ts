@@ -13,6 +13,8 @@ export default defineConfig(({ mode }) => {
         "@welcome": path.resolve(__dirname, "./src/welcome"),
         "@core": path.resolve(__dirname, "./src/core"),
         "@bus": path.resolve(__dirname, "./src/bus"),
+        "@platform": path.resolve(__dirname, "./src/platform"),
+        "@commercial": path.resolve(__dirname, "./src/commercial"),
       },
     },
     define: {

@@ -44,7 +44,6 @@ export const LoginView = (props: ILoginLogicProps) => {
   const onSubmit: SubmitHandler<IAuthLoginRequestDTO> = (
     data: IAuthLoginRequestDTO
   ) => {
-    console.log(data);
     props.login(data);
   };
 

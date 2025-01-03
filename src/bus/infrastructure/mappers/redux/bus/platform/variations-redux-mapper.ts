@@ -10,6 +10,7 @@ export class VariationsReduxMapper extends Mapper<IPlatformVariationsResponseDTO
     private currencyReduxMapper = InjectionPlatformReduxMapper.CurrencyReduxMapper()
     private locationReduxMapper = InjectionPlatformReduxMapper.LocationReduxMapper()
     private languageReduxMapper = InjectionPlatformReduxMapper.LanguageReduxMapper()
+    private companyReduxMapper = InjectionPlatformReduxMapper.CompanyReduxMapper()
     private constructor() {
         super();
     }
@@ -25,7 +26,8 @@ export class VariationsReduxMapper extends Mapper<IPlatformVariationsResponseDTO
         return {
             currencies: this.currencyReduxMapper.mapFromList(param.currencies),
             locations: this.locationReduxMapper.mapFromList(param.locations),
-            languages: this.languageReduxMapper.mapFromList(param.languages)
+            languages: this.languageReduxMapper.mapFromList(param.languages),
+            companies: this.companyReduxMapper.mapFromList(param.companies)
         }
     }
 
@@ -39,7 +41,8 @@ export class VariationsReduxMapper extends Mapper<IPlatformVariationsResponseDTO
         return {
             currencies: this.currencyReduxMapper.mapToList(param.currencies),
             locations: this.locationReduxMapper.mapToList(param.locations),
-            languages: this.languageReduxMapper.mapToList(param.languages)
+            languages: this.languageReduxMapper.mapToList(param.languages),
+            companies: this.companyReduxMapper.mapToList(param.companies)
         }
     }
 

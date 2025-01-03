@@ -12,6 +12,7 @@ export class PlatformVariationsResponseMapper extends Mapper<IPlatformVariations
     private currencyLoginResponseMapper = InjectionPlatformBusinessAuthMapper.CurrencyLoginResponseMapper()
     private locationLoginResponseMapper = InjectionPlatformBusinessAuthMapper.LocationLoginResponseMapper()
     private languageLoginResponseMapper = InjectionPlatformBusinessAuthMapper.LanguageLoginResponseMapper()
+    private companyLoginResponseMapper = InjectionPlatformBusinessAuthMapper.CompanyLoginResponseMapper()
     private constructor() {
         super();
     }
@@ -27,7 +28,8 @@ export class PlatformVariationsResponseMapper extends Mapper<IPlatformVariations
         return {
             currencies: this.currencyLoginResponseMapper.mapFromList(param.currencies),
             locations: this.locationLoginResponseMapper.mapFromList(param.locations),
-            languages: this.languageLoginResponseMapper.mapFromList(param.languages)
+            languages: this.languageLoginResponseMapper.mapFromList(param.languages),
+            companies: this.companyLoginResponseMapper.mapFromList(param.companies)
         }
     }
 
@@ -41,7 +43,8 @@ export class PlatformVariationsResponseMapper extends Mapper<IPlatformVariations
         return {
             currencies: this.currencyLoginResponseMapper.mapToList(param.currencies),
             locations: this.locationLoginResponseMapper.mapToList(param.locations),
-            languages: this.languageLoginResponseMapper.mapToList(param.languages)
+            languages: this.languageLoginResponseMapper.mapToList(param.languages),
+            companies: this.companyLoginResponseMapper.mapToList(param.companies)
         }
     }
 

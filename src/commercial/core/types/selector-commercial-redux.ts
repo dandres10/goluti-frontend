@@ -6,8 +6,8 @@ import { IInitialStateReduxDTO } from '../../infrastructure/repositories/redux/b
 
 // Define el estado global con una propiedad `bus` de tipo `IInitialStateReduxDTO`
 type RootState = {
-  onboarding: IInitialStateReduxDTO;
+  commercial: IInitialStateReduxDTO;
 };
 
 // Define el tipo para el `useSelector` tipado
-export type SelectorOnboardingRedux = TypedUseSelectorHook<RootState>;
+export type SelectorCommercialRedux = TypedUseSelectorHook<RootState>;

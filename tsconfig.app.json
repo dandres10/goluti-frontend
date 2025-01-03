@@ -26,7 +26,8 @@
       "@appointment/*": ["src/appointment/*"],
       "@welcome/*": ["src/welcome/*"],
       "@core/*": ["src/core/*"],
-      "@bus/*": ["src/bus/*"]
+      "@bus/*": ["src/bus/*"],
+      "@platform/*": ["src/platform/*"]
     }
   },
   "include": ["src"]
