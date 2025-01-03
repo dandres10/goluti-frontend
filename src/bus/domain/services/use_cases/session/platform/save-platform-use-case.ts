@@ -1,9 +1,8 @@
-import { IConfigDTO } from "../../../../../core/interfaces";
-import { UseCase } from "../../../../../core/interfaces/use-case";
-import { InjectionPlatformReduxMapper } from "../../../../../infrastructure/mappers/redux/injection";
-import { IAuthLoginResponseDTO } from "../../../../../domain/models/apis/platform/business/auth/login";
-import { InjectionPlatformEventUseCase } from "../../event/injection/injection-platform-event-use-case";
-import { InjectionPlatformSessionRepository } from "../../../../../infrastructure/repositories/session/injection/injection-platform-session-repository";
+import { UseCase } from "@bus/core/interfaces/use-case";
+import { InjectionPlatformReduxMapper } from "@bus/infrastructure/mappers/redux/injection";
+import { IAuthLoginResponseDTO } from "@bus/domain/models/apis/platform/business/auth/login";
+import { InjectionPlatformEventUseCase } from "@bus/domain/services/use_cases/event/injection/injection-platform-event-use-case";
+import { InjectionPlatformSessionRepository } from "@bus/infrastructure/repositories/session/injection/injection-platform-session-repository";
 
 
 export class SavePlatformUseCase implements UseCase<IAuthLoginResponseDTO, void> {
@@ -20,12 +19,11 @@ export class SavePlatformUseCase implements UseCase<IAuthLoginResponseDTO, void>
     }
 
     public execute(
-        param: IAuthLoginResponseDTO,
-        config: IConfigDTO
+        param: IAuthLoginResponseDTO
     ): void {
         const data = this.platformReduxMapper.mapFrom(param)
         this.dispatchUpdatePlatformEventUseCase.execute(data);
-        this.platformSessionRepository.savePlatform(data, config);
+        this.platformSessionRepository.savePlatform(data);
     }
 }
 

@@ -2,6 +2,7 @@ import { IConfigDTO } from "@bus/core/interfaces";
 import { UseCase } from "@bus/core/interfaces/use-case";
 import { IPlatformConfigurationDTO } from "@/bus/domain/models/redux/bus/platform/i-platform-configuration-dto";
 import { InjectionRepositoriesRedux } from "@bus/infrastructure/repositories/redux/injection/injection-repositories-redux";
+import { IRolReduxDTO } from "@/bus/domain/models/redux/bus/platform";
 
 
 export class PlatformConfigurationUseCase implements UseCase<any, IPlatformConfigurationDTO | undefined> {
@@ -17,6 +18,12 @@ export class PlatformConfigurationUseCase implements UseCase<any, IPlatformConfi
 
     public execute(config: IConfigDTO): IPlatformConfigurationDTO | undefined {
 
+        let rols: IRolReduxDTO[] = [];
+        const rol = this.platformRepository.readRol(config);
+        if (rol) {
+            rols.push(rol);
+        }
+
         let setIPlatformConfigurationDTO: IPlatformConfigurationDTO = {
             rol_id: this.platformRepository.readRol(config)?.id,
             language_id: this.platformRepository.readLanguage(config)?.id,
@@ -26,7 +33,8 @@ export class PlatformConfigurationUseCase implements UseCase<any, IPlatformConfi
             languages: this.platformRepository.readLanguages(config),
             locations: this.platformRepository.readLocations(config),
             currencies: this.platformRepository.readCurrencies(config),
-            companies: this.platformRepository.readCompanies(config)
+            companies: this.platformRepository.readCompanies(config),
+            rols: rols
         }
 
         return setIPlatformConfigurationDTO;

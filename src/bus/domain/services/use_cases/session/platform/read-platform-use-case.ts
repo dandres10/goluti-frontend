@@ -1,7 +1,7 @@
-import { IConfigDTO } from "../../../../../core/interfaces";
-import { UseCase } from "../../../../../core/interfaces/use-case";
-import { IPlatformReduxDTO } from "../../../../../domain/models/redux/bus/platform";
-import { InjectionPlatformSessionRepository } from "../../../../../infrastructure/repositories/session/injection/injection-platform-session-repository";
+import { IConfigDTO } from "@bus/core/interfaces";
+import { UseCase } from "@bus/core/interfaces/use-case";
+import { IPlatformReduxDTO } from "@bus/domain/models/redux/bus/platform";
+import { InjectionPlatformSessionRepository } from "@bus/infrastructure/repositories/session/injection/injection-platform-session-repository";
 
 
 export class ReadPlatformUseCase implements UseCase<IConfigDTO, IPlatformReduxDTO | null> {
@@ -16,10 +16,8 @@ export class ReadPlatformUseCase implements UseCase<IConfigDTO, IPlatformReduxDT
         return ReadPlatformUseCase.instance;
     }
 
-    public execute(
-        config: IConfigDTO
-    ): IPlatformReduxDTO | null {
-        return this.platformSessionRepository.readPlatform(config)
+    public execute(): IPlatformReduxDTO | null {
+        return this.platformSessionRepository.readPlatform()
     }
 }
 

@@ -4,27 +4,20 @@ import { ButtonUI, SelectUI } from "../../atoms";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { IPlatformConfigurationDTO } from "@/bus/domain/models/redux/bus/platform/i-platform-configuration-dto";
+import { useEffect, useState } from "react";
+import {
+  ICompanyReduxDTO,
+  ILanguageReduxDTO,
+  ILocationReduxDTO,
+  IRolReduxDTO,
+} from "@/bus/domain/models/redux/bus/platform";
 
 export interface IMenuToolsUI {
   id: string;
   onClose: () => void;
+  platformConfiguration: IPlatformConfigurationDTO | undefined;
 }
-
-const rols: any[] = [
-  { label: "Administrador", value: "ADMIN" },
-  { label: "Colaborador", value: "COLLA" },
-  { label: "Cliente", value: "CLIENT" },
-];
-
-const companies: any[] = [{ label: "Barbeer", value: "asdf-asdaf" }];
-const locations: any[] = [
-  { label: "Suba", value: "asdf-asderf" },
-  { label: "Cajíca", value: "asdf-as34rf" },
-];
-const language: any[] = [
-  { label: "Español", value: "asdf-asderf" },
-  { label: "Ingles", value: "asdf-as34rf" },
-];
 
 const schema = yup.object({
   rol: yup.string().required("Rol es requerido"),
@@ -34,7 +27,11 @@ const schema = yup.object({
 });
 
 export const MenuToolsUI = (props: IMenuToolsUI) => {
-  const { id, onClose } = props;
+  const { id, onClose, platformConfiguration } = props;
+  const [companies, setCompanies] = useState<any[] | undefined>([]);
+  const [locations, setLocations] = useState<any[] | undefined>([]);
+  const [languages, setLanguages] = useState<any[] | undefined>([]);
+  const [rols, setRols] = useState<any[] | undefined>([]);
   const {
     control,
     handleSubmit,
@@ -42,16 +39,73 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
     trigger,
   } = useForm({
     defaultValues: {
-      rol: undefined,
-      company: undefined,
-      location: undefined,
-      language: undefined,
+      rol: platformConfiguration?.rol_id ?? "",
+      company: platformConfiguration?.company_id ?? "",
+      location: platformConfiguration?.location_id ?? "",
+      language: platformConfiguration?.language_id ?? "",
     },
     resolver: yupResolver(schema),
   });
 
   const onSubmit: SubmitHandler<any> = (data: any) => {
     console.log(data);
+  };
+
+  useEffect(() => {
+    getCompanies();
+    getLocations();
+    getLanguages();
+    getRols();
+  }, [platformConfiguration]);
+
+  const getCompanies = () => {
+    const companies = platformConfiguration?.companies?.map(
+      (company: ICompanyReduxDTO) => {
+        return {
+          label: company.name,
+          value: company.id,
+        };
+      }
+    );
+
+    setCompanies(companies);
+  };
+
+  const getLocations = () => {
+    const locations = platformConfiguration?.locations?.map(
+      (location: ILocationReduxDTO) => {
+        return {
+          label: location.name,
+          value: location.id,
+        };
+      }
+    );
+
+    setLocations(locations);
+  };
+
+  const getLanguages = () => {
+    const languages = platformConfiguration?.languages?.map(
+      (language: ILanguageReduxDTO) => {
+        return {
+          label: language.nativeName,
+          value: language.id,
+        };
+      }
+    );
+
+    setLanguages(languages);
+  };
+
+  const getRols = () => {
+    const rols = platformConfiguration?.rols?.map((rol: IRolReduxDTO) => {
+      return {
+        label: rol.name,
+        value: rol.id,
+      };
+    });
+
+    setRols(rols);
   };
 
   return (
@@ -88,7 +142,7 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
               placeholder="Rol"
               dataSource={rols}
               className="menu-tools-ui__form__wrapper-select__select"
-              disabled={false}
+              disabled={true}
               label="Rol"
               size="small"
             />
@@ -134,7 +188,7 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
               errors={errors.language?.message}
               onChange={() => trigger("language")}
               placeholder="Idioma"
-              dataSource={language}
+              dataSource={languages}
               className="menu-tools-ui__form__wrapper-select__select"
               disabled={false}
               label="Idioma"

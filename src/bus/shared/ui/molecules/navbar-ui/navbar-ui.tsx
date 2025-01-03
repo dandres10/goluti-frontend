@@ -18,9 +18,8 @@ import { useNavigate } from "react-router-dom";
 import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
 import { MenuToolsUI } from "../menu-tools/menu-tools";
 import { ROUTES } from "@/core/routes/routes";
-import { InjectionReduxFacade } from "@/bus/facade/redux";
-import { useSelector } from "react-redux";
-import { ICompanyReduxDTO } from "@/bus/domain/models/redux/bus/platform";
+import { IPlatformConfigurationDTO } from "@/bus/domain/models/redux/bus/platform/i-platform-configuration-dto";
+import { capitalizeWords } from "@/bus/core/functions/capitalize-word";
 
 const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 
@@ -28,20 +27,15 @@ export interface INavbarUI {
   id: string;
   navbarType: NAVBAR_TYPE;
   className?: string;
+  platformConfiguration: IPlatformConfigurationDTO | undefined;
 }
 
 export const NavbarUI = (props: INavbarUI) => {
+  const { id, navbarType, className, platformConfiguration } = props;
   const [openMenuHome, setOpenMenuHome] = useState(false);
   const [openTools, setOpenTools] = useState(false);
   const fullWidth = useFullWidth();
   const navigate = useNavigate();
-
-  const _injectionReduxFacade = InjectionReduxFacade.PlatformReduxFacade();
-
-  const companies: ICompanyReduxDTO[] | undefined =
-    _injectionReduxFacade.readCompanies({
-      selector: useSelector,
-    });
 
   const showDrawer = () => {
     setOpenMenuHome(true);
@@ -65,10 +59,22 @@ export const NavbarUI = (props: INavbarUI) => {
     _uIEventFacade.dispatchUpdateNavbarEvent({ typeNavbar: NAVBAR_TYPE.HOME });
   };
 
+  const getCurrentLocation = () => {
+    const companyName = platformConfiguration?.companies?.find(
+      (company) => company.id === platformConfiguration?.company_id
+    )?.name;
+    const locationName = platformConfiguration?.locations?.find(
+      (location) => location.id === platformConfiguration?.location_id
+    )?.name;
+    return `${capitalizeWords(companyName ?? "")} - ${capitalizeWords(
+      locationName ?? ""
+    )}`;
+  };
+
   return (
-    <div id="home-view__navbar" className={`${props.className} navbar-ui`}>
+    <div id="home-view__navbar" className={`${className} navbar-ui`}>
       <div className="navbar-ui__start">
-        {[NAVBAR_TYPE.HOME].includes(props.navbarType) && fullWidth < 800 ? (
+        {[NAVBAR_TYPE.HOME].includes(navbarType) && fullWidth < 800 ? (
           <ButtonUI
             id="button-menu-core"
             type="text"
@@ -79,7 +85,7 @@ export const NavbarUI = (props: INavbarUI) => {
           />
         ) : null}
 
-        {[NAVBAR_TYPE.LOGIN].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.LOGIN].includes(navbarType) ? (
           <ButtonUI
             id="hv-button-back"
             className="navbar-ui__start__back"
@@ -90,7 +96,7 @@ export const NavbarUI = (props: INavbarUI) => {
           />
         ) : null}
 
-        {[NAVBAR_TYPE.PLATFORM].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.PLATFORM].includes(navbarType) ? (
           <ButtonUI
             id="button-menu-core"
             type="text"
@@ -107,7 +113,7 @@ export const NavbarUI = (props: INavbarUI) => {
         </div>
       </div>
       <div className="navbar-ui__center">
-        {[NAVBAR_TYPE.HOME].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.HOME].includes(navbarType) ? (
           <div className="navbar-ui__center__menu">
             <div className="navbar-ui__center__menu__item--selected">
               Inicio
@@ -116,12 +122,12 @@ export const NavbarUI = (props: INavbarUI) => {
             <div className="navbar-ui__center__menu__item">Contacto</div>
           </div>
         ) : null}
-        {[NAVBAR_TYPE.PLATFORM].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.PLATFORM].includes(navbarType) ? (
           <ButtonUI
             id="button-filter"
             type="text"
             size="large"
-            text="Barbeer - Suba"
+            text={getCurrentLocation()}
             onClick={showDrawerTools}
             className="navbar-ui__center__location"
             icon={<AimOutlined />}
@@ -129,7 +135,7 @@ export const NavbarUI = (props: INavbarUI) => {
         ) : null}
       </div>
       <div className="navbar-ui__end">
-        {[NAVBAR_TYPE.HOME, NAVBAR_TYPE.LOGIN].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.HOME, NAVBAR_TYPE.LOGIN].includes(navbarType) ? (
           <div>Idioma</div>
         ) : null}
 
@@ -140,14 +146,14 @@ export const NavbarUI = (props: INavbarUI) => {
           </Badge>
         ) : null} */}
 
-        {[NAVBAR_TYPE.PLATFORM].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.PLATFORM].includes(navbarType) ? (
           <div className="navbar-ui__end__data">
             <div className="navbar-ui__end__data__title">Hola,</div>
             <div className="navbar-ui__end__data__text">Marlon</div>
           </div>
         ) : null}
 
-        {[NAVBAR_TYPE.HOME].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.HOME].includes(navbarType) ? (
           <ButtonUI
             id="hv-button"
             className="navbar-ui__end__getinto"
@@ -157,7 +163,7 @@ export const NavbarUI = (props: INavbarUI) => {
             onClick={() => handleLogin()}
           />
         ) : null}
-        {[NAVBAR_TYPE.PLATFORM].includes(props.navbarType) ? (
+        {[NAVBAR_TYPE.PLATFORM].includes(navbarType) ? (
           <ButtonUI
             id="button-filter"
             type="text"
@@ -206,7 +212,13 @@ export const NavbarUI = (props: INavbarUI) => {
         placement="right"
         onClose={onCloseTools}
         open={openTools}
-        component={<MenuToolsUI id="menu-tools" onClose={onCloseTools} />}
+        component={
+          <MenuToolsUI
+            id="menu-tools"
+            onClose={onCloseTools}
+            platformConfiguration={platformConfiguration}
+          />
+        }
       />
     </div>
   );

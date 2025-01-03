@@ -1,9 +1,10 @@
-import { AppDispatch } from "../config/redux/store"
-import { SelectorBusRedux } from "../types/selector-bus-redux"
+
+import { AppDispatch } from "@/core/redux/redux-core"
+import { KEYS_SESSION_ENUM } from "../enums/keys-session-enum"
 
 export interface IConfigDTO {
     loadService?: boolean
     dispatch?: AppDispatch
-    selector?: SelectorBusRedux
-    key?: string
+    selector?: any
+    key?: KEYS_SESSION_ENUM
 }

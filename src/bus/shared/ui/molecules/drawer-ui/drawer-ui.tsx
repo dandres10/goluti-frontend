@@ -12,12 +12,6 @@ export interface IDrawerUI {
   component?: React.ReactNode;
 }
 
-/**
- * Functional component that renders a select component.
- *
- * @param {ISelectUI} props - The props for the component.
- * @returns {JSX.Element} The rendered select component.
- */
 export const DrawerUI = (props: IDrawerUI) => {
   const { title, placement, onClose, open, id, size, component } = props;
 
