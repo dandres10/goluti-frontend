@@ -1,12 +1,9 @@
 
 import { useEffect } from "react";
-import {
-  AppDispatch,
-  useAppDispatch,
-} from "@/onboarding/core/config/redux";
 import { InjectionReduxFacade } from "@/onboarding/facade/redux";
 import { IPlatformReduxDTO } from "@/onboarding/domain/models/redux/bus/platform";
 import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
+import { store } from "../redux/redux-core";
 
 
 //event
@@ -14,7 +11,7 @@ const _platformEventFacade = InjectionEventFacade.PlatformEventFacade();
 
 export const OnboardingEvents = () => {
   //datos
-  const dispatch: AppDispatch = useAppDispatch();
+    const dispatch = store.dispatch;
   //redux
   const _platformReduxFacade = InjectionReduxFacade.PlatformReduxFacade();
   

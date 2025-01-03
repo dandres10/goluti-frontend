@@ -24,6 +24,7 @@
       "@/*": ["src/*"],
       "@onboarding/*": ["src/onboarding/*"],
       "@appointment/*": ["src/appointment/*"],
+      "@commercial/*": ["src/commercial/*"],
       "@welcome/*": ["src/welcome/*"],
       "@core/*": ["src/core/*"],
       "@bus/*": ["src/bus/*"],

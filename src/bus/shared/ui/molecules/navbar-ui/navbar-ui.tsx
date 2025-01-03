@@ -18,6 +18,9 @@ import { useNavigate } from "react-router-dom";
 import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
 import { MenuToolsUI } from "../menu-tools/menu-tools";
 import { ROUTES } from "@/core/routes/routes";
+import { InjectionReduxFacade } from "@/bus/facade/redux";
+import { useSelector } from "react-redux";
+import { ICompanyReduxDTO } from "@/bus/domain/models/redux/bus/platform";
 
 const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 
@@ -33,7 +36,12 @@ export const NavbarUI = (props: INavbarUI) => {
   const fullWidth = useFullWidth();
   const navigate = useNavigate();
 
+  const _injectionReduxFacade = InjectionReduxFacade.PlatformReduxFacade();
 
+  const companies: ICompanyReduxDTO[] | undefined =
+    _injectionReduxFacade.readCompanies({
+      selector: useSelector,
+    });
 
   const showDrawer = () => {
     setOpenMenuHome(true);

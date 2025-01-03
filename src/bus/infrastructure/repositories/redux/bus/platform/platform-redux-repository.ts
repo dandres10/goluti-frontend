@@ -2,6 +2,7 @@ import { IConfigDTO } from '../../../../../core/interfaces';
 import { ACTIONS_BUS } from './platform.action';
 import { ICompanyReduxDTO, ICurrencyReduxDTO, ILanguageReduxDTO, ILocationReduxDTO, IPlatformReduxDTO, IRolReduxDTO, IUserReduxDTO } from '../../../../../domain/models/redux/bus/platform';
 import { IPlatformReduxRepository } from "../../../../../domain/services/repositories/redux/bus/i-platform-redux-repository";
+import { RootState } from '@/bus/core/config/redux';
 
 
 export class PlatformReduxRepository extends IPlatformReduxRepository {
