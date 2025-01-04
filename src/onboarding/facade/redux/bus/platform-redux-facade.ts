@@ -15,7 +15,7 @@ export class PlatformReduxFacade {
     }
 
 
-    public updatePlatform(params: IPlatformReduxDTO, config: IConfigDTO): void {
+    public updatePlatform(params: IPlatformReduxDTO|null, config: IConfigDTO): void {
         this.updatePlatformUseCase.execute(params,config);
     }
 

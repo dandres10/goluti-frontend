@@ -18,8 +18,10 @@ export const BusEvents = () => {
   const _platformReduxFacade = InjectionReduxFacade.PlatformReduxFacade();
 
   useEffect(() => {
+    createLogoutEvent();
     createUpdateNavbarEvent();
     listenerUpdatePlatformEvent();
+    listenerLogoutEvent();
   }, []);
 
   const createUpdateNavbarEvent = () => {
@@ -36,6 +38,16 @@ export const BusEvents = () => {
         _platformReduxFacade.savePlatform(message, { dispatch });
       }
     );
+  };
+
+  const createLogoutEvent = () => {
+    _platformEventFacade.createLogoutEvent();
+  };
+
+  const listenerLogoutEvent = () => {
+    _platformEventFacade.listenerLogoutEvent(() => {
+      _platformReduxFacade.savePlatform(null, { dispatch });
+    });
   };
 
   return null;

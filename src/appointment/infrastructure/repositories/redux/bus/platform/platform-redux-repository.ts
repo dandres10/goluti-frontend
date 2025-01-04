@@ -14,7 +14,7 @@ export class PlatformReduxRepository extends IPlatformReduxRepository {
     }
 
     public updatePlatform(
-        params: IPlatformReduxDTO,
+        params: IPlatformReduxDTO | null,
         config: IConfigDTO
     ): void {
         if (config?.dispatch) {

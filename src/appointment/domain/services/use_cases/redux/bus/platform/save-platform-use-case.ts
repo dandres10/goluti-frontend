@@ -3,12 +3,12 @@ import { UseCase } from "../../../../../../core/interfaces/use-case";
 import { IPlatformReduxDTO } from "../../../../../../domain/models/redux/bus/platform";
 import { InjectionRepositoriesRedux } from "../../../../../../infrastructure/repositories/redux/injection/injection-repositories-redux";
 
-export class UpdatePlatformUseCase implements UseCase<IPlatformReduxDTO, void> {
+export class UpdatePlatformUseCase implements UseCase<IPlatformReduxDTO | null, void> {
 
     private static instance: UpdatePlatformUseCase;
     private platformReduxRepository = InjectionRepositoriesRedux.PlatformReduxRepository()
-    
-    
+
+
 
 
     public static getInstance(): UpdatePlatformUseCase {
@@ -18,7 +18,7 @@ export class UpdatePlatformUseCase implements UseCase<IPlatformReduxDTO, void> {
     }
 
     public execute(
-        param: IPlatformReduxDTO,
+        param: IPlatformReduxDTO | null,
         config: IConfigDTO
     ): void {
         this.platformReduxRepository.updatePlatform(param, config)

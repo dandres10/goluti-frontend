@@ -34,7 +34,7 @@ export class PlatformReduxFacade {
     }
 
 
-    public savePlatform(params: IPlatformReduxDTO, config: IConfigDTO): void {
+    public savePlatform(params: IPlatformReduxDTO | null, config: IConfigDTO): void {
         this.savePlatformUseCase.execute(params, config);
     }
 

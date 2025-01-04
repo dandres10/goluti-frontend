@@ -1,5 +1,5 @@
 import { LoginView } from "./login-view";
-import { KEYS_SESSION } from "@/bus/core/const/keys-session";
+
 import { IAuthLoginResponseDTO } from "@/bus/domain/models/apis/platform/business/auth/login";
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
 import { InjectionPlatformBusinessFacade } from "@/bus/facade/apis/platform/injection/business/injection-platform-business-facade";
@@ -7,7 +7,6 @@ import { IAuthLoginRequestDTO } from "@/appointment/domain/models/apis/platform/
 import { useNavigate } from "react-router-dom";
 import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
 import { NAVBAR_TYPE } from "@/bus/shared/enums";
-
 
 export interface ILoginLogicProps {
   login: (param: IAuthLoginRequestDTO) => void;
@@ -21,8 +20,6 @@ const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 const _injectionSessionFacade = InjectionSessionFacade.PlatformSessionFacade();
 
 export const LoginLogic = () => {
- 
-
   const navigate = useNavigate();
 
   const login = async (param: IAuthLoginRequestDTO) => {
@@ -30,9 +27,7 @@ export const LoginLogic = () => {
       .login({ email: param.email, password: param.password })
       .then((res: IAuthLoginResponseDTO | null) => {
         if (res) {
-          _injectionSessionFacade.savePlatform(res, {
-            key: KEYS_SESSION.PLATFORM,
-          });
+          _injectionSessionFacade.savePlatform(res);
           handleContinue();
         }
       });

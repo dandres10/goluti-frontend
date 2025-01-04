@@ -20,7 +20,7 @@ export class SavePlatformUseCase implements UseCase<any, void> {
     }
 
     public execute(
-        param: IPlatformReduxDTO,
+        param: IPlatformReduxDTO | null,
         config: IConfigDTO
     ): void {
         this.platformReduxRepository.savePlatform(param, config)

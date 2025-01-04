@@ -12,6 +12,11 @@ import {
   ILocationReduxDTO,
   IRolReduxDTO,
 } from "@/bus/domain/models/redux/bus/platform";
+import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/core/routes/routes";
+
+const _platformEventFacade = InjectionEventFacade.PlatformEventFacade();
 
 export interface IMenuToolsUI {
   id: string;
@@ -32,6 +37,7 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
   const [locations, setLocations] = useState<any[] | undefined>([]);
   const [languages, setLanguages] = useState<any[] | undefined>([]);
   const [rols, setRols] = useState<any[] | undefined>([]);
+  const navigate = useNavigate();
   const {
     control,
     handleSubmit,
@@ -106,6 +112,12 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
     });
 
     setRols(rols);
+  };
+
+  const logout = () => {
+    _platformEventFacade.dispatchLogoutEvent();
+    navigate(ROUTES.WELCOME_HOME);
+    onClose();
   };
 
   return (
@@ -207,6 +219,7 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
             id="button-form-session"
             text="Cerrar sesión"
             className="menu-tools-ui__logout"
+            onClick={logout}
             icon={<LogoutOutlined />}
           />
         </form>

@@ -1,4 +1,5 @@
-import { BUS_EVENTS } from "../../../core/const";
+
+import { BUS_EVENTS_ENUM } from "@/bus/core/enums/events-enum";
 import { IUiReduxDTO } from "../../../../bus/domain/models/redux/bus/ui/i-ui-redux-dto";
 import { IUiEventRepository } from "../../../domain/services/repositories/events/i-ui-event-repository";
 
@@ -18,19 +19,19 @@ export class UiEventRepository extends IUiEventRepository {
     }
 
     public createUpdateNavbarTypeEvent(param: IUiReduxDTO): CustomEvent<{ message: IUiReduxDTO }> {
-        return new CustomEvent(BUS_EVENTS.UPDATE_NAVBAR, {
+        return new CustomEvent(BUS_EVENTS_ENUM.UPDATE_NAVBAR, {
             detail: { message: param }
         });
     }
 
     public listenerUpdateNavbarTypeEvent(callback: (message: IUiReduxDTO) => void): void {
-        document.addEventListener(BUS_EVENTS.UPDATE_NAVBAR, (event: any) => {
+        document.addEventListener(BUS_EVENTS_ENUM.UPDATE_NAVBAR, (event: any) => {
             callback(event?.detail?.message);
         });
     }
 
     public dispatchUpdateNavbarTypeEvent(param: IUiReduxDTO): void {
-        const updateEvent = new CustomEvent(BUS_EVENTS.UPDATE_NAVBAR, {
+        const updateEvent = new CustomEvent(BUS_EVENTS_ENUM.UPDATE_NAVBAR, {
             detail: { message: param }
         });
         document.dispatchEvent(updateEvent);

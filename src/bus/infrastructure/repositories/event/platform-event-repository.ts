@@ -1,6 +1,6 @@
-import { BUS_EVENTS } from "../../../core/const";
-import { IPlatformReduxDTO } from "../../../domain/models/redux/bus/platform";
-import { IPlatformEventRepository } from "../../../domain/services/repositories/events/i-platform-event-repository";
+import { BUS_EVENTS_ENUM } from "@/bus/core/enums/events-enum";
+import { IPlatformReduxDTO } from "@bus/domain/models/redux/bus/platform";
+import { IPlatformEventRepository } from "@bus/domain/services/repositories/events/i-platform-event-repository";
 
 
 export class PlatformEventRepository extends IPlatformEventRepository {
@@ -20,7 +20,7 @@ export class PlatformEventRepository extends IPlatformEventRepository {
 
     public createUpdatePlatformEvent(param: IPlatformReduxDTO | null): CustomEvent<{ message: IPlatformReduxDTO | null }> {
         if (!this.updatePlatformEvent) {
-            this.updatePlatformEvent = new CustomEvent(BUS_EVENTS.UPDATE_PLATFORM, {
+            this.updatePlatformEvent = new CustomEvent(BUS_EVENTS_ENUM.UPDATE_PLATFORM, {
                 detail: { message: param }
             });
         }
@@ -29,7 +29,7 @@ export class PlatformEventRepository extends IPlatformEventRepository {
 
 
     public listenerUpdatePlatformEvent(callback: (message: IPlatformReduxDTO) => void): void {
-        document.addEventListener(BUS_EVENTS.UPDATE_PLATFORM, function (event: any) {
+        document.addEventListener(BUS_EVENTS_ENUM.UPDATE_PLATFORM, function (event: any) {
             if (callback) {
                 callback(event?.detail?.message);
             }
@@ -38,6 +38,24 @@ export class PlatformEventRepository extends IPlatformEventRepository {
 
     public dispatchUpdatePlatformEvent(param: IPlatformReduxDTO): void {
         document.dispatchEvent(this.createUpdatePlatformEvent(param));
+    }
+
+
+    public createLogoutEvent(): CustomEvent {
+        return new CustomEvent(BUS_EVENTS_ENUM.LOGOUT);
+    }
+
+    public listenerLogoutEvent(callback: () => void): void {
+        document.addEventListener(BUS_EVENTS_ENUM.LOGOUT, function (event: any) {
+            if (callback) {
+                callback();
+            }
+        });
+    }
+
+    public dispatchLogoutEvent(): void {
+        const updateEvent = new CustomEvent(BUS_EVENTS_ENUM.LOGOUT);
+        document.dispatchEvent(updateEvent);
     }
 
 
