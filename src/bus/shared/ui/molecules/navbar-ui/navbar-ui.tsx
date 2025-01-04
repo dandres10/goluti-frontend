@@ -20,22 +20,42 @@ import { MenuToolsUI } from "../menu-tools/menu-tools";
 import { ROUTES } from "@/core/routes/routes";
 import { IPlatformConfigurationDTO } from "@/bus/domain/models/redux/bus/platform/i-platform-configuration-dto";
 import { capitalizeWords } from "@/bus/core/functions/capitalize-word";
+import { KEYS_SESSION_ENUM } from "@/bus/core/enums/keys-session-enum";
+import { IUiReduxDTO } from "@/bus/domain/models/redux/bus/ui/i-ui-redux-dto";
+import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
 
 const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 
 export interface INavbarUI {
   id: string;
-  navbarType: NAVBAR_TYPE;
   className?: string;
   platformConfiguration: IPlatformConfigurationDTO | undefined;
 }
 
+const _uISessionFacade = InjectionSessionFacade.UiSessionFacade();
+const ui: IUiReduxDTO | null = _uISessionFacade.readNavbarType({
+  key: KEYS_SESSION_ENUM.UI,
+});
+
 export const NavbarUI = (props: INavbarUI) => {
-  const { id, navbarType, className, platformConfiguration } = props;
+  const { id, className, platformConfiguration } = props;
   const [openMenuHome, setOpenMenuHome] = useState(false);
   const [openTools, setOpenTools] = useState(false);
+  const [navbarType, setNavbarType] = useState(NAVBAR_TYPE.HOME);
   const fullWidth = useFullWidth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    listenerUpdateNavbarEvent();
+    const type = ui ? ui.typeNavbar : NAVBAR_TYPE.HOME;
+    setNavbarType(type);
+  }, []);
+
+  const listenerUpdateNavbarEvent = () => {
+    _uIEventFacade.listenerUpdateNavbarEvent((message: IUiReduxDTO) => {
+      setNavbarType(message.typeNavbar);
+    });
+  };
 
   const showDrawer = () => {
     setOpenMenuHome(true);

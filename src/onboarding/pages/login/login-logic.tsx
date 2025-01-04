@@ -7,6 +7,7 @@ import { IAuthLoginRequestDTO } from "@/appointment/domain/models/apis/platform/
 import { useNavigate } from "react-router-dom";
 import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
 import { NAVBAR_TYPE } from "@/bus/shared/enums";
+import { useEffect } from "react";
 
 export interface ILoginLogicProps {
   login: (param: IAuthLoginRequestDTO) => void;
@@ -21,6 +22,10 @@ const _injectionSessionFacade = InjectionSessionFacade.PlatformSessionFacade();
 
 export const LoginLogic = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    _uIEventFacade.dispatchUpdateNavbarEvent({ typeNavbar: NAVBAR_TYPE.LOGIN });
+  }, []);
 
   const login = async (param: IAuthLoginRequestDTO) => {
     await _authFacade
