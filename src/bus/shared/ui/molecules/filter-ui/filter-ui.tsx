@@ -131,7 +131,7 @@ export const FilterUI = (props: IFilterUI) => {
   const [schemaFieldsCore, setSchemaFieldsCore] = useState<string[]>();
   const [dynamicSchema, setSchema] = useState(() => yup.object().shape({}));
   const [dynamicDefaultValues, setDynamicDefaultValues] = useState<any>({});
-  const [formKey, setFormKey] = useState(0);
+  const [formKey, setFormKey] = useState(Date.now());
   const defaultValuesFilter: any = {
     fieldsFilterSchema: {
       value: undefined,
@@ -346,7 +346,7 @@ export const FilterUI = (props: IFilterUI) => {
 
     setDynamicDefaultValues(newDefaultValues);
 
-    setFormKey((prev) => prev + 1);
+    setFormKey(Date.now());
   };
 
   const onSubmitFilter = (data: any) => {
@@ -628,7 +628,7 @@ export const FilterUI = (props: IFilterUI) => {
                   !["fieldsFilterSchema", "actionsFilterSchema"].includes(x)
               )
               .map((field, index) => (
-                <div>
+                <div key={`${index}c`}>
                   <div key={index} className="container-item">
                     <div className="container-item__label">
                       {getLabel(field)}
@@ -719,7 +719,7 @@ export const FilterUI = (props: IFilterUI) => {
                           ) && (
                             <div className="filter-core__body__form__container__item-range__range-date">
                               <DatePickerUI
-                                id={`${field}`}
+                                id={`${field}initial`}
                                 name={`${field}.initialValue`}
                                 control={control}
                                 status={status(errors?.[field], 1)}
@@ -734,7 +734,7 @@ export const FilterUI = (props: IFilterUI) => {
                                 disabled={isDisabled(field, 1)}
                               />
                               <DatePickerUI
-                                id={`${field}`}
+                                id={`${field}final`}
                                 name={`${field}.finalValue`}
                                 control={control}
                                 status={status(errors?.[field], 2)}
@@ -777,7 +777,7 @@ export const FilterUI = (props: IFilterUI) => {
                           ) && (
                             <div className="filter-core__body__form__container__item-range__range-currency">
                               <InputCurrencyUI
-                                id={`${field}`}
+                                id={`${field}initial`}
                                 name={`${field}.initialValue`}
                                 control={control}
                                 status={status(errors?.[field], 1)}
@@ -792,7 +792,7 @@ export const FilterUI = (props: IFilterUI) => {
                                 disabled={isDisabled(field, 1)}
                               />
                               <InputCurrencyUI
-                                id={`${field}`}
+                                id={`${field}final`}
                                 name={`${field}.finalValue`}
                                 control={control}
                                 status={status(errors?.[field], 2)}
@@ -835,7 +835,7 @@ export const FilterUI = (props: IFilterUI) => {
                           ) && (
                             <div className="filter-core__body__form__container__item-range__range-number">
                               <InputNumberUI
-                                id={`${field}`}
+                                id={`${field}initial`}
                                 name={`${field}.initialValue`}
                                 control={control}
                                 status={status(errors?.[field], 1)}
@@ -850,7 +850,7 @@ export const FilterUI = (props: IFilterUI) => {
                                 disabled={isDisabled(field, 1)}
                               />
                               <InputNumberUI
-                                id={`${field}`}
+                                id={`${field}final`}
                                 name={`${field}.finalValue`}
                                 control={control}
                                 status={status(errors?.[field], 2)}
@@ -893,7 +893,7 @@ export const FilterUI = (props: IFilterUI) => {
                           ) && (
                             <div className="filter-core__body__form__container__item-range__range-time">
                               <TimePickerUI
-                                id={`${field}`}
+                                id={`${field}initial`}
                                 name={`${field}.initialValue`}
                                 control={control}
                                 status={status(errors?.[field], 1)}
@@ -908,7 +908,7 @@ export const FilterUI = (props: IFilterUI) => {
                                 disabled={isDisabled(field, 1)}
                               />
                               <TimePickerUI
-                                id={`${field}`}
+                                id={`${field}final`}
                                 name={`${field}.finalValue`}
                                 control={control}
                                 status={status(errors?.[field], 2)}
