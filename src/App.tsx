@@ -16,6 +16,7 @@ import { InjectionReduxFacade } from "@/bus/facade/redux";
 import { IPlatformConfigurationDTO } from "@bus/domain/models/redux/bus/platform/i-platform-configuration-dto";
 import { useSelector } from "react-redux";
 
+
 const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 const _uISessionFacade = InjectionSessionFacade.UiSessionFacade();
 const typeNavbar: IUiReduxDTO | null = _uISessionFacade.readNavbarType({

@@ -26,5 +26,10 @@ export class PlatformSessionRepository extends IPlatformSessionRepository {
         return getFromSessionStorage(KEYS_SESSION_ENUM.PLATFORM);
     }
 
+    public deleteSession(): void {
+        sessionStorage.removeItem(KEYS_SESSION_ENUM.PLATFORM);
+        sessionStorage.removeItem(KEYS_SESSION_ENUM.UI);
+    }
+
 
 }

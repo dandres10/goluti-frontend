@@ -15,8 +15,10 @@ import {
 import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/routes";
+import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
 
 const _platformEventFacade = InjectionEventFacade.PlatformEventFacade();
+const _platformSessionFacade = InjectionSessionFacade.PlatformSessionFacade();
 
 export interface IMenuToolsUI {
   id: string;
@@ -116,6 +118,7 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
 
   const logout = () => {
     _platformEventFacade.dispatchLogoutEvent();
+    _platformSessionFacade.deleteSession();
     navigate(ROUTES.WELCOME_HOME);
     onClose();
   };

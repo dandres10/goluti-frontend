@@ -7,6 +7,7 @@ export class PlatformSessionFacade {
     private static instance: PlatformSessionFacade;
     private savePlatformUseCase = InjectionPlatformSessionUseCase.SavePlatformUseCase();
     private readPlatformUseCase = InjectionPlatformSessionUseCase.ReadPlatformUseCase();
+    private deleteSessionUseCase = InjectionPlatformSessionUseCase.DeleteSessionUseCase();
 
 
     public static getInstance(): PlatformSessionFacade {
@@ -25,7 +26,8 @@ export class PlatformSessionFacade {
     }
 
 
-
-
+    public deleteSession(): void {
+        this.deleteSessionUseCase.execute();
+    }
 
 }
