@@ -23,7 +23,9 @@ const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 
 export const FooterHomeUI = (props: IFooterHomeUI) => {
   const { id } = props;
-  const [navbarType, setNavbarType] = useState(NAVBAR_TYPE.HOME);
+  const [navbarType, setNavbarType] = useState(
+    ui ? ui.typeNavbar : NAVBAR_TYPE.HOME
+  );
   useEffect(() => {
     listenerUpdateNavbarEvent();
     const type = ui ? ui.typeNavbar : NAVBAR_TYPE.HOME;
