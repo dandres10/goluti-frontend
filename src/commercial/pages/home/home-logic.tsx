@@ -39,10 +39,10 @@ export interface ICommercialLogicProps {
   handlePageChange: (pagination: any) => void;
 }
 
-const url =
-  "wss://api-platform-qa.goluti.com/user/traceability_by_code_websocket?language=es&company_id=1f9a2dd5-2cf6-4350-b3d1-10dc4e8ba730&traceability_code=ONBOARDING&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xfaWQiOiJiMmYyMTJlYi0xOGMyLTQyNjAtOTIyMy04OTc2ODUwODY5MDQiLCJyb2xfY29kZSI6IkFETUlOIiwicGVybWlzc2lvbnMiOlsiVVBEQVRFIiwiUkVBRCIsIkRFTEVURSIsIlNBVkUiLCJMSVNUIiwiSE9NRSJdLCJkYXRlIjoiMjAyNC0xMS0wOCAwMDozNjo1NS43MDk3NTErMDA6MDAifQ.AP_iVX5f_4Ul-w-oV8woM_imn2m83dx-QFjE7VP0EDY";
 /* const url =
-  "ws://localhost:8002/tracking-manager/traceability_by_code_websocket?language=es&company_id=1f9a2dd5-2cf6-4350-b3d1-10dc4e8ba730&traceability_code=ONBOARDING&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xfaWQiOiJiMmYyMTJlYi0xOGMyLTQyNjAtOTIyMy04OTc2ODUwODY5MDQiLCJyb2xfY29kZSI6IkFETUlOIiwicGVybWlzc2lvbnMiOlsiVVBEQVRFIiwiUkVBRCIsIkRFTEVURSIsIlNBVkUiLCJMSVNUIiwiSE9NRSJdLCJkYXRlIjoiMjAyNC0xMS0wOCAwMDozNjo1NS43MDk3NTErMDA6MDAifQ.AP_iVX5f_4Ul-w-oV8woM_imn2m83dx-QFjE7VP0EDY"; */
+  "wss://api-platform-qa.goluti.com/user/traceability_by_code_websocket?language=es&company_id=1f9a2dd5-2cf6-4350-b3d1-10dc4e8ba730&traceability_code=ONBOARDING&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xfaWQiOiJiMmYyMTJlYi0xOGMyLTQyNjAtOTIyMy04OTc2ODUwODY5MDQiLCJyb2xfY29kZSI6IkFETUlOIiwicGVybWlzc2lvbnMiOlsiVVBEQVRFIiwiUkVBRCIsIkRFTEVURSIsIlNBVkUiLCJMSVNUIiwiSE9NRSJdLCJkYXRlIjoiMjAyNC0xMS0wOCAwMDozNjo1NS43MDk3NTErMDA6MDAifQ.AP_iVX5f_4Ul-w-oV8woM_imn2m83dx-QFjE7VP0EDY"; */
+const url =
+  "ws://localhost:8002/tracking-manager/traceability_by_code_websocket?language=es&company_id=1f9a2dd5-2cf6-4350-b3d1-10dc4e8ba730&traceability_code=ONBOARDING&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xfaWQiOiJiMmYyMTJlYi0xOGMyLTQyNjAtOTIyMy04OTc2ODUwODY5MDQiLCJyb2xfY29kZSI6IkFETUlOIiwicGVybWlzc2lvbnMiOlsiVVBEQVRFIiwiUkVBRCIsIkRFTEVURSIsIlNBVkUiLCJMSVNUIiwiSE9NRSJdLCJkYXRlIjoiMjAyNC0xMS0wOCAwMDozNjo1NS43MDk3NTErMDA6MDAifQ.AP_iVX5f_4Ul-w-oV8woM_imn2m83dx-QFjE7VP0EDY";
 
 export const CommercialLogic = () => {
   const { data, connectionStatus, updatePagination } = useWebSocketPagination(

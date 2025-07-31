@@ -8,6 +8,7 @@ import ChatComponent from "@/commercial/pages/voice/voice-logic";
 import AppointmentLogic from "@/appointment/pages/home/home-logic";
 import PlatformLogic from "@/platform/pages/home/home-logic";
 import { PrivateRoute } from "@/bus/core/routes";
+import DialogLogic from "@/commercial/pages/dialog/dialog-logic";
 
 export const RoutesCore = () => {
   return (
@@ -43,6 +44,14 @@ export const RoutesCore = () => {
         element={
           <PrivateRoute>
             <ChatComponent />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path={ROUTES.COMMERCIAL_DIALOG}
+        element={
+          <PrivateRoute>
+            <DialogLogic />
           </PrivateRoute>
         }
       />
