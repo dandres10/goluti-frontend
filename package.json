@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "development:mode": "vite --mode development",
+    "dev:mobile": "vite --mode development.network --host 0.0.0.0 --port 5173",
     "qa:mode": "vite --mode qa",
     "staging:mode": "vite --mode staging",
     "production:mode": "vite --mode production",
