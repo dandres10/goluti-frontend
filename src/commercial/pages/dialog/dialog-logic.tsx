@@ -37,10 +37,11 @@ export interface ICommercialLogicProps {
   handlePageChange: (pagination: any) => void;
 }
 
-/* const url =
-  "wss://api-platform-qa.goluti.com/dialog/dialog-by-chat-id-websocket?language=es&chat_id=9b8812ba-5342-4a75-887d-3c3f1873b183&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xfaWQiOiJiMmYyMTJlYi0xOGMyLTQyNjAtOTIyMy04OTc2ODUwODY5MDQiLCJyb2xfY29kZSI6IkFETUlOIiwicGVybWlzc2lvbnMiOlsiVVBEQVRFIiwiUkVBRCIsIkRFTEVURSIsIlNBVkUiLCJMSVNUIiwiSE9NRSJdLCJkYXRlIjoiMjAyNC0xMS0wOCAwMDozNjo1NS43MDk3NTErMDA6MDAifQ.AP_iVX5f_4Ul-w-oV8woM_imn2m83dx-QFjE7VP0EDY"; */
+//TODO: Cambiar a la url de producción el "ws" se usa cuando es http y "wss" cuando es https
 const url =
-  "ws://localhost:8003/dialog/dialog-by-chat-id-websocket?language=es&chat_id=9b8812ba-5342-4a75-887d-3c3f1873b183&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xfaWQiOiJiMmYyMTJlYi0xOGMyLTQyNjAtOTIyMy04OTc2ODUwODY5MDQiLCJyb2xfY29kZSI6IkFETUlOIiwicGVybWlzc2lvbnMiOlsiVVBEQVRFIiwiUkVBRCIsIkRFTEVURSIsIlNBVkUiLCJMSVNUIiwiSE9NRSJdLCJkYXRlIjoiMjAyNC0xMS0wOCAwMDozNjo1NS43MDk3NTErMDA6MDAifQ.AP_iVX5f_4Ul-w-oV8woM_imn2m83dx-QFjE7VP0EDY";
+  "ws://backend-chat-prod-env.eba-u59rr9y2.us-east-1.elasticbeanstalk.com/dialog/dialog-by-chat-id-websocket?language=es&chat_id=9b8812ba-5342-4a75-887d-3c3f1873b183&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xfaWQiOiJiMmYyMTJlYi0xOGMyLTQyNjAtOTIyMy04OTc2ODUwODY5MDQiLCJyb2xfY29kZSI6IkFETUlOIiwicGVybWlzc2lvbnMiOlsiVVBEQVRFIiwiUkVBRCIsIkRFTEVURSIsIlNBVkUiLCJMSVNUIiwiSE9NRSJdLCJkYXRlIjoiMjAyNC0xMS0wOCAwMDozNjo1NS43MDk3NTErMDA6MDAifQ.AP_iVX5f_4Ul-w-oV8woM_imn2m83dx-QFjE7VP0EDY";
+/* const url =
+  "ws://localhost:8003/dialog/dialog-by-chat-id-websocket?language=es&chat_id=9b8812ba-5342-4a75-887d-3c3f1873b183&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xfaWQiOiJiMmYyMTJlYi0xOGMyLTQyNjAtOTIyMy04OTc2ODUwODY5MDQiLCJyb2xfY29kZSI6IkFETUlOIiwicGVybWlzc2lvbnMiOlsiVVBEQVRFIiwiUkVBRCIsIkRFTEVURSIsIlNBVkUiLCJMSVNUIiwiSE9NRSJdLCJkYXRlIjoiMjAyNC0xMS0wOCAwMDozNjo1NS43MDk3NTErMDA6MDAifQ.AP_iVX5f_4Ul-w-oV8woM_imn2m83dx-QFjE7VP0EDY"; */
 
 export const DialogLogic = () => {
   const { data, connectionStatus, updatePagination } = useWebSocketPagination(
