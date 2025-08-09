@@ -2,8 +2,6 @@ import "./home.scss";
 import { PropsHomeLogic } from "./home-logic";
 import { ButtonUI } from "@/bus/shared/ui/atoms";
 
-
-
 export const HomeView = (props: PropsHomeLogic) => {
 
 
