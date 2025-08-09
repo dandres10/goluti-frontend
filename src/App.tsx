@@ -9,6 +9,12 @@ import { FooterHomeUI, NavbarUI } from "@bus/shared/ui/molecules";
 import { InjectionReduxFacade } from "@/bus/facade/redux";
 import { IPlatformConfigurationDTO } from "@bus/domain/models/redux/bus/platform/i-platform-configuration-dto";
 import { useSelector } from "react-redux";
+import { InjectionPlatformEntitiesFacade } from "@bus/facade/apis/platform/injection/entities/injection-platform-entities-facade";
+import type { ILocationDTO } from "@bus/domain/models/apis/platform/entities/location";
+import { CONDITION_TYPE_ENUM } from "@bus/core/enums/condition-type-enum";
+
+const _injectionPlatformEntitiesFacade = InjectionPlatformEntitiesFacade.LocationFacade();
+
 
 function App() {
   const _injectionReduxFacade = InjectionReduxFacade.PlatformReduxFacade();
@@ -16,6 +22,22 @@ function App() {
     _injectionReduxFacade.platformConfiguration({
       selector: useSelector,
     });
+
+  const onChangeCompany = async (company: string): Promise<ILocationDTO[] | null> => {
+    return await _injectionPlatformEntitiesFacade.list({
+      skip: 0,
+      limit: 0,
+      all_data: true,
+      filters: [
+        {
+          field: "company_id",
+          condition: CONDITION_TYPE_ENUM.IN.toString(),
+          value: [company]
+        }
+      ]
+    }).then((locations: ILocationDTO[] | null) => locations ?? []);
+  };
+
 
   return (
     <>
@@ -29,6 +51,7 @@ function App() {
           id="navbar-core"
           className="home-view__navbar"
           platformConfiguration={platformConfiguration}
+          onChangeCompany={onChangeCompany}
         />
         <RoutesCore />
         <FooterHomeUI id="footer-home" />
