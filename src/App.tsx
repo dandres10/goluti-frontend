@@ -9,8 +9,8 @@ import { FooterHomeUI, NavbarUI } from "@bus/shared/ui/molecules";
 import { InjectionReduxFacade } from "@/bus/facade/redux";
 import { IPlatformConfigurationDTO } from "@bus/domain/models/redux/bus/platform/i-platform-configuration-dto";
 import { useSelector } from "react-redux";
-import { InjectionPlatformEntitiesFacade } from "@bus/facade/apis/platform/injection/entities/injection-platform-entities-facade";
-import type { ILocationDTO } from "@bus/domain/models/apis/platform/entities/location";
+import { InjectionPlatformEntitiesFacade } from "@platform/facade/apis/platform/injection/entities/injection-platform-entities-facade";
+import type { ILocationDTO } from "@platform/domain/models/apis/platform/entities/location";
 import { CONDITION_TYPE_ENUM } from "@bus/core/enums/condition-type-enum";
 
 const _injectionPlatformEntitiesFacade = InjectionPlatformEntitiesFacade.LocationFacade();

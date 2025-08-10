@@ -16,7 +16,7 @@ import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-eve
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/routes";
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
-import { ILocationDTO } from "@/bus/domain/models/apis/platform/entities/location";
+import { ILocationDTO } from "@platform/domain/models/apis/platform/entities/location";
 
 const _platformEventFacade = InjectionEventFacade.PlatformEventFacade();
 const _platformSessionFacade = InjectionSessionFacade.PlatformSessionFacade();

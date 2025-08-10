@@ -23,7 +23,7 @@ import { capitalizeWords } from "@/bus/core/functions/capitalize-word";
 import { KEYS_SESSION_ENUM } from "@/bus/core/enums/keys-session-enum";
 import { IUiReduxDTO } from "@/bus/domain/models/redux/bus/ui/i-ui-redux-dto";
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
-import { ILocationDTO } from "@/bus/domain/models/apis/platform/entities/location";
+import { ILocationDTO } from "@platform/domain/models/apis/platform/entities/location";
 
 const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 
