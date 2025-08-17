@@ -1,4 +1,5 @@
 export interface ILocationUpdateDTO {
+  id: string;
   companyId?: string;
   countryId?: string;
   name?: string;

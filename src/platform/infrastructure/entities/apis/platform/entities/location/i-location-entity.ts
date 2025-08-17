@@ -1,7 +1,7 @@
 export interface ILocationEntity {
-  id?: string;
-  company_id?: string;
-  country_id?: string;
+  id: string;
+  company_id: string;
+  country_id: string;
   name: string;
   address: string;
   city: string;

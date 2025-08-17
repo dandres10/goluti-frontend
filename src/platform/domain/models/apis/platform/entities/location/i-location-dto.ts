@@ -1,7 +1,7 @@
 export interface ILocationDTO {
-  id?: string;
-  companyId?: string;
-  countryId?: string;
+  id: string;
+  companyId: string;
+  countryId: string;
   name: string;
   address: string;
   city: string;

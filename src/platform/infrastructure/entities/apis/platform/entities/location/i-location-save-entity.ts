@@ -1,6 +1,6 @@
 export interface ILocationSaveEntity {
-  company_id?: string;
-  country_id?: string;
+  company_id: string;
+  country_id: string;
   name: string;
   address: string;
   city: string;

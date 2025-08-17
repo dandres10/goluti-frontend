@@ -12,8 +12,10 @@ import { useSelector } from "react-redux";
 import { InjectionPlatformEntitiesFacade } from "@platform/facade/apis/platform/injection/entities/injection-platform-entities-facade";
 import type { ILocationDTO } from "@platform/domain/models/apis/platform/entities/location";
 import { CONDITION_TYPE_ENUM } from "@bus/core/enums/condition-type-enum";
+import { IPlatformUpdateDTO } from "@platform/domain/models/apis/platform/entities/platform";
 
-const _injectionPlatformEntitiesFacade = InjectionPlatformEntitiesFacade.LocationFacade();
+const _injectionPlatformEntitiesFacadeLocation = InjectionPlatformEntitiesFacade.LocationFacade();
+const _injectionPlatformEntitiesFacadePlatform = InjectionPlatformEntitiesFacade.PlatformFacade();
 
 
 function App() {
@@ -24,7 +26,7 @@ function App() {
     });
 
   const onChangeCompany = async (company: string): Promise<ILocationDTO[] | null> => {
-    return await _injectionPlatformEntitiesFacade.list({
+    return await _injectionPlatformEntitiesFacadeLocation.list({
       skip: 0,
       limit: 0,
       all_data: true,
@@ -36,6 +38,18 @@ function App() {
         }
       ]
     }).then((locations: ILocationDTO[] | null) => locations ?? []);
+  };
+
+  const onUpdatePlatform = async (platform: IPlatformUpdateDTO): Promise<void> => {
+
+    const platformUpdateDTO: IPlatformUpdateDTO = {
+      id: platform.id,
+      languageId: platform.languageId,
+      locationId: platform.locationId,
+      currencyId: platform.currencyId
+    };
+
+    await _injectionPlatformEntitiesFacadePlatform.update(platformUpdateDTO)
   };
 
 
@@ -52,6 +66,7 @@ function App() {
           className="home-view__navbar"
           platformConfiguration={platformConfiguration}
           onChangeCompany={onChangeCompany}
+          onUpdatePlatform={onUpdatePlatform}
         />
         <RoutesCore />
         <FooterHomeUI id="footer-home" />

@@ -1,6 +1,6 @@
 export interface ILocationSaveDTO {
-  companyId?: string;
-  countryId?: string;
+  companyId: string;
+  countryId: string;
   name: string;
   address: string;
   city: string;

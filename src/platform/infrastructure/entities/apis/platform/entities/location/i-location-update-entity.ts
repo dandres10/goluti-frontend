@@ -1,4 +1,5 @@
 export interface ILocationUpdateEntity {
+  id: string;
   company_id?: string;
   country_id?: string;
   name?: string;

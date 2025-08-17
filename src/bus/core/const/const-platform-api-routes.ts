@@ -3,5 +3,7 @@ export const CONST_PLATFORM_API_ROUTES = {
     AUTH_REFRESH_TOKEN: 'auth/refresh_token',
     AUTH_LOGOUT: 'auth/logout',
     LOCATION: 'location',
-    LOCATION_LIST: 'location/list'
+    PLATFORM: 'platform',
+    LOCATION_LIST: 'location/list',
+    PLATFORM_LIST: 'platform/list'
 }

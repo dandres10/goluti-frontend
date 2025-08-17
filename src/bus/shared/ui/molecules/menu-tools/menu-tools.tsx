@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/routes";
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
 import { ILocationDTO } from "@platform/domain/models/apis/platform/entities/location";
+import { IPlatformUpdateDTO } from "@/platform/domain/models/apis/platform/entities/platform";
 
 const _platformEventFacade = InjectionEventFacade.PlatformEventFacade();
 const _platformSessionFacade = InjectionSessionFacade.PlatformSessionFacade();
@@ -25,6 +26,7 @@ export interface IMenuToolsUI {
   id: string;
   onClose: () => void;
   onChangeCompany: (company: string) => Promise<ILocationDTO[] | null>;
+  onUpdatePlatform: (platform: IPlatformUpdateDTO) => Promise<void>;
   platformConfiguration: IPlatformConfigurationDTO | undefined;
 }
 
@@ -35,8 +37,16 @@ const schema = yup.object({
   language: yup.string().required("Idioma es requerido"),
 });
 
+// Definición del tipo para los valores del formulario
+interface MenuToolsFormValues {
+  rol: string;
+  company: string;
+  location: string;
+  language: string;
+}
+
 export const MenuToolsUI = (props: IMenuToolsUI) => {
-  const { id, onClose, onChangeCompany, platformConfiguration } = props;
+  const { id, onClose, onChangeCompany, onUpdatePlatform, platformConfiguration } = props;
   const [companies, setCompanies] = useState<IDataSourceDTO[] | undefined>([]);
   const [locations, setLocations] = useState<IDataSourceDTO[] | undefined>([]);
   const [languages, setLanguages] = useState<IDataSourceDTO[] | undefined>([]);
@@ -48,7 +58,7 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
     formState: { errors, isValid },
     trigger,
     setValue,
-  } = useForm({
+  } = useForm<MenuToolsFormValues>({
     defaultValues: {
       rol: platformConfiguration?.rol_id ?? "",
       company: platformConfiguration?.company_id ?? "",
@@ -58,8 +68,14 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<any> = (data: any) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<MenuToolsFormValues> = (data: MenuToolsFormValues) => {
+    const platformUpdateDTO: IPlatformUpdateDTO = {
+      id: platformConfiguration?.platform?.id ?? "",
+      languageId: data.language,
+      locationId: data.location,
+      currencyId: platformConfiguration?.platform?.currencyId ?? "",
+    };
+    onUpdatePlatform(platformUpdateDTO);
   };
 
   useEffect(() => {

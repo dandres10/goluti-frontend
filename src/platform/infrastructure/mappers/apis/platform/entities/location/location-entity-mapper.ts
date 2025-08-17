@@ -15,6 +15,7 @@ export class LocationEntityMapper extends Mapper<ILocationEntity, ILocationDTO> 
   public mapFrom(param: ILocationEntity): ILocationDTO {
     return {
       id: param.id,
+      id: param.id,
       companyId: param.company_id,
       countryId: param.country_id,
       name: param.name,
@@ -33,6 +34,7 @@ export class LocationEntityMapper extends Mapper<ILocationEntity, ILocationDTO> 
 
   public mapTo(param: ILocationDTO): ILocationEntity {
     return {
+      id: param.id,
       id: param.id,
       company_id: param.companyId,
       country_id: param.countryId,
