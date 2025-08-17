@@ -49,7 +49,7 @@ function App() {
       currencyId: platform.currencyId
     };
 
-    await _injectionPlatformEntitiesFacadePlatform.update(platformUpdateDTO)
+    await _injectionPlatformEntitiesFacadePlatform.update(platformUpdateDTO);
   };
 
 
