@@ -34,7 +34,8 @@ export class PlatformConfigurationUseCase implements UseCase<any, IPlatformConfi
             locations: this.platformRepository.readLocations(config),
             currencies: this.platformRepository.readCurrencies(config),
             companies: this.platformRepository.readCompanies(config),
-            rols: rols
+            rols: rols,
+            platform: this.platformRepository.readPlatform(config)
         }
 
         return setIPlatformConfigurationDTO;

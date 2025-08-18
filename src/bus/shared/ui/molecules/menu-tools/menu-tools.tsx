@@ -1,6 +1,6 @@
 import { CloseOutlined, LogoutOutlined, SaveOutlined } from "@ant-design/icons";
 import "./menu-tools.scss";
-import { ButtonUI, SelectUI } from "../../atoms";
+import { ButtonUI, IDataSourceDTO, SelectUI } from "@bus/shared/ui/atoms";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -16,6 +16,8 @@ import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-eve
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/routes";
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
+import { ILocationDTO } from "@platform/domain/models/apis/platform/entities/location";
+import { IPlatformUpdateDTO } from "@/platform/domain/models/apis/platform/entities/platform";
 
 const _platformEventFacade = InjectionEventFacade.PlatformEventFacade();
 const _platformSessionFacade = InjectionSessionFacade.PlatformSessionFacade();
@@ -23,6 +25,8 @@ const _platformSessionFacade = InjectionSessionFacade.PlatformSessionFacade();
 export interface IMenuToolsUI {
   id: string;
   onClose: () => void;
+  onChangeCompany: (company: string) => Promise<ILocationDTO[] | null>;
+  onUpdatePlatform: (platform: IPlatformUpdateDTO) => Promise<void>;
   platformConfiguration: IPlatformConfigurationDTO | undefined;
 }
 
@@ -33,11 +37,19 @@ const schema = yup.object({
   language: yup.string().required("Idioma es requerido"),
 });
 
+// Definición del tipo para los valores del formulario
+interface MenuToolsFormValues {
+  rol: string;
+  company: string;
+  location: string;
+  language: string;
+}
+
 export const MenuToolsUI = (props: IMenuToolsUI) => {
-  const { id, onClose, platformConfiguration } = props;
-  const [companies, setCompanies] = useState<any[] | undefined>([]);
-  const [locations, setLocations] = useState<any[] | undefined>([]);
-  const [languages, setLanguages] = useState<any[] | undefined>([]);
+  const { id, onClose, onChangeCompany, onUpdatePlatform, platformConfiguration } = props;
+  const [companies, setCompanies] = useState<IDataSourceDTO[] | undefined>([]);
+  const [locations, setLocations] = useState<IDataSourceDTO[] | undefined>([]);
+  const [languages, setLanguages] = useState<IDataSourceDTO[] | undefined>([]);
   const [rols, setRols] = useState<any[] | undefined>([]);
   const navigate = useNavigate();
   const {
@@ -45,7 +57,8 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
     handleSubmit,
     formState: { errors, isValid },
     trigger,
-  } = useForm({
+    setValue,
+  } = useForm<MenuToolsFormValues>({
     defaultValues: {
       rol: platformConfiguration?.rol_id ?? "",
       company: platformConfiguration?.company_id ?? "",
@@ -55,8 +68,14 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<any> = (data: any) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<MenuToolsFormValues> = (data: MenuToolsFormValues) => {
+    const platformUpdateDTO: IPlatformUpdateDTO = {
+      id: platformConfiguration?.platform?.id ?? "",
+      languageId: data.language,
+      locationId: data.location,
+      currencyId: platformConfiguration?.platform?.currencyId ?? "",
+    };
+    onUpdatePlatform(platformUpdateDTO);
   };
 
   useEffect(() => {
@@ -123,6 +142,22 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
     onClose();
   };
 
+  const handleChangeCompany = async (company: string) => {
+    let locations = await onChangeCompany(company).then((locations: ILocationDTO[] | null) => locations ?? []);
+    if (!locations) {
+      return;
+    }
+    setValue('location', '');
+    await trigger('location');
+    const locationsDataSource = locations.map((location: ILocationDTO) => {
+      return {
+        label: location.name,
+        value: location.id ?? "",
+      };
+    });
+    setLocations(locationsDataSource);
+  };
+
   return (
     <div key={id} className="menu-tools-ui">
       <div className="menu-tools-ui__head">
@@ -169,7 +204,10 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
               control={control}
               status={errors.company?.message ? "error" : undefined}
               errors={errors.company?.message}
-              onChange={() => trigger("company")}
+              onChange={(e) => {
+                trigger("company");
+                handleChangeCompany(e);
+              }}
               placeholder="Compañia"
               dataSource={companies}
               className="menu-tools-ui__form__wrapper-select__select"

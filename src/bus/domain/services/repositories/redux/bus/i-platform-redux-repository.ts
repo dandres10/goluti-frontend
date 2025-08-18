@@ -4,6 +4,7 @@ import {
     ICurrencyReduxDTO,
     ILanguageReduxDTO,
     ILocationReduxDTO,
+    IPlatformInitialReduxDTO,
     IPlatformReduxDTO,
     IRolReduxDTO,
     IUserReduxDTO
@@ -18,6 +19,7 @@ export abstract class IPlatformReduxRepository {
     abstract readLanguage(config: IConfigDTO): ILanguageReduxDTO | undefined;
     abstract readLocation(config: IConfigDTO): ILocationReduxDTO | undefined;
     abstract readCurrency(config: IConfigDTO): ICurrencyReduxDTO | undefined;
+    abstract readPlatform(config: IConfigDTO): IPlatformInitialReduxDTO | undefined;
 
     abstract readLocations(config: IConfigDTO): ILocationReduxDTO[] | undefined;
     abstract readLanguages(config: IConfigDTO): ILanguageReduxDTO[] | undefined;

@@ -29,6 +29,10 @@
   --scroll: #bfbfbf;
 }
 
+* {
+  box-sizing: content-box;
+}
+
 body {
   margin: 0;
 }

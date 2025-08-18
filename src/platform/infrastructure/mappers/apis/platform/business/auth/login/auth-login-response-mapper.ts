@@ -1,15 +1,14 @@
-import { Mapper } from "../../../../../../../core/classes";
-import { IAuthLoginResponseDTO } from "../../../../../../../domain/models/apis/platform/business/auth/login";
-import { IAuthLoginResponseEntity } from "../../../../../../entities/apis/platform/business/auth/login";
-import { InjectionPlatformBusinessAuthMapper } from "../../../injection/business/injection-platform-business-auth-mapper";
+import { Mapper } from "@bus/core/classes";
+import { IAuthLoginResponseDTO } from "@platform/domain/models/apis/platform/business/auth";
+import { IAuthLoginResponseEntity } from "@platform/infrastructure/entities/apis/platform/business/auth";
+import { InjectionPlatformBusinessAuthLoginMapper } from "@platform/infrastructure/mappers/apis/platform/injection/business/auth/injection-platform-business-auth-login-mapper";
 
 export class AuthLoginResponseMapper extends Mapper<IAuthLoginResponseEntity, IAuthLoginResponseDTO> {
 
     private static instance: AuthLoginResponseMapper;
-    private platformConfigurationResponseMapper = InjectionPlatformBusinessAuthMapper.PlatformConfigurationResponseMapper()
-    private platformVariationsResponseMapper = InjectionPlatformBusinessAuthMapper.PlatformVariationsResponseMapper()
+    private platformConfigurationresponseMapper = InjectionPlatformBusinessAuthLoginMapper.PlatformConfigurationResponseMapper()
+    private platformVariationsresponseMapper = InjectionPlatformBusinessAuthLoginMapper.PlatformVariationsResponseMapper()
     public constructor() { super(); }
-
 
     public static getInstance(): AuthLoginResponseMapper {
         if (!AuthLoginResponseMapper.instance)
@@ -19,8 +18,8 @@ export class AuthLoginResponseMapper extends Mapper<IAuthLoginResponseEntity, IA
 
     public mapFrom(param: IAuthLoginResponseEntity): IAuthLoginResponseDTO {
         return {
-            platformConfiguration: this.platformConfigurationResponseMapper.mapFrom(param.platform_configuration),
-            platformVariations: this.platformVariationsResponseMapper.mapFrom(param.platform_variations),
+            platformConfiguration: this.platformConfigurationresponseMapper.mapFrom(param.platform_configuration),
+            platformVariations: this.platformVariationsresponseMapper.mapFrom(param.platform_variations),
             token: param.token
         }
     }
@@ -33,8 +32,8 @@ export class AuthLoginResponseMapper extends Mapper<IAuthLoginResponseEntity, IA
 
     public mapTo(param: IAuthLoginResponseDTO): IAuthLoginResponseEntity {
         return {
-            platform_configuration: this.platformConfigurationResponseMapper.mapTo(param.platformConfiguration),
-            platform_variations: this.platformVariationsResponseMapper.mapTo(param.platformVariations),
+            platform_configuration: this.platformConfigurationresponseMapper.mapTo(param.platformConfiguration),
+            platform_variations: this.platformVariationsresponseMapper.mapTo(param.platformVariations),
             token: param.token
         }
     }
@@ -44,5 +43,4 @@ export class AuthLoginResponseMapper extends Mapper<IAuthLoginResponseEntity, IA
             return this.mapTo(param);
         })
     }
-
 }

@@ -1,6 +1,6 @@
 import { IConfigDTO } from '../../../../../core/interfaces';
 import { ACTIONS_BUS } from './platform.action';
-import { ICompanyReduxDTO, ICurrencyReduxDTO, ILanguageReduxDTO, ILocationReduxDTO, IPlatformReduxDTO, IRolReduxDTO, IUserReduxDTO } from '../../../../../domain/models/redux/bus/platform';
+import { ICompanyReduxDTO, ICurrencyReduxDTO, ILanguageReduxDTO, ILocationReduxDTO, IPlatformInitialReduxDTO, IPlatformReduxDTO, IRolReduxDTO, IUserReduxDTO } from '../../../../../domain/models/redux/bus/platform';
 import { IPlatformReduxRepository } from "../../../../../domain/services/repositories/redux/bus/i-platform-redux-repository";
 
 
@@ -98,6 +98,14 @@ export class PlatformReduxRepository extends IPlatformReduxRepository {
     public readCurrencies(config: IConfigDTO): ICurrencyReduxDTO[] | undefined {
         if (config?.selector) {
             const data = config.selector((state: any) => state?.bus?.platform?.variations?.currencies);
+            return data;
+        }
+        return undefined;
+    }
+
+    public readPlatform(config: IConfigDTO): IPlatformInitialReduxDTO | undefined {
+        if (config?.selector) {
+            const data = config.selector((state: any) => state?.bus?.platform?.configuration?.platform);
             return data;
         }
         return undefined;

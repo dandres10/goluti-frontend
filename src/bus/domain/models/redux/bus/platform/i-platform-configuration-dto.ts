@@ -2,6 +2,7 @@ import { ICompanyReduxDTO } from "./i-company-redux-dto";
 import { ICurrencyReduxDTO } from "./i-currency-redux-dto";
 import { ILanguageReduxDTO } from "./i-language-redux-dto";
 import { ILocationReduxDTO } from "./i-location-redux-dto";
+import { IPlatformInitialReduxDTO } from "./i-platform-initial-redux-dto";
 import { IRolReduxDTO } from "./i-rol-redux-dto";
 
 export interface IPlatformConfigurationDTO {
@@ -15,4 +16,5 @@ export interface IPlatformConfigurationDTO {
     currencies?: ICurrencyReduxDTO[],
     companies?: ICompanyReduxDTO[],
     rols?: IRolReduxDTO[],
+    platform?: IPlatformInitialReduxDTO,
 }

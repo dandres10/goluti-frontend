@@ -23,6 +23,8 @@ import { capitalizeWords } from "@/bus/core/functions/capitalize-word";
 import { KEYS_SESSION_ENUM } from "@/bus/core/enums/keys-session-enum";
 import { IUiReduxDTO } from "@/bus/domain/models/redux/bus/ui/i-ui-redux-dto";
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
+import { ILocationDTO } from "@platform/domain/models/apis/platform/entities/location";
+import { IPlatformUpdateDTO } from "@/platform/domain/models/apis/platform/entities/platform";
 
 const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 
@@ -30,6 +32,8 @@ export interface INavbarUI {
   id: string;
   className?: string;
   platformConfiguration: IPlatformConfigurationDTO | undefined;
+  onChangeCompany: (company: string) => Promise<ILocationDTO[] | null>;
+  onUpdatePlatform: (platform: IPlatformUpdateDTO) => Promise<void>;
 }
 
 const _uISessionFacade = InjectionSessionFacade.UiSessionFacade();
@@ -38,7 +42,7 @@ const ui: IUiReduxDTO | null = _uISessionFacade.readNavbarType({
 });
 
 export const NavbarUI = (props: INavbarUI) => {
-  const { id, className, platformConfiguration } = props;
+  const { id, className, platformConfiguration, onChangeCompany, onUpdatePlatform } = props;
   const [openMenuHome, setOpenMenuHome] = useState(false);
   const [openTools, setOpenTools] = useState(false);
   const [navbarType, setNavbarType] = useState(NAVBAR_TYPE.HOME);
@@ -236,6 +240,8 @@ export const NavbarUI = (props: INavbarUI) => {
           <MenuToolsUI
             id="menu-tools"
             onClose={onCloseTools}
+            onChangeCompany={onChangeCompany}
+            onUpdatePlatform={onUpdatePlatform}
             platformConfiguration={platformConfiguration}
           />
         }
