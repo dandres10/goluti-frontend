@@ -13,9 +13,11 @@ import { InjectionPlatformEntitiesFacade } from "@platform/facade/apis/platform/
 import type { ILocationDTO } from "@platform/domain/models/apis/platform/entities/location";
 import { CONDITION_TYPE_ENUM } from "@bus/core/enums/condition-type-enum";
 import { IPlatformUpdateDTO } from "@platform/domain/models/apis/platform/entities/platform";
+import { InjectionPlatformBusinessFacade } from "@platform/facade/apis/platform/injection/business/injection-platform-business-facade";
 
 const _injectionPlatformEntitiesFacadeLocation = InjectionPlatformEntitiesFacade.LocationFacade();
 const _injectionPlatformEntitiesFacadePlatform = InjectionPlatformEntitiesFacade.PlatformFacade();
+const _injectionPlatformBusinessFacadeAuth = InjectionPlatformBusinessFacade.AuthFacade();
 
 
 function App() {
@@ -49,7 +51,19 @@ function App() {
       currencyId: platform.currencyId
     };
 
-    await _injectionPlatformEntitiesFacadePlatform.update(platformUpdateDTO);
+    await _injectionPlatformEntitiesFacadePlatform
+      .update(platformUpdateDTO)
+      .then(async () => {
+        await refreshToken();
+      });
+  };
+
+  const refreshToken = async (): Promise<void> => {
+    await _injectionPlatformBusinessFacadeAuth
+      .refreshToken()
+      .then((data) => {
+        console.log(data);
+      });
   };
 
 
