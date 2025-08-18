@@ -1,12 +1,12 @@
-import { Mapper } from "../../../../../../../core/classes";
-import { IAuthLoginRequestDTO } from "../../../../../../../domain/models/apis/platform/business/auth/login";
-import { IAuthLoginRequestEntity } from "../../../../../../entities/apis/platform/business/auth/login";
+import { Mapper } from "@bus/core/classes";
+import { IAuthLoginRequestDTO } from "@platform/domain/models/apis/platform/business/auth";
+import { IAuthLoginRequestEntity } from "@platform/infrastructure/entities/apis/platform/business/auth";
 
 export class AuthLoginRequestMapper extends Mapper<IAuthLoginRequestEntity, IAuthLoginRequestDTO> {
 
     private static instance: AuthLoginRequestMapper;
-    public constructor() { super(); }
 
+    public constructor() { super(); }
 
     public static getInstance(): AuthLoginRequestMapper {
         if (!AuthLoginRequestMapper.instance)
@@ -39,5 +39,4 @@ export class AuthLoginRequestMapper extends Mapper<IAuthLoginRequestEntity, IAut
             return this.mapTo(param);
         })
     }
-
 }

@@ -1,11 +1,18 @@
-import { IConfigDTO } from "../../../../../../core/interfaces";
-import { IAuthLoginResponseDTO } from "../../../../../models/apis/platform/business/auth/login";
-import { IRefreshTokenResponseDTO } from "../../../../../models/apis/platform/business/auth/refresh-token";
-import { IAuthLoginRequestEntity } from "../../../../../../infrastructure/entities/apis/platform/business/auth/login";
-import { ILogoutResponseDTO } from "../../../../../models/apis/platform/business/auth/logout/i-logout-response-dto";
+import { IConfigDTO } from "@bus/core/interfaces";
+import { 
+  IAuthLoginResponseDTO,
+  IAuthRefreshTokenResponseDTO,
+  IAuthLogoutResponseDTO,
+  IAuthCreateApiTokenResponseDTO
+} from "@platform/domain/models/apis/platform/business/auth";
+import {
+  IAuthLoginRequestEntity,
+  IAuthCreateApiTokenRequestEntity
+} from "@platform/infrastructure/entities/apis/platform/business/auth";
 
 export abstract class IAuthRepository {
-    abstract login(params: IAuthLoginRequestEntity, config: IConfigDTO): Promise<IAuthLoginResponseDTO | null>;
-    abstract refreshToken(config: IConfigDTO): Promise<IRefreshTokenResponseDTO | null>;
-    abstract logout(config: IConfigDTO): Promise<ILogoutResponseDTO | null>;
+  abstract login(params: IAuthLoginRequestEntity, config: IConfigDTO): Promise<IAuthLoginResponseDTO | null>;
+  abstract refreshToken(config: IConfigDTO): Promise<IAuthRefreshTokenResponseDTO | null>;
+  abstract logout(config: IConfigDTO): Promise<IAuthLogoutResponseDTO | null>;
+  abstract createApiToken(params: IAuthCreateApiTokenRequestEntity, config: IConfigDTO): Promise<IAuthCreateApiTokenResponseDTO | null>;
 }
