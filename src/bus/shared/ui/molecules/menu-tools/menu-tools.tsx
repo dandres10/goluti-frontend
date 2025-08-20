@@ -76,6 +76,7 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
       currencyId: platformConfiguration?.platform?.currencyId ?? "",
     };
     onUpdatePlatform(platformUpdateDTO);
+    onClose();
   };
 
   useEffect(() => {

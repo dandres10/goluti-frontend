@@ -14,10 +14,18 @@ import type { ILocationDTO } from "@platform/domain/models/apis/platform/entitie
 import { CONDITION_TYPE_ENUM } from "@bus/core/enums/condition-type-enum";
 import { IPlatformUpdateDTO } from "@platform/domain/models/apis/platform/entities/platform";
 import { InjectionPlatformBusinessFacade } from "@platform/facade/apis/platform/injection/business/injection-platform-business-facade";
+import { InjectionPlatformReduxMapper } from "@bus/infrastructure/mappers/redux/injection";
+import { InjectionPlatformSessionRepository } from "@bus/infrastructure/repositories/session/injection/injection-platform-session-repository";
+import { InjectionPlatformEventUseCase } from "@bus/domain/services/use_cases/event/injection/injection-platform-event-use-case";
+import { IAuthLoginResponseDTO } from "@bus/domain/models/apis/platform/business/auth/login";
 
 const _injectionPlatformEntitiesFacadeLocation = InjectionPlatformEntitiesFacade.LocationFacade();
 const _injectionPlatformEntitiesFacadePlatform = InjectionPlatformEntitiesFacade.PlatformFacade();
 const _injectionPlatformBusinessFacadeAuth = InjectionPlatformBusinessFacade.AuthFacade();
+
+const platformReduxMapper = InjectionPlatformReduxMapper.PlatformReduxMapper();
+const platformSessionRepository = InjectionPlatformSessionRepository.PlatformSessionRepository();
+const dispatchUpdatePlatformEventUseCase = InjectionPlatformEventUseCase.DispatchUpdatePlatformEventUseCase();
 
 
 function App() {
@@ -62,7 +70,11 @@ function App() {
     await _injectionPlatformBusinessFacadeAuth
       .refreshToken()
       .then((data) => {
-        console.log(data);
+        const dataRedux = platformReduxMapper.mapFrom({
+          ...data,
+        } as IAuthLoginResponseDTO)
+        platformSessionRepository.savePlatform(dataRedux);
+        dispatchUpdatePlatformEventUseCase.execute(dataRedux);
       });
   };
 

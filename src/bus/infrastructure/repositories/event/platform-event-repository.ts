@@ -37,7 +37,10 @@ export class PlatformEventRepository extends IPlatformEventRepository {
     }
 
     public dispatchUpdatePlatformEvent(param: IPlatformReduxDTO): void {
-        document.dispatchEvent(this.createUpdatePlatformEvent(param));
+        const updateEvent = new CustomEvent(BUS_EVENTS_ENUM.UPDATE_PLATFORM, {
+            detail: { message: param }
+        });
+        document.dispatchEvent(updateEvent);
     }
 
 
