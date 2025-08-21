@@ -28,6 +28,7 @@ export interface IMenuToolsUI {
   onChangeCompany: (company: string) => Promise<ILocationDTO[] | null>;
   onUpdatePlatform: (platform: IPlatformUpdateDTO) => Promise<void>;
   platformConfiguration: IPlatformConfigurationDTO | undefined;
+  isOpen: boolean;
 }
 
 const schema = yup.object({
@@ -46,7 +47,7 @@ interface MenuToolsFormValues {
 }
 
 export const MenuToolsUI = (props: IMenuToolsUI) => {
-  const { id, onClose, onChangeCompany, onUpdatePlatform, platformConfiguration } = props;
+  const { id, onClose, onChangeCompany, onUpdatePlatform, platformConfiguration, isOpen } = props;
   const [companies, setCompanies] = useState<IDataSourceDTO[] | undefined>([]);
   const [locations, setLocations] = useState<IDataSourceDTO[] | undefined>([]);
   const [languages, setLanguages] = useState<IDataSourceDTO[] | undefined>([]);
@@ -58,6 +59,7 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
     formState: { errors, isValid },
     trigger,
     setValue,
+    reset,
   } = useForm<MenuToolsFormValues>({
     defaultValues: {
       rol: platformConfiguration?.rol_id ?? "",
@@ -80,11 +82,20 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
   };
 
   useEffect(() => {
-    getCompanies();
-    getLocations();
-    getLanguages();
-    getRols();
-  }, [platformConfiguration]);
+    if (isOpen && platformConfiguration) {
+      reset({
+        rol: platformConfiguration?.rol_id ?? "",
+        company: platformConfiguration?.company_id ?? "",
+        location: platformConfiguration?.location_id ?? "",
+        language: platformConfiguration?.language_id ?? "",
+      });
+      getCompanies();
+      getLocations();
+      getLanguages();
+      getRols();
+    }
+  }, [platformConfiguration, isOpen]);
+
 
   const getCompanies = () => {
     const companies = platformConfiguration?.companies?.map(

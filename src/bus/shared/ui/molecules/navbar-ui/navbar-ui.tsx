@@ -243,6 +243,7 @@ export const NavbarUI = (props: INavbarUI) => {
             onChangeCompany={onChangeCompany}
             onUpdatePlatform={onUpdatePlatform}
             platformConfiguration={platformConfiguration}
+            isOpen={openTools}
           />
         }
       />
