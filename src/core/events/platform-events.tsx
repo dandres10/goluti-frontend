@@ -28,7 +28,6 @@ export const PlatformEvents = () => {
     }
     _platformEventFacade.listenerUpdatePlatformEvent(
       (message: IPlatformReduxDTO) => {
-        console.log("message platform events", message);
         _platformReduxFacade.updatePlatform(message, { dispatch });
       }
     );
