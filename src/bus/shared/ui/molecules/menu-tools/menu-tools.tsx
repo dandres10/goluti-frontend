@@ -94,7 +94,7 @@ export const MenuToolsUI = (props: IMenuToolsUI) => {
       getLanguages();
       getRols();
     }
-  }, [platformConfiguration, isOpen]);
+  }, [isOpen]);
 
 
   const getCompanies = () => {
