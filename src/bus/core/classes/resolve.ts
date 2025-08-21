@@ -13,7 +13,6 @@ export class Resolve {
     }
 
     public ResolveRequest = <T>(requestResult: Response<T>): T | null => {
-
         //TODO: mapeador para diferentes objetos de respuesta
         /* requestResult = { ...requestResult, response: requestResult?.result }; */
 
