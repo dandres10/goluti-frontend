@@ -6,5 +6,5 @@ export const CONST_PLATFORM_API_ROUTES = {
     LOCATION: 'location',
     PLATFORM: 'platform',
     LOCATION_LIST: 'location/list',
-    PLATFORM_LIST: 'platform/list'
+    PLATFORM_LIST: 'platform/list',
 }
