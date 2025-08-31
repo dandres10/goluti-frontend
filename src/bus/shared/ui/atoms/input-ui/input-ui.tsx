@@ -101,6 +101,7 @@ export const InputUI = (props: IInputUI) => {
           onPressEnter={onPressEnter} // Actualiza la paginación al presionar Enter
           size={size}
           className={`${className}`}
+          disabled={disabled}
         />
       )}
     </ConfigProvider>

@@ -2,7 +2,7 @@ import "./home.scss";
 import * as yup from "yup";
 import { IAppointmentLogicProps } from "./home-logic";
 import { ButtonUI } from "@/bus/shared/ui/atoms";
-import { DrawerUI } from "@/bus/shared/ui/molecules";
+import { DrawerUI, PaginationUI, TableUI } from "@/bus/shared/ui/molecules";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import {
@@ -331,7 +331,18 @@ export const fields: any[] = [
 ];
 
 export const AppointmentView = (props: IAppointmentLogicProps) => {
-  const { showDrawer, onClose, open, onSubmit } = props;
+  const {
+    showDrawer,
+    onClose,
+    open,
+    onSubmit,
+    hasData,
+    data,
+    columns,
+    onChangeTable,
+    handlePageChange,
+    onButtonNextDisabled,
+    componentKey } = props;
   const [schema, setSchema] = useState(schemaCore);
   const [defaultValues, setDefaultValues] = useState(defaultValuesCore);
 
@@ -345,13 +356,43 @@ export const AppointmentView = (props: IAppointmentLogicProps) => {
 
   return (
     <div className="appointment-home">
-      <ButtonUI
-        id="button-filter"
-        type="primary"
-        text="Filtro"
-        className="appointment-home__filter"
-        onClick={showDrawer}
-      />
+
+
+      <section className="appointment-home__actions">
+        <ButtonUI
+          id="button-filter"
+          type="primary"
+          text="Filtro"
+          className="appointment-home__filter"
+          onClick={showDrawer}
+        />
+      </section>
+
+      <section className="appointment-home__body">
+        {hasData ? (
+          <div>
+            <TableUI
+              dataSource={data}
+              scroll={{ x: 1000, y: 445 }}
+              size="small"
+              columns={columns}
+              onChange={onChangeTable}
+            />
+          </div>
+        ) : (
+          <div>cargando...</div>
+        )}
+        <div className="home__pagination">
+          <PaginationUI
+            key={`pagination-${componentKey}`}
+            id="pagination"
+            initialLimit={10}
+            initialPage={1}
+            onPageChange={handlePageChange}
+            onButtonNextDisabled={onButtonNextDisabled}
+          />
+        </div>
+      </section>
       <DrawerUI
         id="drawer-filter"
         placement={"right"}

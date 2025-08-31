@@ -1,17 +1,25 @@
 import "./pagination.scss";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ButtonUI, InputUI } from "../../atoms";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+
+
+
+export interface IPaginationValuesUI {
+  limit: number;
+  offset: number;
+}
 
 export interface IPaginationUI {
   id: string;
   initialPage?: number;
   initialLimit: number;
-  onPageChange: (pagination: { limit: number; offset: number }) => void;
+  onPageChange: (pagination: IPaginationValuesUI) => void;
+  onButtonNextDisabled?: boolean;
 }
 
 export const PaginationUI = (props: IPaginationUI) => {
-  const { id, initialPage = 1, initialLimit, onPageChange } = props;
+  const { id, initialPage = 1, initialLimit, onPageChange, onButtonNextDisabled } = props;
   const [page, setPage] = useState(initialPage);
   const [offset, setOffset] = useState(0);
 
@@ -74,15 +82,16 @@ export const PaginationUI = (props: IPaginationUI) => {
 
       {/* InputUI para el número de página */}
       <InputUI
-        value={page === 0 ? "" : page} 
+        value={page === 0 ? "" : page}
         onChange={handlePageInputChange}
-        onBlur={handlePageInputBlur} 
-        onPressEnter={handlePageInputBlur} 
+        onBlur={handlePageInputBlur}
+        onPressEnter={handlePageInputBlur}
         size="small"
         name="asdf"
         maxLength={3}
         id={`${id}_pagination`}
         className={"pagination__pag"}
+        disabled={onButtonNextDisabled}
       />
 
       <ButtonUI
@@ -92,6 +101,7 @@ export const PaginationUI = (props: IPaginationUI) => {
         size="small"
         icon={<RightOutlined />}
         onClick={handleNext}
+        disabled={onButtonNextDisabled}
       />
     </div>
   );
