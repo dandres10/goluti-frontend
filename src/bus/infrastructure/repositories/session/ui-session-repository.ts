@@ -32,4 +32,17 @@ export class UiSessionRepository extends IUiSessionRepository {
     }
 
 
+    public updateTopIdMenu(params: IUiReduxDTO, config: IConfigDTO): void {
+        if (config?.key) {
+            saveToSessionStorage(config.key, params);
+        }
+    }
+
+    public readTopIdMenu(config: IConfigDTO): IUiReduxDTO | null {
+        if (config?.key)
+            return getFromSessionStorage(config.key)
+        return null
+    }
+
+
 }

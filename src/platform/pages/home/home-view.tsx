@@ -3,7 +3,7 @@ import { IPlatformLogicProps } from "./home-logic";
 import "./home.scss";
 
 export const PlatformView = (props: IPlatformLogicProps) => {
-  const { goToAppointment } = props;
+  const { goToAppointment, firstLevelMenu } = props;
   return (
     <div className="platform-home">
       <div className="platform-home__head">
@@ -14,14 +14,14 @@ export const PlatformView = (props: IPlatformLogicProps) => {
       </div>
 
       <div className="platform-home__container-cards">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((value) => (
-          <div key={value}>
+        {firstLevelMenu?.map((item) => (
+          <div key={item.id}>
             <ButtonUI
-              id={value.toString()}
+              id={item.id}
               type="primary"
               size="large"
-              text="Citas"
-              onClick={goToAppointment}
+              text={item.name}
+              onClick={() => goToAppointment(item.id, item.route)}
               className="platform-home__container-cards__card"
             />
           </div>

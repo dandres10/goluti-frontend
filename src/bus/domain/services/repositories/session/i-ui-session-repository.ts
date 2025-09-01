@@ -4,4 +4,7 @@ import { IUiReduxDTO } from "../../../../../bus/domain/models/redux/bus/ui/i-ui-
 export abstract class IUiSessionRepository {
     abstract updateNavbarType(params: IUiReduxDTO, config: IConfigDTO): void;
     abstract readNavbarType(config: IConfigDTO): IUiReduxDTO | null;
+
+    abstract updateTopIdMenu(params: IUiReduxDTO, config: IConfigDTO): void;
+    abstract readTopIdMenu(config: IConfigDTO): IUiReduxDTO | null;
 }

@@ -35,6 +35,8 @@ function App() {
       selector: useSelector,
     });
 
+
+
   const onChangeCompany = async (company: string): Promise<ILocationDTO[] | null> => {
     return await _injectionPlatformEntitiesFacadeLocation.list({
       skip: 0,

@@ -7,4 +7,5 @@ export const enum BUS_EVENTS_ENUM {
     LOGOUT = 'LOGOUT',
     //UI
     UPDATE_NAVBAR = 'UPDATE_NAVBAR',
+    UPDATE_TOP_ID_MENU = 'UPDATE_TOP_ID_MENU',
 }

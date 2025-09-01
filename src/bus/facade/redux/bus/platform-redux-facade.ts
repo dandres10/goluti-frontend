@@ -5,11 +5,13 @@ import {
     ICurrencyReduxDTO,
     ILanguageReduxDTO,
     ILocationReduxDTO,
+    IMenuReduxDTO,
     IPlatformReduxDTO,
     IRolReduxDTO,
     IUserReduxDTO
 } from "@bus/domain/models/redux/bus/platform";
 import { IPlatformConfigurationDTO } from "@/bus/domain/models/redux/bus/platform/i-platform-configuration-dto";
+import { IReadMenuByTopIdParamsDTO } from "@/bus/domain/models/redux/bus/platform/i-read-menu-by-top-id-params-dto";
 
 export class PlatformReduxFacade {
     private static instance: PlatformReduxFacade;
@@ -25,6 +27,8 @@ export class PlatformReduxFacade {
     private readLocationsUseCase = InjectionPlatformReduxUseCase.ReadLocationsUseCase();
     private readRolUseCase = InjectionPlatformReduxUseCase.ReadRolUseCase();
     private platformConfigurationUseCase = InjectionPlatformReduxUseCase.PlatformConfigurationUseCase();
+    private readFirstLevelMenuUseCase = InjectionPlatformReduxUseCase.ReadFirstLevelMenuUseCase();
+    private readMenuByTopIdUseCase = InjectionPlatformReduxUseCase.ReadMenuByTopIdUseCase();
 
 
     public static getInstance(): PlatformReduxFacade {
@@ -80,6 +84,14 @@ export class PlatformReduxFacade {
 
     public platformConfiguration(config: IConfigDTO): IPlatformConfigurationDTO | undefined {
         return this.platformConfigurationUseCase.execute(config)
+    }
+
+    public readFirstLevelMenu(config: IConfigDTO): IMenuReduxDTO[] | undefined {
+        return this.readFirstLevelMenuUseCase.execute(config)
+    }
+
+    public readMenuByTopId(config: IConfigDTO, params: IReadMenuByTopIdParamsDTO): IMenuReduxDTO[] | undefined {
+        return this.readMenuByTopIdUseCase.execute(params, config)
     }
 
 }

@@ -1,10 +1,12 @@
 import { IConfigDTO } from '../../../../../core/interfaces';
 import { ACTIONS_BUS } from './platform.action';
-import { ICompanyReduxDTO, ICurrencyReduxDTO, ILanguageReduxDTO, ILocationReduxDTO, IPlatformInitialReduxDTO, IPlatformReduxDTO, IRolReduxDTO, IUserReduxDTO } from '../../../../../domain/models/redux/bus/platform';
+import { ICompanyReduxDTO, ICurrencyReduxDTO, ILanguageReduxDTO, ILocationReduxDTO, IMenuReduxDTO, IPlatformInitialReduxDTO, IPlatformReduxDTO, IRolReduxDTO, IUserReduxDTO } from '../../../../../domain/models/redux/bus/platform';
 import { IPlatformReduxRepository } from "../../../../../domain/services/repositories/redux/bus/i-platform-redux-repository";
+import { IReadMenuByTopIdParamsDTO } from '@/bus/domain/models/redux/bus/platform/i-read-menu-by-top-id-params-dto';
 
 
 export class PlatformReduxRepository extends IPlatformReduxRepository {
+
 
     private static instance: PlatformReduxRepository;
 
@@ -106,6 +108,25 @@ export class PlatformReduxRepository extends IPlatformReduxRepository {
     public readPlatform(config: IConfigDTO): IPlatformInitialReduxDTO | undefined {
         if (config?.selector) {
             const data = config.selector((state: any) => state?.bus?.platform?.configuration?.platform);
+            return data;
+        }
+        return undefined;
+    }
+
+    public readFirstLevelMenu(config: IConfigDTO): IMenuReduxDTO[] | undefined {
+        if (config?.selector) {
+            const data = config
+                .selector((state: any) =>
+                    state?.bus?.platform?.configuration?.menu
+                        .filter((menu: IMenuReduxDTO) => menu.topId === menu.id));
+            return data;
+        }
+        return undefined;
+    }
+
+    public readMenuByTopId(config: IConfigDTO, params: IReadMenuByTopIdParamsDTO): IMenuReduxDTO[] | undefined {
+        if (config?.selector) {
+            const data = config.selector((state: any) => state?.bus?.platform?.configuration?.menu.filter((menu: IMenuReduxDTO) => menu.topId === params.topId));
             return data;
         }
         return undefined;

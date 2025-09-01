@@ -13,7 +13,7 @@ import {
 } from "@ant-design/icons";
 import { DrawerUI } from "@bus/shared/ui/molecules/index";
 import { useFullWidth } from "@bus/shared/hooks";
-import { MenuHomeUI } from "../menu-home-ui/menu-home-ui";
+import { IDataSourceDTO, MenuHomeUI } from "../menu-home-ui/menu-home-ui";
 import { useNavigate } from "react-router-dom";
 import { InjectionEventFacade } from "@/bus/facade/event/injection/injection-event-facade";
 import { MenuToolsUI } from "../menu-tools/menu-tools";
@@ -25,6 +25,10 @@ import { IUiReduxDTO } from "@/bus/domain/models/redux/bus/ui/i-ui-redux-dto";
 import { InjectionSessionFacade } from "@/bus/facade/session/injection/injection-session-facade";
 import { ILocationDTO } from "@platform/domain/models/apis/platform/entities/location";
 import { IPlatformUpdateDTO } from "@/platform/domain/models/apis/platform/entities/platform";
+import { ICONS } from "../../icons/icons";
+import { InjectionReduxFacade } from "@/bus/facade/redux";
+import { useSelector } from "react-redux";
+import { IMenuReduxDTO } from "@/bus/domain/models/redux/bus/platform";
 
 const _uIEventFacade = InjectionEventFacade.UiEventFacade();
 
@@ -42,24 +46,100 @@ const ui: IUiReduxDTO | null = _uISessionFacade.readNavbarType({
 });
 
 export const NavbarUI = (props: INavbarUI) => {
+
+
+
   const { id, className, platformConfiguration, onChangeCompany, onUpdatePlatform } = props;
   const [openMenuHome, setOpenMenuHome] = useState(false);
   const [openTools, setOpenTools] = useState(false);
   const [navbarType, setNavbarType] = useState(NAVBAR_TYPE.HOME);
+  const [topIdMenu, setTopIdMenu] = useState<string | undefined>(undefined);
+  const [menuPlatform, setMenuPlatform] = useState<IDataSourceDTO[]>([]);
   const fullWidth = useFullWidth();
   const navigate = useNavigate();
 
+  const _injectionReduxFacade = InjectionReduxFacade.PlatformReduxFacade();
+  const _platformSessionFacade = InjectionSessionFacade.UiSessionFacade();
+
+
+  const menuPlatformByTopId: IMenuReduxDTO[] | undefined =
+    _injectionReduxFacade.readMenuByTopId({
+      selector: useSelector,
+    }, { topId: topIdMenu ?? "" });
+
+
   useEffect(() => {
+    readTopIdMenuSession();
     listenerUpdateNavbarEvent();
-    const type = ui ? ui.typeNavbar : NAVBAR_TYPE.HOME;
-    setNavbarType(type);
+    listenerUpdateTopIdMenuEvent();
+    const type = ui ? ui.typeNavbar : NAVBAR_TYPE.LOGIN;
+    setNavbarType(type ?? NAVBAR_TYPE.LOGIN);
   }, []);
+
+  useEffect(() => {
+    setMenuPlatformByTopId();
+  }, [topIdMenu]);
+
+  const readTopIdMenuSession = () => {
+    setTopIdMenu('');
+    setTopIdMenu(_platformSessionFacade.readTopIdMenu({ key: KEYS_SESSION_ENUM.UI })?.topIdMenu);
+  }
 
   const listenerUpdateNavbarEvent = () => {
     _uIEventFacade.listenerUpdateNavbarEvent((message: IUiReduxDTO) => {
-      setNavbarType(message.typeNavbar);
+      setNavbarType(message.typeNavbar ?? NAVBAR_TYPE.LOGIN);
+      onCloseMenuHome();
     });
   };
+
+
+  const goToMenuPlatform = (route: string) => {
+    navigate(route);
+    onCloseMenuHome();
+  }
+
+
+  const listenerUpdateTopIdMenuEvent = () => {
+    _uIEventFacade.listenerUpdateTopIdMenuEvent((message: IUiReduxDTO) => {
+      if (!message?.topIdMenu) return;
+      console.log("message topIdMenu", message);
+      setTopIdMenu(message?.topIdMenu);
+    });
+  };
+
+  const setMenuPlatformByTopId = () => {
+    if (!menuPlatformByTopId?.length) return;
+    let buildMenuPlatform: IDataSourceDTO[] = [];
+    buildMenuPlatform.push({
+      id: "Dashboard",
+      value: "Dashboard",
+      label: "Dashboard",
+      route: ROUTES.PLATFORM_HOME,
+      icon: ICONS['home'],
+      goTo: (route: string) => {
+        goToMenuPlatform(route);
+        setMenuPlatform([]);
+        setTopIdMenu(undefined);
+        _uIEventFacade.dispatchUpdateTopIdMenuEvent({ topIdMenu: '' });
+      },
+    });
+    menuPlatformByTopId?.forEach((item) => {
+      buildMenuPlatform.push({
+        id: item.id,
+        value: item.name,
+        label: item.label,
+        route: item.route,
+        icon: ICONS[item.icon as keyof typeof ICONS],
+        goTo: (route: string) => {
+          goToMenuPlatform(route);
+        },
+      });
+    });
+
+
+    setMenuPlatform(buildMenuPlatform);
+  };
+
 
   const showDrawer = () => {
     setOpenMenuHome(true);
@@ -96,7 +176,7 @@ export const NavbarUI = (props: INavbarUI) => {
   };
 
   return (
-    <div id="home-view__navbar" className={`${className} navbar-ui`}>
+    <div id={id} className={`${className} navbar-ui`}>
       <div className="navbar-ui__start">
         {[NAVBAR_TYPE.HOME].includes(navbarType) && fullWidth < 800 ? (
           <ButtonUI
@@ -120,7 +200,7 @@ export const NavbarUI = (props: INavbarUI) => {
           />
         ) : null}
 
-        {[NAVBAR_TYPE.PLATFORM].includes(navbarType) ? (
+        {[NAVBAR_TYPE.PLATFORM].includes(navbarType) && menuPlatform.length > 0 ? (
           <ButtonUI
             id="button-menu-core"
             type="text"
@@ -198,7 +278,8 @@ export const NavbarUI = (props: INavbarUI) => {
           />
         ) : null}
       </div>
-      <DrawerUI
+
+      {[NAVBAR_TYPE.HOME].includes(navbarType) ? (<DrawerUI
         id="menu-core"
         placement="left"
         open={openMenuHome}
@@ -213,24 +294,44 @@ export const NavbarUI = (props: INavbarUI) => {
                 value: "Inicio",
                 label: "Inicio",
                 selected: true,
+                route: "/",
                 icon: <HomeOutlined />,
               },
               {
                 id: "nosotros",
                 value: "Nosotros",
                 label: "Nosotros",
+                route: "/nosotros",
                 icon: <AuditOutlined />,
               },
               {
                 id: "contacto",
                 value: "Contacto",
                 label: "Contacto",
+                route: "/contacto",
                 icon: <PhoneOutlined />,
               },
             ]}
           />
         }
-      />
+      />) : null}
+
+
+      {[NAVBAR_TYPE.PLATFORM].includes(navbarType) && menuPlatform.length > 0 ? (<DrawerUI
+        id="menu-core"
+        placement="left"
+        open={openMenuHome}
+        onClose={onCloseMenuHome}
+        component={
+          <MenuHomeUI
+            id="menu-core"
+            close={() => onCloseMenuHome()}
+            options={menuPlatform}
+          />
+        }
+      />) : null}
+
+
       <DrawerUI
         id="drawer-tools"
         placement="right"

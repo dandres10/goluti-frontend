@@ -7,6 +7,8 @@ export class UiSessionFacade {
     private static instance: UiSessionFacade;
     private updateNavbarTypeUseCase = InjectionUiSessionUseCase.UpdateNavbarTypeUseCase();
     private readNavbarTypeUseCase = InjectionUiSessionUseCase.ReadNavbarTypeUseCase();
+    private updateTopIdMenuUseCase = InjectionUiSessionUseCase.UpdateTopIdMenuUseCase();
+    private readTopIdMenuUseCase = InjectionUiSessionUseCase.ReadTopIdMenuUseCase();
 
 
     public static getInstance(): UiSessionFacade {
@@ -24,8 +26,13 @@ export class UiSessionFacade {
         return this.readNavbarTypeUseCase.execute(config);
     }
 
+    public updateTopIdMenu(params: IUiReduxDTO, config: IConfigDTO): void {
+        this.updateTopIdMenuUseCase.execute(params, config);
+    }
 
-
+    public readTopIdMenu(config: IConfigDTO): IUiReduxDTO | null {
+        return this.readTopIdMenuUseCase.execute(config);
+    }
 
 
 }

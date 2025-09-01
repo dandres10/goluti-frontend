@@ -6,14 +6,17 @@ export interface IDataSourceDTO {
   id: string;
   value: string;
   label: string;
+  route: string;
   icon: React.ReactNode;
   selected?: boolean;
+  goTo?: (route: string) => void;
 }
 
 export interface IMenuHomeUI {
   id: string;
   options: IDataSourceDTO[];
   close: () => void;
+
 }
 
 export const MenuHomeUI = (props: IMenuHomeUI) => {
@@ -41,6 +44,7 @@ export const MenuHomeUI = (props: IMenuHomeUI) => {
           className={
             item.selected ? "menu-home__items--selected" : "menu-home__items"
           }
+          onClick={() => item.goTo?.(item.route)}
         >
           <div style={{ fontSize: "18px" }}>{item.icon}</div>
           <div className="menu-home__items__value">{item.value}</div>

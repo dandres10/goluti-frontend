@@ -1,9 +1,11 @@
+import { IReadMenuByTopIdParamsDTO } from "@/bus/domain/models/redux/bus/platform/i-read-menu-by-top-id-params-dto";
 import { IConfigDTO } from "@bus/core/interfaces";
 import {
     ICompanyReduxDTO,
     ICurrencyReduxDTO,
     ILanguageReduxDTO,
     ILocationReduxDTO,
+    IMenuReduxDTO,
     IPlatformInitialReduxDTO,
     IPlatformReduxDTO,
     IRolReduxDTO,
@@ -25,5 +27,7 @@ export abstract class IPlatformReduxRepository {
     abstract readLanguages(config: IConfigDTO): ILanguageReduxDTO[] | undefined;
     abstract readCompanies(config: IConfigDTO): ICompanyReduxDTO[] | undefined;
     abstract readCurrencies(config: IConfigDTO): ICurrencyReduxDTO[] | undefined;
+    abstract readFirstLevelMenu(config: IConfigDTO): IMenuReduxDTO[] | undefined;
+    abstract readMenuByTopId(config: IConfigDTO, params: IReadMenuByTopIdParamsDTO): IMenuReduxDTO[] | undefined;
 
 }

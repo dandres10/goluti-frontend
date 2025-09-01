@@ -37,4 +37,23 @@ export class UiEventRepository extends IUiEventRepository {
         document.dispatchEvent(updateEvent);
 
     }
+
+    public createUpdateTopIdMenuEvent(param: IUiReduxDTO): CustomEvent<{ message: IUiReduxDTO }> {
+        return new CustomEvent(BUS_EVENTS_ENUM.UPDATE_TOP_ID_MENU, {
+            detail: { message: param }
+        });
+    }
+    
+    public listenerUpdateTopIdMenuEvent(callback: (message: IUiReduxDTO) => void): void {
+        document.addEventListener(BUS_EVENTS_ENUM.UPDATE_TOP_ID_MENU, (event: any) => {
+            callback(event?.detail?.message);
+        });
+    }
+    
+    public dispatchUpdateTopIdMenuEvent(param: IUiReduxDTO): void {
+        const updateEvent = new CustomEvent(BUS_EVENTS_ENUM.UPDATE_TOP_ID_MENU, {
+            detail: { message: param }
+        });
+        document.dispatchEvent(updateEvent);
+    }
 }

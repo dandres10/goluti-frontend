@@ -6,4 +6,8 @@ export abstract class IUiEventRepository {
     abstract createUpdateNavbarTypeEvent(param: IUiReduxDTO): CustomEvent<{ message: IUiReduxDTO }>;
     abstract listenerUpdateNavbarTypeEvent(callback: (message: IUiReduxDTO) => void): void;
     abstract dispatchUpdateNavbarTypeEvent(param: IUiReduxDTO): void;
+
+    abstract createUpdateTopIdMenuEvent(param: IUiReduxDTO): CustomEvent<{ message: IUiReduxDTO }>;
+    abstract listenerUpdateTopIdMenuEvent(callback: (message: IUiReduxDTO) => void): void;
+    abstract dispatchUpdateTopIdMenuEvent(param: IUiReduxDTO): void;
 }

@@ -4,6 +4,7 @@ import { InjectionEventRepository } from "../../../../../infrastructure/reposito
 import { InjectionUiSessionRepository } from "../../../../../infrastructure/repositories/session/injection/injection-ui-session-repository";
 import { KEYS_SESSION } from "../../../../../core/const/keys-session";
 import { IUiReduxDTO } from "../../../../../../bus/domain/models/redux/bus/ui/i-ui-redux-dto";
+import { KEYS_SESSION_ENUM } from "@/bus/core/enums/keys-session-enum";
 
 
 export class CreateUpdateNavbarEventUseCase implements UseCase<IUiReduxDTO, CustomEvent<{ message: NAVBAR_TYPE | null }>> {
@@ -21,14 +22,14 @@ export class CreateUpdateNavbarEventUseCase implements UseCase<IUiReduxDTO, Cust
     public execute(param: IUiReduxDTO): CustomEvent<{ message: IUiReduxDTO }> {
 
         const ui: IUiReduxDTO | null = this.uISessionRepository.readNavbarType({
-            key: KEYS_SESSION.UI,
+            key: KEYS_SESSION.UI as KEYS_SESSION_ENUM | undefined,
         });
 
         if (ui) {
-            this.uISessionRepository.updateNavbarType(ui, { key: KEYS_SESSION.UI })
+            this.uISessionRepository.updateNavbarType(ui, { key: KEYS_SESSION.UI as KEYS_SESSION_ENUM | undefined })
             return this.uiEventRepository.createUpdateNavbarTypeEvent(ui);
         }
-        this.uISessionRepository.updateNavbarType(param, { key: KEYS_SESSION.UI })
+        this.uISessionRepository.updateNavbarType(param, { key: KEYS_SESSION.UI as KEYS_SESSION_ENUM | undefined })
         return this.uiEventRepository.createUpdateNavbarTypeEvent(param);
     }
 }

@@ -8,6 +8,9 @@ export class UiEventFacade {
     private listenerUpdateNavbarEventUseCase = InjectionUiEventUseCase.ListenerUpdateNavbarEventUseCase();
     private createUpdateNavbarEventUseCase = InjectionUiEventUseCase.CreateUpdateNavbarEventUseCase();
     private dispatchUpdateNavbarEventUseCase = InjectionUiEventUseCase.DispatchUpdateNavbarEventUseCase();
+    private createUpdateTopIdMenuEventUseCase = InjectionUiEventUseCase.CreateUpdateTopIdMenuEventUseCase();
+    private dispatchUpdateTopIdMenuEventUseCase = InjectionUiEventUseCase.DispatchUpdateTopIdMenuEventUseCase();
+    private listenerUpdateTopIdMenuEventUseCase = InjectionUiEventUseCase.ListenerUpdateTopIdMenuEventUseCase();
 
 
     public static getInstance(): UiEventFacade {
@@ -26,5 +29,18 @@ export class UiEventFacade {
     }
     public dispatchUpdateNavbarEvent(param: IUiReduxDTO): void {
         this.dispatchUpdateNavbarEventUseCase.execute(param);
+    }
+
+
+    public listenerUpdateTopIdMenuEvent(callback: (message: IUiReduxDTO) => void): void {
+        this.listenerUpdateTopIdMenuEventUseCase.execute(callback);
+    }
+
+    public createUpdateTopIdMenuEvent(param: IUiReduxDTO): void {
+        this.createUpdateTopIdMenuEventUseCase.execute(param);
+    }
+
+    public dispatchUpdateTopIdMenuEvent(param: IUiReduxDTO): void {
+        this.dispatchUpdateTopIdMenuEventUseCase.execute(param);
     }
 }

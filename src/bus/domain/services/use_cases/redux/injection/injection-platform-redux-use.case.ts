@@ -10,7 +10,9 @@ import {
     ReadLanguageUseCase,
     ReadLocationsUseCase,
     ReadLocationUseCase,
-    ReadRolUseCase
+    ReadRolUseCase,
+    ReadFirstLevelMenuUseCase,
+    ReadMenuByTopIdUseCase
 } from "@bus/domain/services/use_cases/redux/bus/platform";
 
 
@@ -27,4 +29,6 @@ export class InjectionPlatformReduxUseCase {
     public static ReadLocationUseCase() { return ReadLocationUseCase.getInstance() }
     public static ReadLocationsUseCase() { return ReadLocationsUseCase.getInstance() }
     public static ReadRolUseCase() { return ReadRolUseCase.getInstance() }
+    public static ReadFirstLevelMenuUseCase() { return ReadFirstLevelMenuUseCase.getInstance() }
+    public static ReadMenuByTopIdUseCase() { return ReadMenuByTopIdUseCase.getInstance() }
 }
