@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AppointmentView } from "./home-view";
 import { IFilterDTO } from "@/bus/core/interfaces/i-filter-dto";
 import { InjectionAppointmentBusinessFacade } from "@/appointment/facade/apis/appointment/injection/business/injection-appointment-business-facade";
@@ -6,10 +6,14 @@ import { IAvailabilityAppointmentTableFilterManagerRequestDTO, IAvailabilityAppo
 import { ColumnUI } from "@/bus/shared/ui/core/interfaces";
 import { FC_UI } from "@/bus/shared/ui/core/enums";
 import { IPaginationValuesUI } from "@/bus/shared/ui/molecules";
+import { ButtonUI } from "@/bus/shared/ui/atoms";
+import { RightOutlined } from "@ant-design/icons";
 
 
 export interface IAppointmentLogicProps {
   showDrawer: () => void;
+  showDrawerAction: () => void;
+  onCloseAction: () => void;
   onClose: () => void;
   onSubmit: (data: IFilterDTO[]) => void;
   onChangeTable: (dataSourceTable: IAvailabilityAppointmentTableResponseDTO) => void;
@@ -19,6 +23,7 @@ export interface IAppointmentLogicProps {
   data: IAvailabilityAppointmentTableResponseDTO[];
   onButtonNextDisabled: boolean;
   componentKey: number;
+  openAction: boolean;
   handlePageChange: (pagination: any) => void;
 }
 
@@ -26,6 +31,7 @@ const availabilityFacade = InjectionAppointmentBusinessFacade.AvailabilityFacade
 
 export const AppointmentLogic = () => {
   const [open, setOpen] = useState(false);
+  const [openAction, setOpenAction] = useState(false);
   const [availabilityAppointment, setAvailabilityAppointment] = useState<IAvailabilityAppointmentTableResponseDTO[]>([]);
   const [hasData, setHasData] = useState<boolean>(false);
   const [onButtonNextDisabled, setOnButtonNextDisabled] = useState<boolean>(false);
@@ -38,6 +44,14 @@ export const AppointmentLogic = () => {
 
   const onClose = () => {
     setOpen(false);
+  };
+
+  const showDrawerAction = () => {
+    setOpenAction(true);
+  };
+
+  const onCloseAction = () => {
+    setOpenAction(false);
   };
 
   const onSubmit = (data: IFilterDTO[]) => {
@@ -61,6 +75,18 @@ export const AppointmentLogic = () => {
     });
   };
 
+  const buildAction = (value: IAvailabilityAppointmentTableResponseDTO) => {
+
+    return (
+      <ButtonUI
+        id="button-action"
+        type="text"
+        icon={<RightOutlined />}
+        onClick={() => showDrawerAction()}
+      />
+    );
+  };
+
   const columns: ColumnUI[] = [
     {
       key: "free",
@@ -68,6 +94,18 @@ export const AppointmentLogic = () => {
       width: 0.2,
       fixed: "left",
       FC: FC_UI.FREE,
+    },
+    {
+      key: "index",
+      title: "ID",
+      align: "left",
+      fixed: true,
+      width: 2,
+      FC: FC_UI.TEXT_UI,
+      dataSource: {
+        id: (item: IAvailabilityAppointmentTableResponseDTO) => item.appointmentId,
+        text: (item: IAvailabilityAppointmentTableResponseDTO) => `${item.appointmentId.slice(0, 4)}${item.appointmentId.slice(-3)}`,
+      },
     },
     {
       key: "userLocationRolId",
@@ -85,7 +123,7 @@ export const AppointmentLogic = () => {
       key: "clientId",
       title: "Nombre cliente",
       align: "left",
-      width: 4,
+      width: 3,
       FC: FC_UI.TEXT_UI,
       dataSource: {
         id: (item: IAvailabilityAppointmentTableResponseDTO) => item.clientId,
@@ -96,7 +134,7 @@ export const AppointmentLogic = () => {
       key: "appointmentStatusId",
       title: "Estado",
       align: "left",
-      width: 4,
+      width: 3,
       FC: FC_UI.BADGE_UI,
       dataSource: {
         id: (item: IAvailabilityAppointmentTableResponseDTO) => item.appointmentStatusId,
@@ -139,12 +177,23 @@ export const AppointmentLogic = () => {
         text: (item: IAvailabilityAppointmentTableResponseDTO) => `${new Date(item.appointmentEnd).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
       },
     },
+    {
+      key: "action_button",
+      align: "center",
+      width: 1,
+      fixed: "right",
+      FC: FC_UI.ACTION,
+      dataSource: {
+        id: (item: IAvailabilityAppointmentTableResponseDTO) => item.appointmentId,
+        build: (item: IAvailabilityAppointmentTableResponseDTO) => buildAction(item),
+      },
+    },
   ];
 
 
   const dataWithKeys = availabilityAppointment?.map((item: IAvailabilityAppointmentTableResponseDTO) => ({
     ...item,
-    key: item.appointmentId
+    key: item.appointmentId,
   })) || [];
 
 
@@ -162,6 +211,7 @@ export const AppointmentLogic = () => {
     columns,
     open,
     hasData,
+    openAction,
     data: dataWithKeys,
     onButtonNextDisabled,
     componentKey,
@@ -169,7 +219,9 @@ export const AppointmentLogic = () => {
     onChangeTable,
     onClose,
     onSubmit,
-    handlePageChange
+    handlePageChange,
+    showDrawerAction,
+    onCloseAction
   };
 
   return <AppointmentView {...props} />;

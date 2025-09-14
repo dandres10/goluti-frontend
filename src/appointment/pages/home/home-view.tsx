@@ -342,7 +342,11 @@ export const AppointmentView = (props: IAppointmentLogicProps) => {
     onChangeTable,
     handlePageChange,
     onButtonNextDisabled,
-    componentKey } = props;
+    componentKey,
+    openAction,
+    showDrawerAction,
+    onCloseAction
+  } = props;
   const [schema, setSchema] = useState(schemaCore);
   const [defaultValues, setDefaultValues] = useState(defaultValuesCore);
 
@@ -409,6 +413,15 @@ export const AppointmentView = (props: IAppointmentLogicProps) => {
             onChangeSchema={handleSchema}
             onChangeDefaultValues={handleDefaultValues}
           />
+        }
+      />
+      <DrawerUI
+        id="drawer-action"
+        placement={"right"}
+        onClose={onCloseAction}
+        open={openAction}
+        component={
+          <div id="drawer-action-component">Accion</div>
         }
       />
     </div>
