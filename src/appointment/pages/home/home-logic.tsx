@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useState } from "react";
 import { AppointmentView } from "./home-view";
 import { IFilterDTO } from "@/bus/core/interfaces/i-filter-dto";
 import { InjectionAppointmentBusinessFacade } from "@/appointment/facade/apis/appointment/injection/business/injection-appointment-business-facade";
@@ -24,7 +24,7 @@ export interface IAppointmentLogicProps {
   onButtonNextDisabled: boolean;
   componentKey: number;
   openAction: boolean;
-  handlePageChange: (pagination: any) => void;
+  handlePageChange: (pagination: IPaginationValuesUI) => void;
 }
 
 const availabilityFacade = InjectionAppointmentBusinessFacade.AvailabilityFacade();
